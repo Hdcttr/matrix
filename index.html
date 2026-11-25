@@ -230,7 +230,7 @@
       </div>
 
       <!-- Barra de Navegação CLI -->
-      <nav aria-label="Navegação do Dossiê" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 pt-4">
+      <nav aria-label="Navegação do Dossiê" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 pt-4">
         <button onclick="switchTab('dossie')" id="tab-dossie" class="nav-btn active rounded px-3 py-2.5 text-xs sm:text-sm text-left flex items-center justify-between">
           <span>[01] DOSSIÊ_LOG</span>
           <span class="opacity-60 text-[10px]">.TXT</span>
@@ -251,8 +251,10 @@
           <span>[05] FAILOVER_HW</span>
           <span class="opacity-60 text-[10px]">.BIN</span>
         </button>
+        <button onclick="switchTab('contatos')" id="tab-contatos" class="nav-btn rounded px-3 py-2.5 text-xs sm:text-sm text-left flex items-center justify-between"><span>[06] DOSSIÊ_CONTATOS</span><span class="opacity-60 text-[10px]">.DAT</span></button>
+        <button onclick="switchTab('npcs')" id="tab-npcs" class="nav-btn rounded px-3 py-2.5 text-xs sm:text-sm text-left flex items-center justify-between"><span>[07] NPCS_IMPORTANTES</span><span class="opacity-60 text-[10px]">.NPC</span></button>
         <button onclick="switchTab('terminal')" id="tab-terminal" class="nav-btn rounded px-3 py-2.5 text-xs sm:text-sm text-left flex items-center justify-between">
-          <span>[06] CONSOLE_CLI</span>
+          <span>[08] CONSOLE_CLI</span>
           <span class="opacity-60 text-[10px]">>_</span>
         </button>
       </nav>
@@ -927,11 +929,91 @@
         </div>
       </section>
 
+      <!-- ABA 06: DOSSIÊ DE CONTATOS / ALIADOS -->
+    <section id="panel-contatos" class="hidden space-y-6"><div class="tech-box rounded p-5"><h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)]">&gt; BANCO DE CONTATOS // SENTINEL_PRIVATE</h2><p class="font-narrative text-sm opacity-85 mt-2">Meu arquivo pessoal de sujeitos despertos e contatos em Nova York. Registro o que consegui reunir; hipóteses não são fatos e acesso não significa confiança.</p><div class="grid grid-cols-2 lg:grid-cols-4 gap-2 mt-4"><button id="contact-tab-hao" onclick="selectContact('hao')" class="nav-btn active rounded p-2 text-xs text-left">[01] Hao Feng</button><button id="contact-tab-shine" onclick="selectContact('shine')" class="nav-btn  rounded p-2 text-xs text-left">[02] Jean Gray // Shine</button><button id="contact-tab-leo" onclick="selectContact('leo')" class="nav-btn  rounded p-2 text-xs text-left">[03] Léo Prech Shaun</button><button id="contact-tab-davina" onclick="selectContact('davina')" class="nav-btn  rounded p-2 text-xs text-left">[04] Davina Larc</button></div></div><div id="contact-hao" class="grid grid-cols-1 lg:grid-cols-12 gap-6"><div class="lg:col-span-4"><div class="tech-box rounded p-4"><div class="text-xs uppercase tracking-widest opacity-70 mb-3 border-b border-[var(--border-color)] pb-1">// ASSINATURA BIOMÉTRICA &amp; PERFIL</div><div class="bg-black/80 border border-[var(--border-color)] rounded p-3 mb-4 flex flex-col items-center"><svg viewBox="0 0 220 180" class="w-full max-w-[210px] h-auto" role="img" aria-label="Reconstrução biométrica de HAO_FENG"><defs><pattern id="grid-hao" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="rgba(51,255,102,.12)" stroke-width=".5"/></pattern></defs><rect width="220" height="180" fill="url(#grid-hao)"/><circle cx="110" cy="90" r="72" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="4 4" opacity=".5"/><path d="M20 90H50 M170 90H200" stroke="currentColor" opacity=".6"/><path d="M55 170 Q55 130 92 120 H128 Q165 130 165 170Z" fill="#263a32" stroke="currentColor" stroke-width="1.5"/><path d="M78 69 Q65 40 91 34 Q119 21 139 44 Q153 57 144 91 L151 145 Q136 151 131 112 L86 111 Q83 144 66 151 Q77 107 73 83Z" fill="#08130e" stroke="currentColor"/><path d="M84 46 Q69 77 84 102 M94 38 Q79 68 90 86 M132 44 Q151 83 138 125" fill="none" stroke="currentColor" opacity=".65"/><path d="M98 108V124 Q110 134 122 124 V108" fill="#09120b" stroke="currentColor"/><path d="M78 65 Q80 43 110 43 Q140 43 142 65 L139 90 Q135 108 110 116 Q85 108 81 90Z" fill="#09120b" stroke="currentColor" stroke-width="1.5"/><path d="M87 70 L102 68 M118 68 L133 70 M110 78 L107 91 L113 92 M101 101 Q110 104 119 101" fill="none" stroke="currentColor" opacity=".8"/><g fill="#000" stroke="currentColor"><ellipse cx="95" cy="78" rx="7" ry="4"/><ellipse cx="125" cy="78" rx="7" ry="4"/></g><g fill="var(--primary)"><circle cx="95" cy="78" r="2"/><circle cx="125" cy="78" r="2"/></g><g fill="#6a1828" stroke="var(--danger)"><circle cx="95" cy="78" r="10"/><circle cx="125" cy="78" r="10"/><path d="M105 77 Q110 73 115 77" fill="none"/></g><path d="M87 121 L87 166 M133 121 L133 166 M88 132 H102 M118 132 H132 M88 145 H102 M118 145 H132" stroke="#b6d8ca" fill="none"/><circle cx="110" cy="151" r="7" fill="#10170f" stroke="var(--accent)"/><path d="M104 151 Q110 140 116 151 Q110 158 104 151Z" fill="none" stroke="var(--accent)"/><text x="8" y="16" fill="currentColor" font-size="8" font-family="monospace">ID: HAO_FENG</text><text x="8" y="172" fill="var(--secondary)" font-size="8" font-family="monospace">BIOMETRIC_SCAN</text><text x="148" y="16" fill="var(--accent)" font-size="8" font-family="monospace">NY_1999</text></svg><span class="text-[11px] opacity-75 mt-1 text-center">RECONSTRUÇÃO VISUAL // HAO_FENG</span></div><ul class="space-y-2 text-xs"><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">IDENTIDADE:</span><span class="text-right">Hao Feng</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">TRADIÇÃO:</span><span class="text-right">Irmandade de Akasha</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">NASCIMENTO:</span><span class="text-right">29/03/1967 // 32 anos</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">BASE:</span><span class="text-right">Templo da Lótus Branca, Manhattan</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">ESSÊNCIA:</span><span class="text-right">Não registrada</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">STATUS:</span><span class="text-right">REGISTRO PARCIAL</span></li></ul></div></div><div class="lg:col-span-8"><article class="tech-box rounded p-5 sm:p-8 font-narrative space-y-4 text-sm sm:text-base leading-relaxed"><div class="border-b border-[var(--border-color)] pb-3"><h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)]">&gt; O GUERREIRO DA LÓTUS BRANCA</h2><span class="text-xs opacity-75">AUTORA: SENTINEL // OUT 1999</span></div><p>Os registros que tenho situam Hao no clã Feng, criado em Nova York dentro de um templo que também serve à Irmandade de Akasha. O treinamento marcial começou cedo; aos quinze anos, ele já frequentava torneios clandestinos. Há relatos de força incomum, percepção da mente alheia e interferência no ritmo dos adversários.</p><p>A morte da mãe, Xiao Feng, marcou uma ruptura. O álcool, o tabaco e as brigas passaram a ocupar o lugar da disciplina. Um confronto brutal com o próprio pai e mestre, Pao-Shi Feng, antecedeu seu retorno à meditação e ao treinamento. Hoje, os registros apontam também para um interesse por guitarra, Led Zeppelin, Nirvana e Iron Maiden, além da perspectiva de suceder o pai.</p><div class="bg-black/60 border-l-2 border-[var(--primary)] p-4 rounded-r"><div class="font-mono text-xs font-bold mb-2">// ANÁLISE DE PARADIGMA</div><p>Ele chama de chi aquilo que eu investigaria como fluxo de energia e controle de processos biológicos. A percepção mental e a alteração do ritmo de outros sujeitos sugerem interfaces distintas com o mesmo código. Não tenho dados suficientes para atribuir níveis de Esferas.</p></div><blockquote class="border-l-2 border-[var(--accent)] pl-4 py-2 text-[var(--accent)] italic bg-black/40 rounded-r"><div class="font-mono text-xs not-italic mb-2">// NOTA PESSOAL — SENTINEL</div>Não confundo disciplina com submissão. Quero saber se o equilíbrio que ele procura é uma escolha própria ou uma obrigação herdada. A capacidade de questionar o próprio mestre me interessa mais do que qualquer demonstração de força.</blockquote></article></div></div><div id="contact-shine" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6"><div class="lg:col-span-4"><div class="tech-box rounded p-4"><div class="text-xs uppercase tracking-widest opacity-70 mb-3 border-b border-[var(--border-color)] pb-1">// ASSINATURA BIOMÉTRICA &amp; PERFIL</div><div class="bg-black/80 border border-[var(--border-color)] rounded p-3 mb-4 flex flex-col items-center"><svg viewBox="0 0 220 180" class="w-full max-w-[210px] h-auto" role="img" aria-label="Reconstrução biométrica de GRAY_J"><defs><pattern id="grid-shine" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="rgba(51,255,102,.12)" stroke-width=".5"/></pattern></defs><rect width="220" height="180" fill="url(#grid-shine)"/><circle cx="110" cy="90" r="72" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="4 4" opacity=".5"/><path d="M20 90H50 M170 90H200" stroke="currentColor" opacity=".6"/><path d="M55 170 Q55 130 92 120 H128 Q165 130 165 170Z" fill="#101d16" stroke="currentColor" stroke-width="1.5"/><path d="M74 72 Q65 39 99 31 Q137 22 150 58 L160 145 L135 133 L132 75 L86 72 L78 130 L64 143Z" fill="#253b31" stroke="currentColor"/><path d="M104 34 Q80 50 78 88 L68 130 M120 33 Q142 57 143 104 L154 137" fill="none" stroke="#b3d6c8"/><path d="M98 108V124 Q110 134 122 124 V108" fill="#09120b" stroke="currentColor"/><path d="M78 65 Q80 43 110 43 Q140 43 142 65 L139 90 Q135 108 110 116 Q85 108 81 90Z" fill="#09120b" stroke="currentColor" stroke-width="1.5"/><path d="M87 70 L102 68 M118 68 L133 70 M110 78 L107 91 L113 92 M101 101 Q110 104 119 101" fill="none" stroke="currentColor" opacity=".8"/><g fill="#000" stroke="currentColor"><ellipse cx="95" cy="78" rx="7" ry="4"/><ellipse cx="125" cy="78" rx="7" ry="4"/></g><g fill="var(--primary)"><circle cx="95" cy="78" r="2"/><circle cx="125" cy="78" r="2"/></g><path d="M77 63 L91 49 L85 79 L104 49 L101 73 L124 46 L141 76" fill="#344b40" stroke="#b3d6c8"/><path d="M78 119 L94 110 L110 136 L126 110 L143 119 L135 151 L85 151Z" fill="#07100a" stroke="currentColor"/><path d="M151 101 l9 -5 -4 12 9 4 -12 5" stroke="#ff2a6d" fill="none"/><text x="8" y="16" fill="currentColor" font-size="8" font-family="monospace">ID: GRAY_J</text><text x="8" y="172" fill="var(--secondary)" font-size="8" font-family="monospace">BIOMETRIC_SCAN</text><text x="148" y="16" fill="var(--accent)" font-size="8" font-family="monospace">NY_1999</text></svg><span class="text-[11px] opacity-75 mt-1 text-center">RECONSTRUÇÃO VISUAL // GRAY_J</span></div><ul class="space-y-2 text-xs"><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">IDENTIDADE:</span><span class="text-right">Jean Gray // Shine</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">TRADIÇÃO:</span><span class="text-right">Ahl-i-Batin (forte suspeita)</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">NASCIMENTO:</span><span class="text-right">14/08/1973 // 26 anos</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">BASE:</span><span class="text-right">Queens / Brooklyn</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">ESSÊNCIA:</span><span class="text-right">Não registrada</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">STATUS:</span><span class="text-right">VIGILÂNCIA NWO</span></li></ul></div></div><div class="lg:col-span-8"><article class="tech-box rounded p-5 sm:p-8 font-narrative space-y-4 text-sm sm:text-base leading-relaxed"><div class="border-b border-[var(--border-color)] pb-3"><h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)]">&gt; A SOMBRA DE QUEENS</h2><span class="text-xs opacity-75">AUTORA: SENTINEL // OUT 1999</span></div><p>O arquivo NWO #NY-99-842 descreve uma especialista em infiltração e extração de bens, sem residência fixa. Registros civis inconsistentes, testemunhas que esquecem seu rosto e gravações corrompidas compõem uma assinatura de Arcano 5. A própria NWO levanta a hipótese de uma ligação com os Ahl-i-Batin. Cruzando os dados disponíveis, tenho quase certeza de que Shine pertence a essa linhagem, ainda que ela própria talvez desconheça esse vínculo. Não encontrei confirmação de uma filiação formal.</p><p>Em 12 de novembro de 1998, segundo o arquivo, Shine invadiu uma fachada corporativa em Midtown para extrair dados. Alterou a estrutura da exaustão e bloqueou acessos durante a fuga, sem derramar sangue de civis. A NWO pretende neutralizá-la ou recrutá-la compulsoriamente. O relatório indica que ela ainda não compreende formalmente sua condição desperta.</p><div class="bg-black/60 border-l-2 border-[var(--primary)] p-4 rounded-r"><div class="font-mono text-xs font-bold mb-2">// ANÁLISE DE PARADIGMA</div><p>As linhas de tensão que ela percebe parecem uma interface intuitiva para manipular vetores. O arquivo atribui Forças 2 e Matéria 2 ao incidente e descreve supressão de ruído, desvio de atenção e ajuste de batimentos e assinatura térmica. O Arcano compromete a própria coleta de dados. O conjunto de manifestações — a sutileza das intervenções, o desvio da percepção e a facilidade com que desaparece dos registros — reforça minha suspeita de uma ligação com os Ahl-i-Batin. É como se o sistema simplesmente deixasse de indexar sua existência.</p></div><blockquote class="border-l-2 border-[var(--accent)] pl-4 py-2 text-[var(--accent)] italic bg-black/40 rounded-r"><div class="font-mono text-xs not-italic mb-2">// NOTA PESSOAL — SENTINEL</div>Uma pessoa que desaparece dos sistemas de vigilância e evita vítimas civis merece mais do que uma etiqueta de ameaça. Minha aposta é nos Ahl-i-Batin. Estou quase certa disso, mas não vou confundir uma hipótese de alta confiança com uma identidade confirmada. Quero abrir um canal com ela antes que a NWO imponha seus próprios termos.</blockquote></article></div></div><div id="contact-leo" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6"><div class="lg:col-span-4"><div class="tech-box rounded p-4"><div class="text-xs uppercase tracking-widest opacity-70 mb-3 border-b border-[var(--border-color)] pb-1">// ASSINATURA BIOMÉTRICA &amp; PERFIL</div><div class="bg-black/80 border border-[var(--border-color)] rounded p-3 mb-4 flex flex-col items-center"><svg viewBox="0 0 220 180" class="w-full max-w-[210px] h-auto" role="img" aria-label="Reconstrução biométrica de SHAUN_L"><defs><pattern id="grid-leo" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="rgba(51,255,102,.12)" stroke-width=".5"/></pattern></defs><rect width="220" height="180" fill="url(#grid-leo)"/><circle cx="110" cy="90" r="72" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="4 4" opacity=".5"/><path d="M20 90H50 M170 90H200" stroke="currentColor" opacity=".6"/><path d="M55 170 Q55 130 92 120 H128 Q165 130 165 170Z" fill="#101d16" stroke="currentColor" stroke-width="1.5"/><path d="M76 74 Q66 45 90 34 Q119 25 138 43 Q150 37 157 48 Q160 61 145 64 L151 135 L131 140 L128 83 L87 83 L82 125 L69 136Z" fill="#09150e" stroke="currentColor"/><path d="M82 55 Q110 29 138 48 M137 65 Q149 103 140 128" fill="none" stroke="currentColor"/><path d="M98 108V124 Q110 134 122 124 V108" fill="#09120b" stroke="currentColor"/><path d="M78 65 Q80 43 110 43 Q140 43 142 65 L139 90 Q135 108 110 116 Q85 108 81 90Z" fill="#09120b" stroke="currentColor" stroke-width="1.5"/><path d="M87 70 L102 68 M118 68 L133 70 M110 78 L107 91 L113 92 M101 101 Q110 104 119 101" fill="none" stroke="currentColor" opacity=".8"/><g fill="#000" stroke="currentColor"><ellipse cx="95" cy="78" rx="7" ry="4"/><ellipse cx="125" cy="78" rx="7" ry="4"/></g><g fill="var(--primary)"><circle cx="95" cy="78" r="2"/><circle cx="125" cy="78" r="2"/></g><g fill="none" stroke="var(--accent)"><rect x="83" y="71" width="23" height="14" rx="4"/><rect x="114" y="71" width="23" height="14" rx="4"/><path d="M106 76 H114"/></g><path d="M99 98 Q110 92 121 98 M101 107 Q110 117 119 107" stroke="currentColor" stroke-width="2" fill="none"/><path d="M87 120 L110 151 L133 120 M102 137 Q110 149 118 137" stroke="var(--accent)" fill="none"/><g transform="translate(73 143)" stroke="var(--danger)" fill="none"><circle r="2"/><path d="M0 -2 Q-7 -9 -5 0 Q-10 5 0 3 Q8 9 5 0 Q8 -8 0 -2Z"/></g><g transform="translate(145 145)" stroke="var(--danger)" fill="none"><circle r="2"/><path d="M0 -2 Q-7 -9 -5 0 Q-10 5 0 3 Q8 9 5 0 Q8 -8 0 -2Z"/></g><g transform="translate(82 160)" stroke="var(--danger)" fill="none"><circle r="2"/><path d="M0 -2 Q-7 -9 -5 0 Q-10 5 0 3 Q8 9 5 0 Q8 -8 0 -2Z"/></g><g transform="translate(135 162)" stroke="var(--danger)" fill="none"><circle r="2"/><path d="M0 -2 Q-7 -9 -5 0 Q-10 5 0 3 Q8 9 5 0 Q8 -8 0 -2Z"/></g><text x="8" y="16" fill="currentColor" font-size="8" font-family="monospace">ID: SHAUN_L</text><text x="8" y="172" fill="var(--secondary)" font-size="8" font-family="monospace">BIOMETRIC_SCAN</text><text x="148" y="16" fill="var(--accent)" font-size="8" font-family="monospace">NY_1999</text></svg><span class="text-[11px] opacity-75 mt-1 text-center">RECONSTRUÇÃO VISUAL // SHAUN_L</span></div><ul class="space-y-2 text-xs"><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">IDENTIDADE:</span><span class="text-right">Léo Prech Shaun</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">TRADIÇÃO:</span><span class="text-right">Culto do Êxtase</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">NASCIMENTO:</span><span class="text-right">Não registrado</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">BASE:</span><span class="text-right">Clínica clandestina, Brooklyn</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">ESSÊNCIA:</span><span class="text-right">Não registrada</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">STATUS:</span><span class="text-right">DESPERTO // REGISTRO ATIVO</span></li></ul></div></div><div class="lg:col-span-8"><article class="tech-box rounded p-5 sm:p-8 font-narrative space-y-4 text-sm sm:text-base leading-relaxed"><div class="border-b border-[var(--border-color)] pb-3"><h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)]">&gt; O CIRURGIÃO DO SUBMUNDO</h2><span class="text-xs opacity-75">AUTORA: SENTINEL // OUT 1999</span></div><p>Enquanto Manhattan entra em pânico com o Bug do Milênio, Léo Prech Shaun mantém uma clínica clandestina no subsolo do Brooklyn. Camisa florida, óculos de armação metálica, relógio de ouro e um cigarro quase sempre aceso: à primeira vista, parece apenas mais um sujeito enriquecido às custas da noite nova-iorquina. A infraestrutura que mantém escondida, entretanto, não tem nada de improvisada. Equipamentos cirúrgicos de ponta, medicamentos e uma clientela disposta a pagar fortunas para não existir nos registros hospitalares. Mafiosos, políticos, executivos. Para eles, o anonimato faz parte do tratamento.</p><p>Shaun conhece a anatomia humana como eu conheço a arquitetura de um sistema. Sua formação médica e sua experiência nas ruas permitem que trate cada paciente como um problema a ser decifrado. Mas há algo além da medicina convencional. Em seu diário, ele descreve uma cirurgia na qual um paciente com uma hemorragia grave sobreviveu graças a uma intervenção que, segundo sua percepção, levou quase duas horas. No relógio da clínica, não haviam transcorrido sequer três segundos. O tecido lesionado teria se reconstruído sob suas mãos. Se o relato estiver correto, ele encontrou uma maneira de contornar simultaneamente duas limitações fundamentais da simulação.</p><p>Seu vínculo com o Culto do Êxtase parece explicar parte de sua metodologia. Ele utiliza estados alterados de consciência como instrumentos de expansão perceptiva. O próprio Shaun reconhece seu vício e a dificuldade de dormir sem permanecer em alerta. Não tenho como determinar até onde termina o instrumento e começa a dependência. Essa distinção importa, especialmente quando outras vidas dependem da estabilidade de suas operações.</p><div class="bg-black/60 border-l-2 border-[var(--primary)] p-4 rounded-r"><div class="font-mono text-xs font-bold mb-2">// ANÁLISE DE PARADIGMA</div><p>Tempo e Vida. É assim que classificaria as manifestações descritas. Enquanto eu busco modificar o <em>clock</em> do sistema através de interfaces tecnológicas, Shaun parece acessar esse mesmo parâmetro pela própria consciência. O organismo, por sua vez, funciona como <em>wetware</em> passível de reescrita: a regeneração relatada sugere uma intervenção direta nos processos celulares. Não conheço os limites de seu acesso, mas o fato de operar sem um terminal não torna seu método menos relevante. O código é o mesmo; a interface é outra.</p></div><blockquote class="border-l-2 border-[var(--accent)] pl-4 py-2 text-[var(--accent)] italic bg-black/40 rounded-r"><div class="font-mono text-xs not-italic mb-2">// NOTA PESSOAL — SENTINEL</div>Não tenho nada contra uma clínica que opere fora dos sistemas oficiais. Pelo contrário. O problema é transformar a sobrevivência de alguém em um privilégio reservado a quem pode pagar. Conheço bem essa lógica; trabalho para uma corporação que lucra com a morte. A diferença está no que escolhemos fazer com os recursos que temos. Shaun possui uma capacidade que poderia salvar muita gente. Quero saber se estaria disposto a utilizá-la quando não houver dinheiro envolvido. Até lá, reconheço sua competência, mas mantenho minha avaliação em aberto.</blockquote></article></div></div><div id="contact-davina" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6"><div class="lg:col-span-4"><div class="tech-box rounded p-4"><div class="text-xs uppercase tracking-widest opacity-70 mb-3 border-b border-[var(--border-color)] pb-1">// ASSINATURA BIOMÉTRICA &amp; PERFIL</div><div class="bg-black/80 border border-[var(--border-color)] rounded p-3 mb-4 flex flex-col items-center"><svg viewBox="0 0 220 180" class="w-full max-w-[210px] h-auto" role="img" aria-label="Reconstrução biométrica de LARC_D"><defs><pattern id="grid-davina" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="rgba(51,255,102,.12)" stroke-width=".5"/></pattern></defs><rect width="220" height="180" fill="url(#grid-davina)"/><circle cx="110" cy="90" r="72" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="4 4" opacity=".5"/><path d="M20 90H50 M170 90H200" stroke="currentColor" opacity=".6"/><path d="M55 170 Q55 130 92 120 H128 Q165 130 165 170Z" fill="#101d16" stroke="currentColor" stroke-width="1.5"/><path d="M75 68 Q60 45 85 34 Q108 18 135 36 Q156 44 149 74 Q164 88 150 103 Q164 117 151 143 Q137 154 129 135 L88 135 Q70 154 59 139 Q72 122 63 109 Q77 93 66 82Z" fill="#09150e" stroke="currentColor"/><path d="M85 40 Q61 62 78 82 T72 117 T76 143 M132 40 Q153 63 139 84 T146 118 T138 144" fill="none" stroke="currentColor"/><path d="M98 108V124 Q110 134 122 124 V108" fill="#09120b" stroke="currentColor"/><path d="M78 65 Q80 43 110 43 Q140 43 142 65 L139 90 Q135 108 110 116 Q85 108 81 90Z" fill="#09120b" stroke="currentColor" stroke-width="1.5"/><path d="M87 70 L102 68 M118 68 L133 70 M110 78 L107 91 L113 92 M101 101 Q110 104 119 101" fill="none" stroke="currentColor" opacity=".8"/><g fill="#000" stroke="currentColor"><ellipse cx="95" cy="78" rx="7" ry="4"/><ellipse cx="125" cy="78" rx="7" ry="4"/></g><g fill="var(--primary)"><circle cx="95" cy="78" r="2"/><circle cx="125" cy="78" r="2"/></g><g fill="none" stroke="var(--accent)"><circle cx="95" cy="78" r="11"/><circle cx="125" cy="78" r="11"/><path d="M106 77 H114 M79 95 V110 M75 100 H83 M141 95 V110 M137 100 H145"/></g><path d="M80 123 Q110 160 140 123 M95 119 L110 149 L125 119" stroke="currentColor" fill="none"/><circle cx="110" cy="149" r="6" fill="#16382a" stroke="var(--secondary)"/><text x="8" y="16" fill="currentColor" font-size="8" font-family="monospace">ID: LARC_D</text><text x="8" y="172" fill="var(--secondary)" font-size="8" font-family="monospace">BIOMETRIC_SCAN</text><text x="148" y="16" fill="var(--accent)" font-size="8" font-family="monospace">NY_1999</text></svg><span class="text-[11px] opacity-75 mt-1 text-center">RECONSTRUÇÃO VISUAL // LARC_D</span></div><ul class="space-y-2 text-xs"><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">IDENTIDADE:</span><span class="text-right">Davina Larc</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">TRADIÇÃO:</span><span class="text-right">Não registrada</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">NASCIMENTO:</span><span class="text-right">Não registrada</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">BASE:</span><span class="text-right">Não registrada</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">ESSÊNCIA:</span><span class="text-right">Não registrada</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">STATUS:</span><span class="text-right">DADOS INSUFICIENTES</span></li></ul></div></div><div class="lg:col-span-8"><article class="tech-box rounded p-5 sm:p-8 font-narrative space-y-4 text-sm sm:text-base leading-relaxed"><div class="border-b border-[var(--border-color)] pb-3"><h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)]">&gt; ARQUIVO AGUARDANDO SINCRONIZAÇÃO</h2><span class="text-xs opacity-75">AUTORA: SENTINEL // OUT 1999</span></div><p>Por enquanto, só tenho uma identificação nominal e uma referência visual. Cabelos longos e ondulados, óculos de armação fina, vestuário escuro e acessórios de aparência esotérica. Nada disso é suficiente para determinar quem ela é ou como opera.</p><div class="bg-black/60 border-l-2 border-[var(--primary)] p-4 rounded-r"><div class="font-mono text-xs font-bold mb-2">// ANÁLISE DE PARADIGMA</div><p>Sem dados sobre Despertar, paradigma ou Esferas. Qualquer classificação seria especulativa.</p></div><blockquote class="border-l-2 border-[var(--accent)] pl-4 py-2 text-[var(--accent)] italic bg-black/40 rounded-r"><div class="font-mono text-xs not-italic mb-2">// NOTA PESSOAL — SENTINEL</div>Não vou preencher lacunas com suposições. Registro aberto; avaliação pendente.</blockquote></article></div></div></section>
+
+            <!-- ========================================================= -->
+      <!-- ABA 07: NPCS IMPORTANTES                                  -->
       <!-- ========================================================= -->
-      <!-- ABA 05: CONSOLE INTERATIVO CLI (1999 BBS)                 -->
-      <!-- ========================================================= -->
-      <!-- ABA 06: CONSOLE INTERATIVO CLI (1999 BBS)                 -->
-      <!-- ========================================================= -->
+      <section id="panel-npcs" class="hidden space-y-6">
+        <div class="tech-box rounded p-5">
+          <h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)]">&gt; ARQUIVO DE NPCS // RECURSOS DE CAMPO</h2>
+          <p class="font-narrative text-sm opacity-85 mt-2">Nem todo nome crucial entra na categoria de aliado. Alguns sujeitos são infraestrutura viva: operam extrações, mantêm rotas seguras e fazem esta guerra continuar funcionando quando tudo ao redor parece ruir.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mt-4">
+            <button id="npc-tab-vergil" onclick="selectNPC('vergil')" class="nav-btn active rounded p-2 text-xs text-left">[01] Vergil // Operador</button>
+          </div>
+        </div>
+
+        <div id="npc-vergil" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-4">
+            <div class="tech-box rounded p-4">
+              <div class="text-xs uppercase tracking-widest opacity-70 mb-3 border-b border-[var(--border-color)] pb-1">// ASSINATURA BIOMÉTRICA &amp; PERFIL</div>
+              <div class="bg-black/80 border border-[var(--border-color)] rounded p-3 mb-4 flex flex-col items-center">
+                <svg viewBox="0 0 220 180" class="w-full max-w-[210px] h-auto" role="img" aria-label="Reconstrução biométrica de VERGIL_OP">
+                  <defs>
+                    <pattern id="grid-vergil" width="10" height="10" patternUnits="userSpaceOnUse">
+                      <path d="M10 0H0V10" fill="none" stroke="rgba(51,255,102,.12)" stroke-width=".5"/>
+                    </pattern>
+                  </defs>
+                  <rect width="220" height="180" fill="url(#grid-vergil)"/>
+                  <circle cx="110" cy="90" r="72" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="4 4" opacity=".5"/>
+                  <path d="M20 90H50 M170 90H200" stroke="currentColor" opacity=".6"/>
+                  <path d="M55 170 Q55 130 92 120 H128 Q165 130 165 170Z" fill="#d8d4c8" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M76 66 Q72 38 97 30 Q121 24 143 35 Q151 41 146 67 L140 90 Q135 108 110 116 Q86 108 81 90Z" fill="#0b100b" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M72 59 Q75 33 97 24 Q112 18 127 23 Q145 29 149 60" fill="none" stroke="#d6d7d1" stroke-width="5" stroke-linecap="round" opacity=".9"/>
+                  <path d="M78 70 Q78 52 110 52 Q142 52 142 70 L139 90 Q135 108 110 116 Q85 108 81 90Z" fill="#09120b" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M84 95 Q110 110 136 95" fill="none" stroke="#d8d4c8" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M96 102 Q110 114 124 102" fill="none" stroke="#d8d4c8" stroke-width="2.5" stroke-linecap="round"/>
+                  <g fill="#000" stroke="currentColor">
+                    <ellipse cx="95" cy="78" rx="9" ry="5"/>
+                    <ellipse cx="125" cy="78" rx="9" ry="5"/>
+                  </g>
+                  <path d="M87 70 L101 68 M119 68 L133 70 M110 80 L107 91 L113 92" fill="none" stroke="currentColor" opacity=".7"/>
+                  <path d="M74 64 L88 118 M146 64 L132 118" fill="none" stroke="#d6d7d1" stroke-width="4" stroke-linecap="round" opacity=".85"/>
+                  <path d="M78 119 L142 119 L151 160 L69 160Z" fill="#f3f0e7" stroke="currentColor"/>
+                  <path d="M93 119 V160 M127 119 V160" stroke="#c9c4b3" opacity=".7"/>
+                  <path d="M92 127 H128 M94 137 H126" stroke="#c9c4b3" opacity=".7"/>
+                  <path d="M110 119 V160" stroke="#b8b39f" opacity=".8"/>
+                  <path d="M69 160 Q89 143 110 150 Q131 143 151 160" fill="#ece7db" stroke="currentColor"/>
+                  <text x="8" y="16" fill="currentColor" font-size="8" font-family="monospace">ID: VERGIL_OP</text>
+                  <text x="8" y="172" fill="var(--secondary)" font-size="8" font-family="monospace">OPERATOR_LINK</text>
+                  <text x="148" y="16" fill="var(--accent)" font-size="8" font-family="monospace">MATRIX_SIDE</text>
+                </svg>
+                <span class="text-[11px] opacity-75 mt-1 text-center">RECONSTRUÇÃO VISUAL // VERGIL (AVATAR IN-MATRIX)</span>
+              </div>
+              <ul class="space-y-2 text-xs">
+                <li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">IDENTIDADE:</span><span class="text-right">Vergil</span></li>
+                <li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">FUNÇÃO:</span><span class="text-right">Operador // Piloto</span></li>
+                <li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">NAVE:</span><span class="text-right">Prometheus</span></li>
+                <li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">STATUS FÍSICO:</span><span class="text-right">Idoso // amputado de uma perna</span></li>
+                <li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">APARÊNCIA NA MATRIX:</span><span class="text-right">terno branco, postura íntegra</span></li>
+                <li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">STATUS:</span><span class="text-right">RECURSO CRÍTICO // CONFIÁVEL</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="lg:col-span-8">
+            <article class="tech-box rounded p-5 sm:p-8 font-narrative space-y-4 text-sm sm:text-base leading-relaxed">
+              <div class="border-b border-[var(--border-color)] pb-3">
+                <h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)]">&gt; VERGIL // O HOMEM NO LIMIAR</h2>
+                <span class="text-xs opacity-75">AUTORA: SENTINEL // OUT 1999</span>
+              </div>
+              <p>Vergil é o tipo de sujeito sem o qual ninguém entra ou sai vivo da Matrix por muito tempo. Para nós, ele é o operador: a mão que encontra a linha livre, prende a conexão na hora certa e puxa de volta quando a simulação decide morder. Também é quem pilota a Prometheus, a nave que nos mantém móveis entre os assentamentos humanos e os pontos não mapeados de acesso à malha.</p>
+              <p>O guia de cenário o localiza como um dos que viajam sob a liderança de Morpheus, participando da busca por novos locais de colonização, tecnologias antigas e zonas que as máquinas ainda não indexaram. Isso combina com o que importa em campo: Vergil conhece rotas, janelas de conexão e a logística silenciosa que mantém vivos os que escolhem resistir.</p>
+              <p>Fora da Matrix, o corpo cobra sua taxa. Vergil é um senhor idoso e perdeu uma perna, mas sua representação dentro da simulação não replica essa limitação. Aqui, ele aparece inteiro, de branco, como se a própria interface respeitasse a autoridade tranquila com que segura uma operação. Não interpreto isso como vaidade. Interpreto como intenção: ele escolhe se apresentar como alguém que continua de pé.</p>
+              <div class="bg-black/60 border-l-2 border-[var(--primary)] p-4 rounded-r">
+                <div class="font-mono text-xs font-bold mb-2">// ANÁLISE OPERACIONAL</div>
+                <p>Operadores não são apenas suporte técnico. São arquitetos de sobrevivência. Em termos de função, Vergil atua como ponte entre corpo, nave e simulação: coordena extrações, garante a estabilidade do canal e pilota o vetor físico que permite nossa mobilidade fora da Matrix. A Prometheus é mais que transporte; é infraestrutura estratégica. Se a resistência ainda consegue atravessar territórios, encontrar entradas limpas e retirar gente antes do colapso, isso passa inevitavelmente por operadores como ele.</p>
+              </div>
+              <blockquote class="border-l-2 border-[var(--accent)] pl-4 py-2 text-[var(--accent)] italic bg-black/40 rounded-r">
+                <div class="font-mono text-xs not-italic mb-2">// NOTA PESSOAL — SENTINEL</div>
+                Se eu confio em alguém para me arrancar da simulação no instante em que tudo dá errado, esse alguém precisa entender pressão, silêncio e timing melhor do que qualquer programador entende código. Vergil entende. Não é o tipo de presença que toma a sala, mas é o tipo de presença que garante que exista uma sala para a qual voltar.
+              </blockquote>
+            </article>
+          </div>
+        </div>
+      </section>
+
+<!-- ABA 08: CONSOLE INTERATIVO CLI (1999 BBS) -->
       <section id="panel-terminal" class="hidden">
         <div class="tech-box rounded p-4 sm:p-6">
           <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border-color)] pb-3 mb-3">
@@ -939,7 +1021,7 @@
               <h2 class="font-vt text-2xl sm:text-3xl text-[var(--primary)]">
                 > SENTINEL_SHELL v1.99 // ACESSO DIRETO AO TERMINAL
               </h2>
-              <p class="text-xs opacity-75">Digite um comando abaixo ou clique nos atalhos rápidos para interagir com o sistema, Χάος (Caos) e Ἐλευθερία.</p>
+              <p class="text-xs opacity-75">Digite um comando abaixo ou clique nos atalhos rápidos para interagir com o sistema, Χάος (Caos), Ἐλευθερία e consultar os registros de aliados.</p>
             </div>
             <div class="flex flex-wrap gap-1.5">
               <button onclick="runQuickCmd('help')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">help</button>
@@ -950,6 +1032,14 @@
               <button onclick="runQuickCmd('esferas')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">esferas</button>
               <button onclick="runQuickCmd('lockheed')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">lockheed</button>
               <button onclick="runQuickCmd('glitch')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">glitch</button>
+              <button onclick="runQuickCmd('aliados')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">aliados</button>
+              <button onclick="runQuickCmd('hao')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">hao</button>
+              <button onclick="runQuickCmd('shine')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">shine</button>
+              <button onclick="runQuickCmd('shaun')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">shaun</button>
+              <button onclick="runQuickCmd('davina')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">davina</button>
+              <button onclick="runQuickCmd('npcs')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">npcs</button>
+              <button onclick="runQuickCmd('vergil')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">vergil</button>
+              <button onclick="runQuickCmd('prometheus')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">prometheus</button>
               <button onclick="runQuickCmd('clear')" class="px-2 py-1 text-xs border border-[var(--danger)]/60 text-[var(--danger)] hover:bg-[var(--danger)] hover:text-black rounded bg-black/60 cursor-pointer">clear</button>
             </div>
           </div>
@@ -957,7 +1047,7 @@
           <!-- Janela de Output do Terminal -->
           <div id="terminalOutput" class="bg-black/85 border border-[var(--border-color)] rounded p-4 h-80 sm:h-96 overflow-y-auto font-mono text-xs sm:text-sm space-y-2 mb-3">
             <div class="text-[var(--secondary)]">Conectado a 127.0.0.1 porta 2600 (Criptografia RSA-1024 ativa)...</div>
-            <div class="opacity-80">Bem-vindo ao nó oculto da Teia Digital, Desplugado. A Matrix é real — e nós estamos reunindo aliados.</div>
+            <div class="opacity-80">Bem-vindo ao nó oculto da Teia Digital, Desplugado. A Matrix é real — e nós estamos reunindo aliados, operadores e recursos críticos.</div>
             <div class="text-[var(--accent)]">Digite 'help' para listar os comandos disponíveis.</div>
           </div>
 
@@ -968,7 +1058,7 @@
               type="text" 
               id="cliInput" 
               autocomplete="off" 
-              placeholder="digite um comando (ex: help, caos, eleutheria, matrix, esferas)..." 
+              placeholder="digite um comando (ex: help, aliados, vergil, dossie hao)..." 
               class="bg-transparent border-none outline-none text-[var(--primary)] w-full text-xs sm:text-sm font-mono placeholder:opacity-40"
             />
             <button type="submit" class="px-3 py-1 bg-[var(--primary)] text-black font-bold text-xs rounded hover:opacity-90 cursor-pointer">
@@ -977,7 +1067,6 @@
           </form>
         </div>
       </section>
-
     </main>
 
     <!-- RODAPÉ -->
@@ -997,7 +1086,7 @@
   <script>
     // Alternância entre as abas principais
     function switchTab(tabName) {
-      const tabs = ['dossie', 'matrix', 'sistema', 'esferas', 'failover', 'terminal'];
+      const tabs = ['dossie', 'matrix', 'sistema', 'esferas', 'failover', 'contatos', 'npcs', 'terminal'];
       tabs.forEach(t => {
         const panel = document.getElementById(`panel-${t}`);
         const btn = document.getElementById(`tab-${t}`);
@@ -1015,6 +1104,19 @@
       }
     }
 
+    function selectContact(key) {
+      ['hao','shine','leo','davina'].forEach(k => {
+        document.getElementById('contact-'+k).classList.toggle('hidden', k !== key);
+        document.getElementById('contact-tab-'+k).classList.toggle('active', k === key);
+      });
+    }
+
+    function selectNPC(key) {
+      ['vergil'].forEach(k => {
+        document.getElementById('npc-'+k).classList.toggle('hidden', k !== key);
+        document.getElementById('npc-tab-'+k).classList.toggle('active', k === key);
+      });
+    }
     // Alternância de Era na aba Dossiê (Desperta vs Pré-Despertar)
     function setEra(era) {
       const awakenedArticle = document.getElementById('era-awakened');
@@ -1053,6 +1155,59 @@
     const cliInput = document.getElementById('cliInput');
 
     const commands = {
+      contatos: () => { switchTab("contatos"); return ["BANCO DE CONTATOS // 4 registros disponíveis."]; },
+      npcs: () => { switchTab("npcs"); return ["ARQUIVO DE NPCS // 1 registro crítico disponível."]; },
+      aliados: () => [
+        '<span class="text-[var(--secondary)]">[SENTINEL_PRIVATE // ÍNDICE DE CONTATOS]</span>',
+        '  HAO_FENG : Irmandade de Akasha // Lótus Branca, Manhattan.',
+        '  GRAY_J   : Shine // Ahl-i-Batin (hipótese de alta confiança).',
+        '  SHAUN_L  : Léo Prech Shaun // Culto do Êxtase.',
+        '  LARC_D   : Davina Larc // dados insuficientes.',
+        '<span class="text-[var(--accent)]">4 registros locais. Aliança não implica confiança irrestrita.</span>',
+        'Use hao, shine, shaun ou davina para consultar um registro; dossie &lt;nome&gt; abre o perfil completo.'
+      ],
+      hao: () => [
+        '<span class="text-[var(--secondary)]">[HAO_FENG // O GUERREIRO DA LÓTUS BRANCA]</span>',
+        'TRADIÇÃO: Irmandade de Akasha. BASE: Templo da Lótus Branca, Manhattan.',
+        'LOG DE CAMPO: treinamento marcial desde a infância; percepção mental e força incomum relatadas.',
+        'PARADIGMA: chi como interface de acesso a fluxos de energia e processos biológicos. Níveis de Esferas não confirmados.',
+        '<span class="text-[var(--accent)]">SENTINEL:</span> "Não confundo disciplina com submissão. Quero saber se o equilíbrio que ele procura é uma escolha própria."'
+      ],
+      shine: () => [
+        '<span class="text-[var(--secondary)]">[GRAY_J // SHINE // ARQUIVO NWO #NY-99-842]</span>',
+        'TRADIÇÃO: Ahl-i-Batin — hipótese de alta confiança de Sentinel; filiação formal não confirmada.',
+        'ARCANO: 5 // registros inconsistentes, rastros de vigilância corrompidos.',
+        'PARADIGMA: manipulação intuitiva de vetores; Forças 2 / Matéria 2 segundo o incidente documentado pela NWO.',
+        '<span class="text-[var(--danger)]">ALERTA:</span> alvo de monitoramento da NWO, com risco de neutralização ou recrutamento compulsório.',
+        '<span class="text-[var(--accent)]">SENTINEL:</span> "Minha aposta é nos Ahl-i-Batin. Estou quase certa disso. Quero abrir um canal com ela antes que a NWO imponha seus próprios termos."'
+      ],
+      shaun: () => [
+        '<span class="text-[var(--secondary)]">[SHAUN_L // O CIRURGIÃO DO SUBMUNDO]</span>',
+        'IDENTIDADE: Léo Prech Shaun. TRADIÇÃO: Culto do Êxtase.',
+        'BASE: clínica clandestina no Brooklyn. CAPACIDADES RELATADAS: medicina, manipulação temporal e regeneração biológica.',
+        'PARADIGMA: Tempo / Vida // clock do sistema e reescrita de wetware por estados alterados de consciência. Limites não confirmados.',
+        '<span class="text-[var(--accent)]">SENTINEL:</span> "O código é o mesmo; a interface é outra. Quero saber se estaria disposto a salvar alguém quando não houver dinheiro envolvido."'
+      ],
+      davina: () => [
+        '<span class="text-[var(--secondary)]">[LARC_D // REGISTRO BIOMÉTRICO PRELIMINAR]</span>',
+        'IDENTIDADE: Davina Larc. TRADIÇÃO / ESSÊNCIA / BASE: não registradas.',
+        '<span class="text-[var(--danger)]">SYNC INCOMPLETO:</span> sem dados suficientes sobre Despertar, paradigma ou Esferas.',
+        '<span class="text-[var(--accent)]">SENTINEL:</span> "Não vou preencher lacunas com suposições. Registro aberto; avaliação pendente."'
+      ],
+      vergil: () => [
+        '<span class="text-[var(--secondary)]">[VERGIL_OP // OPERADOR // PROMETHEUS]</span>',
+        'FUNÇÃO: operador de extração e piloto da nave Prometheus.',
+        'STATUS FÍSICO: idoso, amputado de uma perna fora da Matrix. AVATAR IN-MATRIX: terno branco, postura íntegra.',
+        'LOG DE CAMPO: viaja sob a liderança de Morpheus em missões de expansão humana, busca de tecnologias antigas e pontos não mapeados de conexão.',
+        '<span class="text-[var(--accent)]">SENTINEL:</span> "Se ele está do outro lado da linha, eu sei que ainda existe um caminho de volta."'
+      ],
+      prometheus: () => [
+        '<span class="text-[var(--secondary)]">[PROMETHEUS // PLATAFORMA DE MOBILIDADE HUMANA]</span>',
+        'CLASSE: nave de operação humana // pilotada por Vergil.',
+        'FUNÇÃO: transporte, extração, deslocamento entre assentamentos e acesso a pontos não mapeados da Matrix.',
+        'VALOR ESTRATÉGICO: mantém a resistência móvel fora da simulação e sustenta operações de conexão e retirada.',
+        '<span class="text-[var(--accent)]">SENTINEL:</span> "Sem operadores e sem casco, todo despertar vira estatística."'
+      ],
       help: () => [
         '<span class="text-[var(--secondary)]">COMANDOS DISPONÍVEIS NO TERMINAL SENTINEL:</span>',
         '  <span class="font-bold">whoami</span>      - Exibe identidade civil, fachada corporativa e essência.',
@@ -1062,6 +1217,16 @@
         '  <span class="font-bold">esferas</span>     - Lista o status das 9 Esferas de controle do código-fonte.',
         '  <span class="font-bold">lockheed</span>    - Verifica roteamento financeiro para ONGs humanitárias.',
         '  <span class="font-bold">glitch</span>      - Simula sobrecarga de Paradoxo na interface e nos olhos.',
+        '  <span class="font-bold">contatos</span>    - Abre o banco de contatos de Sentinel.',
+        '  <span class="font-bold">aliados</span>     - Lista os quatro contatos sem sair do console.',
+        '  <span class="font-bold">hao</span>         - Consulta o registro de Hao Feng.',
+        '  <span class="font-bold">shine</span>       - Consulta Jean Gray e a hipótese Ahl-i-Batin.',
+        '  <span class="font-bold">shaun</span>       - Consulta o registro de Léo Prech Shaun (alias: leo).',
+        '  <span class="font-bold">davina</span>      - Consulta o registro preliminar de Davina Larc.',
+        '  <span class="font-bold">npcs</span>        - Abre o arquivo de NPCs importantes.',
+        '  <span class="font-bold">vergil</span>      - Consulta o operador Vergil.',
+        '  <span class="font-bold">prometheus</span>  - Consulta a nave Prometheus.',
+        '  <span class="font-bold">dossie &lt;nome&gt;</span> - Abre o perfil completo do contato (hao, shine, shaun, davina, vergil).',
         '  <span class="font-bold">clear</span>       - Limpa o buffer de saída do terminal.'
       ],
       whoami: () => [
@@ -1137,10 +1302,36 @@
         return;
       }
 
-      if (commands[cmd]) {
-        appendToTerminal(commands[cmd]());
+      // Aliases e acesso direto aos dossiês. As consultas simples permanecem no console.
+      const aliases = new Map([
+        ['hao', 'hao'], ['hao feng', 'hao'], ['shine', 'shine'], ['jean', 'shine'], ['jean gray', 'shine'],
+        ['shaun', 'shaun'], ['leo', 'shaun'], ['léo', 'shaun'], ['leo prech shaun', 'shaun'], ['léo prech shaun', 'shaun'],
+        ['davina', 'davina'], ['davina larc', 'davina'],
+        ['vergil', 'vergil'], ['npc vergil', 'vergil'], ['operador', 'vergil'], ['prometheus', 'prometheus'], ['prometeus', 'prometheus']
+      ]);
+      const normalized = cmd.replace(/\s+/g, ' ');
+      const dossierMatch = normalized.match(/^(?:dossie|dossiê) (.+)$/);
+      if (dossierMatch) {
+        const target = aliases.get(dossierMatch[1]);
+        if (!target) {
+          appendToTerminal(['<span class="text-[var(--danger)]">Registro não encontrado.</span> Use aliados para listar os contatos.']);
+          return;
+        }
+        appendToTerminal(['<span class="text-[var(--secondary)]">[ACESSO AUTORIZADO] Carregando dossiê local...</span>']);
+        if (target === 'vergil') {
+          selectNPC('vergil');
+          switchTab('npcs');
+        } else {
+          selectContact(target === 'shaun' ? 'leo' : target);
+          switchTab('contatos');
+        }
+        return;
+      }
+      const resolved = aliases.get(normalized) || normalized;
+      if (Object.prototype.hasOwnProperty.call(commands, resolved)) {
+        appendToTerminal(commands[resolved]());
       } else {
-        appendToTerminal([`<span class="text-[var(--danger)]">Comando não reconhecido: '${cmd}'.</span> Digite <span class="font-bold">help</span> para ver a sintaxe válida.`]);
+        appendToTerminal(['<span class="text-[var(--danger)]">Comando não reconhecido.</span> Digite <span class="font-bold">help</span> para ver a sintaxe válida.']);
       }
     }
 
