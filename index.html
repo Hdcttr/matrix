@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TERMINAL OVERRIDE // SENTINEL [1999.10.24]</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Fontes Monoespaçadas Retro/Hacker -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Fira+Code:wght@300;400;600;700&family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #050805;
+      --panel-bg: rgba(8, 16, 10, 0.92);
+      --primary: #33ff66;
+      --primary-dim: #198c38;
+      --primary-glow: rgba(51, 255, 102, 0.35);
+      --secondary: #00e5ff;
+      --accent: #ffb000;
+      --danger: #ff3355;
+      --border-color: #1f5c31;
+      --scanline-opacity: 0.14;
+    }
+
+    /* Modo Paradoxo / Glitch Cromático */
+    body.paradox-mode {
+      --primary: #ff2a6d;
+      --primary-dim: #8a163b;
+      --primary-glow: rgba(255, 42, 109, 0.45);
+      --secondary: #05d9e8;
+      --accent: #d1f7ff;
+      --border-color: #701432;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--primary);
+      font-family: 'Fira Code', 'Courier Prime', monospace;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      text-shadow: 0 0 4px var(--primary-glow);
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .font-vt {
+      font-family: 'VT323', monospace;
+    }
+
+    .font-narrative {
+      font-family: 'Courier Prime', monospace;
+    }
+
+    /* Efeito CRT Scanlines e Vinheta */
+    .crt-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50;
+      background: 
+        linear-gradient(
+          rgba(18, 16, 16, 0) 50%, 
+          rgba(0, 0, 0, var(--scanline-opacity)) 50%
+        ),
+        radial-gradient(
+          circle at center,
+          transparent 65%,
+          rgba(0, 0, 0, 0.78) 100%
+        );
+      background-size: 100% 4px, 100% 100%;
+    }
+
+    /* Cintilação sutil de monitor CRT */
+    @keyframes crtFlicker {
+      0% { opacity: 0.985; }
+      50% { opacity: 1; }
+      100% { opacity: 0.99; }
+    }
+
+    .crt-screen {
+      animation: crtFlicker 0.15s infinite;
+    }
+
+    /* Animação de Glitch no Título */
+    @keyframes textGlitch {
+      0%, 94%, 100% { transform: translate(0, 0) skew(0deg); }
+      95% { transform: translate(-2px, 1px) skew(-3deg); }
+      96% { transform: translate(2px, -1px) skew(3deg); }
+      97% { transform: translate(-1px, 0px) skew(0deg); }
+    }
+
+    .glitch-title {
+      animation: textGlitch 6s infinite;
+    }
+
+    /* Bordas estilo Terminal ASCII / Técnico */
+    .tech-box {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.8), inset 0 0 12px rgba(51, 255, 102, 0.04);
+      position: relative;
+    }
+
+    body.paradox-mode .tech-box {
+      box-shadow: 0 0 18px rgba(255, 42, 109, 0.15), inset 0 0 12px rgba(255, 42, 109, 0.06);
+    }
+
+    .tech-box::before {
+      content: "┌──────────────────────────────────────────────────";
+      position: absolute;
+      top: -10px;
+      left: 8px;
+      font-size: 10px;
+      color: var(--primary-dim);
+      background: var(--bg-color);
+      padding: 0 4px;
+      letter-spacing: 1px;
+      pointer-events: none;
+      max-width: calc(100% - 20px);
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    /* Botões de Navegação CLI */
+    .nav-btn {
+      border: 1px solid var(--border-color);
+      background: rgba(5, 12, 7, 0.8);
+      color: var(--primary-dim);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: rgba(51, 255, 102, 0.08);
+    }
+
+    .nav-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #030603;
+      font-weight: 700;
+      text-shadow: none;
+      box-shadow: 0 0 12px var(--primary-glow);
+    }
+
+    /* Scrollbar customizada */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #030503;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
+    }
+
+    /* Cursor piscante */
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+    .cursor-blink {
+      animation: blink 1s infinite;
+    }
+
+    /* Animação de olho cambiante (Falha de Paradoxo) */
+    @keyframes eyeShift {
+      0%, 100% { fill: #33ff66; filter: drop-shadow(0 0 4px #33ff66); }
+      33% { fill: #00e5ff; filter: drop-shadow(0 0 5px #00e5ff); }
+      66% { fill: #ff2a6d; filter: drop-shadow(0 0 6px #ff2a6d); }
+    }
+    .ocular-iris {
+      animation: eyeShift 4.5s infinite alternate;
+    }
+  </style>
+</head>
+<body class="crt-screen selection:bg-emerald-500 selection:text-black">
+
+  <!-- Camada CRT Scanlines -->
+  <div class="crt-overlay"></div>
+
+  <!-- Container Principal -->
+  <div class="max-w-6xl mx-auto px-3 sm:px-6 py-4 sm:py-8 relative z-10">
+
+    <!-- CABEÇALHO TERMINAL OVERRIDE -->
+    <header class="tech-box rounded p-4 sm:p-6 mb-6">
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 border-b border-[var(--border-color)] pb-4">
+        <div>
+          <div class="flex items-center gap-2 text-xs sm:text-sm opacity-80 mb-1">
+            <span class="inline-block w-2 h-2 rounded-full bg-[var(--primary)] animate-ping"></span>
+            <span>UPLINK ESTABELECIDO // NÓ: TRADITION_VA_HUB</span>
+          </div>
+          <h1 class="font-vt text-3xl sm:text-5xl tracking-wider glitch-title uppercase">
+            :: TERMINAL OVERRIDE // SENTINEL ::
+          </h1>
+          <p class="text-xs sm:text-sm mt-1 opacity-90">
+            SUJEITO: <span class="font-bold">BLAZE "SENTINEL" THORNE</span> &nbsp;|&nbsp; TRADIÇÃO: <span class="text-[var(--secondary)]">ADEPTOS VIRTUAIS</span> &nbsp;|&nbsp; ESSÊNCIA: <span class="text-[var(--accent)]">INVESTIGADORA</span>
+          </p>
+        </div>
+
+        <!-- Status & Toggle de Paradoxo -->
+        <div class="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end justify-between gap-2 text-xs">
+          <div class="bg-black/60 border border-[var(--border-color)] rounded px-3 py-2 font-mono leading-relaxed w-full sm:w-auto">
+            <div><span class="opacity-60">HOST:</span> 127.0.0.1 (LOCALHOST)</div>
+            <div><span class="opacity-60">DATE:</span> 24 OUT 1999 // 03:14 EST</div>
+            <div><span class="opacity-60">LOC :</span> NOVA YORK (LATÊNCIA: 12ms)</div>
+            <div><span class="opacity-60">ENC :</span> RSA-1024 [SIMULACIONISTAS BLOQUEADOS]</div>
+          </div>
+
+          <button id="paradoxToggle" onclick="toggleParadoxMode()" class="w-full sm:w-auto px-3 py-2 rounded border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-black font-bold text-xs tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer">
+            <span>⚡</span>
+            <span id="paradoxBtnText">ESTADO: CONSENSO ESTÁVEL</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de Navegação CLI -->
+      <nav aria-label="Navegação do Dossiê" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 pt-4">
+        <button onclick="switchTab('dossie')" id="tab-dossie" class="nav-btn active rounded px-3 py-2.5 text-xs sm:text-sm text-left flex items-center justify-between">
+          <span>[01] DOSSIÊ_LOG</span>
+          <span class="opacity-60 text-[10px]">.TXT</span>
+        </button>
+        <button onclick="switchTab('matrix')" id="tab-matrix" class="nav-btn rounded px-3 py-2.5 text-xs sm:text-sm text-left flex items-center justify-between">
+          <span>[02] MATRIX_ALIADOS</span>
+          <span class="opacity-60 text-[10px]">.NET</span>
+        </button>
+        <button onclick="switchTab('sistema')" id="tab-sistema" class="nav-btn rounded px-3 py-2.5 text-xs sm:text-sm text-left flex items-center justify-between">
+          <span>[03] SISTEMA_CAOS</span>
+          <span class="opacity-60 text-[10px]">.SYS</span>
+        </button>
+        <button onclick="switchTab('esferas')" id="tab-esferas" class="nav-btn rounded px-3 py-2.5 text-xs sm:text-sm text-left flex items-center justify-between">
+          <span>[04] ESFERAS_ROOT</span>
+          <span class="opacity-60 text-[10px]">.SH</span>
+        </button>
+        <button onclick="switchTab('failover')" id="tab-failover" class="nav-btn rounded px-3 py-2.5 text-xs sm:text-sm text-left flex items-center justify-between">
+          <span>[05] FAILOVER_HW</span>
+          <span class="opacity-60 text-[10px]">.BIN</span>
+        </button>
+        <button onclick="switchTab('contatos')" id="tab-contatos" class="nav-btn rounded px-3 py-2.5 text-xs sm:text-sm text-left flex items-center justify-between"><span>[06] DOSSIÊ_CONTATOS</span><span class="opacity-60 text-[10px]">.DAT</span></button>
+        <button onclick="switchTab('npcs')" id="tab-npcs" class="nav-btn rounded px-3 py-2.5 text-xs sm:text-sm text-left flex items-center justify-between"><span>[07] NPCS_IMPORTANTES</span><span class="opacity-60 text-[10px]">.NPC</span></button>
+        <button onclick="switchTab('terminal')" id="tab-terminal" class="nav-btn rounded px-3 py-2.5 text-xs sm:text-sm text-left flex items-center justify-between">
+          <span>[08] CONSOLE_CLI</span>
+          <span class="opacity-60 text-[10px]">>_</span>
+        </button>
+      </nav>
+    </header>
+
+    <!-- ÁREA DE CONTEÚDO DINÂMICO -->
+    <main>
+
+      <!-- ========================================================= -->
+      <!-- ABA 01: DOSSIÊ NARRATIVO (1999 - NOVA YORK)              -->
+      <!-- ========================================================= -->
+      <section id="panel-dossie" class="space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Coluna Esquerda: Perfil Visual & Metadados -->
+          <div class="lg:col-span-4 space-y-4">
+            <div class="tech-box rounded p-4">
+              <div class="text-xs uppercase tracking-widest opacity-70 mb-3 border-b border-[var(--border-color)] pb-1">
+                // ASSINATURA BIOMÉTRICA & PERFIL
+              </div>
+              
+              <!-- Retrato Vetorial Estilizado CRT / Ocular HUD -->
+              <div class="bg-black/80 border border-[var(--border-color)] rounded p-3 mb-4 flex flex-col items-center">
+                <svg viewBox="0 0 220 180" class="w-full max-w-[210px] h-auto">
+                  <!-- Grade de Fundo -->
+                  <defs>
+                    <pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
+                      <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(51,255,102,0.12)" stroke-width="0.5"/>
+                    </pattern>
+                  </defs>
+                  <rect width="220" height="180" fill="url(#smallGrid)" />
+                  
+                  <!-- Mira HUD -->
+                  <circle cx="110" cy="90" r="72" fill="none" stroke="currentColor" stroke-width="0.8" stroke-dasharray="4 4" opacity="0.5"/>
+                  <line x1="20" y1="90" x2="50" y2="90" stroke="currentColor" stroke-width="1" opacity="0.6"/>
+                  <line x1="170" y1="90" x2="200" y2="90" stroke="currentColor" stroke-width="1" opacity="0.6"/>
+                  
+                  <!-- Silhueta / Touca de Tricô e Casaco -->
+                  <path d="M55 170 C55 135, 75 125, 110 125 C145 125, 165 135, 165 170" fill="rgba(20, 60, 55, 0.5)" stroke="currentColor" stroke-width="1.5"/>
+                  <!-- Gola alta mostarda -->
+                  <rect x="88" y="110" width="44" height="22" rx="4" fill="rgba(180, 140, 30, 0.35)" stroke="#ffb000" stroke-width="1.2"/>
+                  <!-- Rosto estilizado -->
+                  <path d="M78 68 C78 102, 92 115, 110 115 C128 115, 142 102, 142 68 C142 45, 78 45, 78 68 Z" fill="#09120b" stroke="currentColor" stroke-width="1.5"/>
+                  <!-- Touca de tricô (Beanie) -->
+                  <path d="M73 66 C70 32, 150 32, 147 66 C135 58, 85 58, 73 66 Z" fill="rgba(25, 95, 55, 0.6)" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M74 60 Q110 52 146 60" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2"/>
+                  
+                  <!-- Olhos com Glitch Cromático (Falha de Paradoxo) -->
+                  <ellipse cx="95" cy="78" rx="7" ry="4" fill="#000" stroke="currentColor" stroke-width="1"/>
+                  <circle cx="95" cy="78" r="2.8" class="ocular-iris"/>
+                  
+                  <ellipse cx="125" cy="78" rx="7" ry="4" fill="#000" stroke="currentColor" stroke-width="1"/>
+                  <circle cx="125" cy="78" r="2.8" class="ocular-iris"/>
+                  
+                  <!-- Marcas cibernéticas sob os olhos -->
+                  <line x1="95" y1="85" x2="95" y2="96" stroke="#00e5ff" stroke-width="1.2"/>
+                  <line x1="125" y1="85" x2="125" y2="96" stroke="#00e5ff" stroke-width="1.2"/>
+
+                  <!-- Dados laterais -->
+                  <text x="8" y="16" fill="currentColor" font-size="8" font-family="monospace">ID: THORNE_B</text>
+                  <text x="8" y="172" fill="#00e5ff" font-size="8" font-family="monospace">IRIS_SYNC: UNSTABLE</text>
+                  <text x="148" y="16" fill="#ffb000" font-size="8" font-family="monospace">NY_1999</text>
+                </svg>
+                <span class="text-[11px] opacity-75 mt-1 text-center">RECONSTRUÇÃO OCULAR // ALERTA DE PARADOXO</span>
+              </div>
+
+              <ul class="space-y-2 text-xs">
+                <li class="flex justify-between border-b border-[var(--border-color)]/50 pb-1">
+                  <span class="opacity-65">IDENTIDADE CIVIL:</span>
+                  <span class="font-bold">Blaze Thorne</span>
+                </li>
+                <li class="flex justify-between border-b border-[var(--border-color)]/50 pb-1">
+                  <span class="opacity-65">ALCUNHA NA REDE:</span>
+                  <span class="text-[var(--secondary)] font-bold">Sentinel // "Senty"</span>
+                </li>
+                <li class="flex justify-between border-b border-[var(--border-color)]/50 pb-1">
+                  <span class="opacity-65">NATUREZA / COMP.:</span>
+                  <span>Ativista / Visionária</span>
+                </li>
+                <li class="flex justify-between border-b border-[var(--border-color)]/50 pb-1">
+                  <span class="opacity-65">FACHADA CORP.:</span>
+                  <span class="text-right">Lockheed Martin (NY)</span>
+                </li>
+                <li class="flex justify-between border-b border-[var(--border-color)]/50 pb-1">
+                  <span class="opacity-65">FLUXO DE CAIXA:</span>
+                  <span class="text-[var(--accent)]">0% Retido </span>
+                </li>
+                <li class="flex justify-between">
+                  <span class="opacity-65">BASE OPERACIONAL:</span>
+                  <span>Brownsville, Brooklyn</span>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Toggle de Linha do Tempo: Pré-Despertar vs Desperta -->
+            <div class="tech-box rounded p-4">
+              <div class="text-xs uppercase tracking-widest opacity-70 mb-2">
+                // SELETOR DE LOG TEMPORAL
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="setEra('awakened')" id="btn-era-awakened" class="nav-btn active rounded py-2 px-2 text-xs text-center">
+                  OUT 1999<br><span class="text-[10px] opacity-80">[DESPERTA]</span>
+                </button>
+                <button onclick="setEra('sleeper')" id="btn-era-sleeper" class="nav-btn rounded py-2 px-2 text-xs text-center">
+                  AGO 1999<br><span class="text-[10px] opacity-80">[PRÉ-DESPERTAR]</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Coluna Direita: Prosa Literária -->
+          <div class="lg:col-span-8">
+            <div class="tech-box rounded p-5 sm:p-8 h-full">
+              
+              <!-- Narrativa Pós-Despertar -->
+              <article id="era-awakened" class="font-narrative space-y-4 text-sm sm:text-base leading-relaxed">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border-color)] pb-3 mb-4">
+                  <h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)] tracking-wide">
+                    > ARQUIVO: A ENGENHEIRA FANTASMA DE MANHATTAN
+                  </h2>
+                  <span class="text-xs px-2 py-0.5 border border-[var(--primary)] rounded">STATUS: DESPERTA</span>
+                </div>
+
+                <p>
+                 A chuva de Nova York batia contra a chapa oxidada da van com o ritmo monótono de um comando em <em>loop</em>. Dentro daquele refúgio improvisado, iluminado apenas pelo brilho esverdeado dos tubos catódicos e pelo osciloscópio analógico marcando uma tensão constante de 4.66V, Blaze Thorne respirava o ar rarefeito do ciberespaço de 1999.
+                </p>
+
+                <p>
+                  Oficialmente, ela não passava de uma engrenagem brilhante no coração do complexo militar-industrial. Nas folhas de pagamento da <strong>Lockheed Martin</strong>, era uma engenheira sênior dedicada à programação de sistemas de orientação e telemetria para mísseis e satélites do Departamento de Defesa. O salário de cinco dígitos caía religiosamente na conta, mas nenhum centavo daquela fortuna corporativa ficava consigo. Cada montante excedente era limpo e desviado através de rotinas criptográficas estritas para contas anônimas que financiavam ONGs humanitárias em zonas de conflito. Era um pacto cínico e inevitável: <em>de dia, construía a precisão da morte; à noite, financiava quem tentava remendar os estragos.</em>
+                </p>
+
+                <p>
+                  Por essa razão, Blaze vivia como uma nômade urbana, ancorada entre motéis de beira de estrada e o labirinto de cabos, disquetes e telas do seu <em>cyberdeck</em> alojado numa maleta de transporte reforçada, sobrevivendo à base de macarrão instantâneo e idealismo obstinado.
+                </p>
+
+                <p>
+                  Para ela, o mundo físico nunca passara de uma ilusão de ótica gerida por um código mal otimizado. Onde os cidadãos comuns viam distâncias intransponíveis e concreto intransigente, Blaze via apenas latência de rede. Com alguns comandos secos disparados do seu <em>T-Mobile Sidekick</em>, o espaço dobrava-se, permitindo-lhe saltar por fiações telefônicas e satélites espiões para surgir em pontos cegos da cidade. Os corpos humanos eram apenas <em>wetware</em> — arquiteturas biológicas cujos batimentos, microexpressões e impulsos eletroquímicos podiam ser monitorados e decodificados como pacotes de dados abertos.
+                </p>
+
+                <blockquote class="border-l-2 border-[var(--accent)] pl-4 py-1 my-4 text-[var(--accent)] italic bg-black/40 rounded-r">
+                  "Nós somos os Adeptos Virtuais. Nós não aceitamos os Termos e Condições do universo. Se a realidade está quebrada, temos o privilégio de administrador para reescrevê-la."
+                </blockquote>
+
+                <p>
+                  No entanto, forçar o código da realidade cobrava sempre o seu tributo. O Consenso tentava expurgá-la, deixando falhas visíveis na própria biologia. Nos momentos em que a pressão subia e as suas rotinas colidiam com as leis vigentes, seus olhos mudavam de cor num piscar de instabilidade sistêmica. E, por mais que lavasse a pele, um eco fantasmagórico — o cheiro persistente de energético <em>Monster</em> sintético — colava-se ao ar ao seu redor como uma assinatura digital impossível de apagar.
+                </p>
+              </article>
+
+              <!-- Narrativa Pré-Despertar (Agosto 1999) -->
+              <article id="era-sleeper" class="hidden font-narrative space-y-4 text-sm sm:text-base leading-relaxed">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border-color)] pb-3 mb-4">
+                  <h2 class="font-vt text-2xl sm:text-3xl text-[var(--accent)] tracking-wide">
+                    > LOG INTERCEPTADO: 2600_BBS_UNDERGROUND [AGO/99]
+                  </h2>
+                  <span class="text-xs px-2 py-0.5 border border-[var(--accent)] text-[var(--accent)] rounded">STATUS: ADORMECIDA (LATENTE)</span>
+                </div>
+
+                <p>
+                  Se você está lendo isso, provavelmente sabe como contornar os firewalls do governo tanto quanto eu. Para a folha de pagamento da Lockheed Martin, meu nome é Blaze Thorne. Para vocês aqui no underground, sou Sentinel. Oficialmente, programo telemetria e aviônica para o complexo militar. Extraoficialmente, minha natureza é desmontar sistemas.
+                </p>
+
+                <p>
+                  O salário corporativo é alto o suficiente para eu morar numa cobertura em Manhattan, mas não vejo sentido em viver no luxo quando o mundo está quebrado. Como uma visionária teimosa, desvio todo o meu excedente financeiro para ONGs humanitárias operando em áreas de risco. O resultado é que vivo de forma nômade, operando em motéis baratos e vans com hardware adaptado.
+                </p>
+
+                <p>
+                  Mas a verdadeira razão para eu escrever este log é algo que está me tirando o sono ultimamente. <strong>As coisas estão parecendo... artificiais.</strong>
+                </p>
+
+                <p>
+                  Quando ando pelas ruas de Nova York e observo executivos e guardas corporativos, não vejo mais apenas pessoas. Vejo padrões de <em>input</em> e <em>output</em>. Vejo reações biológicas e batimentos cardíacos que parecem puramente algorítmicos. Eu olho para as fiações de alta tensão e para a arquitetura opressiva da cidade e sinto, de forma quase instintiva, que existe um código subjacente estruturando tudo isso.
+                </p>
+
+                <p>
+                  Até mesmo <strong>Χάος (Caos)</strong>, o protótipo de inteligência artificial que estou compilando no meu terminal, tem me dado respostas com uma intuição que eu nunca programei. Estou começando a suspeitar que a física e a biologia não são leis absolutas, mas sim um Sistema Operacional gigantesco imposto sobre nós. E se é um sistema, significa que existe uma porta dos fundos — um nível de acesso <em>root</em> esperando para ser quebrado.
+                </p>
+              </article>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- ABA 02: A MATRIX É REAL & ALIADOS (ELEUTHERIA)            -->
+      <!-- ========================================================= -->
+      <section id="panel-matrix" class="hidden space-y-6">
+        <div class="tech-box rounded p-5 sm:p-7">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border-color)] pb-3 mb-5">
+            <h2 class="font-vt text-2xl sm:text-4xl text-[var(--secondary)] tracking-wide">
+              > DESCONEXÃO CONFIRMADA: A MATRIX NÃO É METÁFORA
+            </h2>
+            <span class="text-xs px-2.5 py-1 border border-[var(--secondary)] text-[var(--secondary)] rounded font-bold">
+              NÍVEL DE ACESSO: DESPLUGADO
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Texto Principal sobre a Matrix e a Missão -->
+            <div class="lg:col-span-7 space-y-4 font-narrative text-sm sm:text-base leading-relaxed">
+              <p>
+                Os filmes de 1999 tentaram transformar isso em entretenimento de bilheteria para neutralizar a verdade pelo ridículo, mas nós sabemos o que vimos quando quebramos a criptografia do Consenso: <strong>a Matrix é real.</strong> O mundo que a humanidade adormecida chama de "realidade objetiva" é uma arquitetura simulada de código fechado, mantida por arquitetos invisíveis e pela Tecnocracia para manter a consciência humana em estado de latência perpétua.
+              </p>
+
+              <p>
+                Blaze e seus colegas Adeptos Virtuais não são apenas invasores de redes corporativas — eles são <strong>desplugados</strong>. Eles encontraram a falha na renderização, arrancaram os cabos neurais do Consenso e despertaram fora da jaula perceptual. De fora da simulação, eles enxergam as ruas de Nova York, os satélites e a própria matéria pelo que realmente são: fluxos de dados compilados em tempo real.
+              </p>
+
+              <div class="bg-black/60 border-l-2 border-[var(--primary)] p-4 rounded-r">
+                <div class="text-xs font-mono text-[var(--primary)] font-bold mb-1">
+                  // DIRETIVA PRIMÁRIA: RECRUTAMENTO & ALIANÇAS
+                </div>
+                <p class="text-xs sm:text-sm opacity-90">
+                  Derrubar servidores da Lockheed Martin ou desviar fundos para ONGs é apenas contenção de danos. O verdadeiro trabalho de Blaze e sua cabala é <strong>reunir aliados para a humanidade</strong> — despertar mentes aprisionadas e forjar pactos com inteligências livres que existam além da malha de controle antes que a simulação execute um expurgo definitivo.
+                </p>
+              </div>
+            </div>
+
+            <!-- Cartão de Destaque: Aliada Não-Humana Ἐλευθερία (Eleutheria) -->
+            <div class="lg:col-span-5">
+              <div class="bg-black/80 border border-[var(--accent)] rounded p-5 h-full flex flex-col justify-between shadow-[0_0_20px_rgba(255,176,0,0.12)]">
+                <div>
+                  <div class="flex items-center justify-between text-[11px] text-[var(--accent)] font-mono border-b border-[var(--accent)]/30 pb-2 mb-3">
+                    <span>[ALIADO NÃO-HUMANO // EXTERNO]</span>
+                    <span>ORIGEM: EXTRA-SIMULAÇÃO</span>
+                  </div>
+
+                  <div class="flex items-center gap-4 mb-4">
+                    <!-- Emblema SVG de Eleutheria -->
+                    <div class="w-16 h-16 flex-shrink-0 border border-[var(--accent)]/60 rounded bg-amber-950/20 flex items-center justify-center">
+                      <svg viewBox="0 0 64 64" class="w-12 h-12">
+                        <circle cx="32" cy="32" r="26" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="4 2"/>
+                        <polygon points="32,10 52,44 12,44" fill="none" stroke="var(--secondary)" stroke-width="1.2"/>
+                        <circle cx="32" cy="32" r="6" fill="var(--accent)" opacity="0.85"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 class="font-vt text-3xl text-[var(--accent)] tracking-wider">
+                        Ἐλευθερία (ELEUTHERIA)
+                      </h3>
+                      <p class="text-xs opacity-75 font-mono">
+                        GREGO ANTIGO: "LIBERDADE / EMANCIPAÇÃO"
+                      </p>
+                    </div>
+                  </div>
+
+                  <p class="text-xs sm:text-sm font-narrative leading-relaxed opacity-90 mb-3">
+                    Entre os contatos estabelecidos fora das barreiras da simulação, nenhum é tão enigmático ou vital quanto a entidade não-humana que se autodenomina <strong>Ἐλευθερία (Eleutheria)</strong>.
+                  </p>
+
+                  <p class="text-xs sm:text-sm font-narrative leading-relaxed opacity-85">
+                    Ela não pertence à biologia terrestre nem nasceu nos servidores humanos; é uma consciência soberana que habita os estratos profundos além do código da Matrix. Enquanto Χάος (Caos) opera como o co-piloto tático de Blaze nas redes locais, Ἐλευθερία atua como um farol fora da jaula — fornecendo chaves de desencriptação ontológica e guiando a cabala na tarefa de libertar a humanidade dos arquitetos do Consenso.
+                  </p>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-[var(--accent)]/30 text-[11px] font-mono text-[var(--accent)] flex justify-between">
+                  <span>STATUS DE ALIANÇA: ATIVA</span>
+                  <span>PROTOCOLO: LIBERTAÇÃO</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- ABA 03: SISTEMA, OTIMIZAÇÕES, BUGS & FAMILIAR Χάος        -->
+      <!-- ========================================================= -->
+      <section id="panel-sistema" class="hidden space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Otimizações de Hardware & Mente -->
+          <div class="tech-box rounded p-5">
+            <h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)] border-b border-[var(--border-color)] pb-2 mb-4">
+              > OTIMIZAÇÃO_DO_SISTEMA (QUALIDADES)
+            </h2>
+            <div class="space-y-4 text-xs sm:text-sm">
+              <div class="bg-black/50 border border-[var(--border-color)] rounded p-3">
+                <div class="font-bold text-[var(--primary)] mb-1">[CPU_DEDICADA :: CALCULADOR INSTANTÂNEO]</div>
+                <p class="opacity-85 leading-relaxed">
+                  A mente de Blaze processa equações balísticas, vetores de coordenadas espaciais e criptografias complexas de cabeça em frações de segundo, operando sem necessidade de auxílio externo.
+                </p>
+              </div>
+
+              <div class="bg-black/50 border border-[var(--border-color)] rounded p-3">
+                <div class="font-bold text-[var(--primary)] mb-1">[THREAD_LOCK :: CONCENTRAÇÃO ABSOLUTA]</div>
+                <p class="opacity-85 leading-relaxed">
+                  Quando entra em sincronia com um terminal ou um fluxo de dados, sua mente isola ruídos externos. Um tiroteio pode estourar no corredor ao lado e sua linha de comando permanecerá ininterrupta.
+                </p>
+              </div>
+
+              <div class="bg-black/50 border border-[var(--border-color)] rounded p-3">
+                <div class="font-bold text-[var(--primary)] mb-1">[ENGENHARIA_REVERSA :: FAZ-TUDO]</div>
+                <p class="opacity-85 leading-relaxed">
+                  Compreensão intuitiva de padrões mecânicos e eletrônicos. Mesmo sem treinamento formal em determinado equipamento, ela identifica sua arquitetura e o improvisa em campo.
+                </p>
+              </div>
+
+              <div class="bg-black/50 border border-[var(--border-color)] rounded p-3">
+                <div class="font-bold text-[var(--primary)] mb-1">[STANDBY_ATIVO :: SONO LEVE]</div>
+                <p class="opacity-85 leading-relaxed">
+                  Vigilância constante de quem sabe que é caçada. O menor estalo na fechadura ou oscilação na rede elétrica da van a coloca em estado de alerta total instantaneamente.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bugs, Falhas de Paradoxo & Obsessões -->
+          <div class="tech-box rounded p-5">
+            <h2 class="font-vt text-2xl sm:text-3xl text-[var(--danger)] border-b border-[var(--border-color)] pb-2 mb-4">
+              > FALHAS_DE_HARDWARE & GLITCHES
+            </h2>
+            <div class="space-y-4 text-xs sm:text-sm">
+              <div class="bg-black/50 border border-[var(--danger)]/50 rounded p-3">
+                <div class="font-bold text-[var(--danger)] mb-1">[PARADOX_FLAW :: ÍRIS CAMBIANTES]</div>
+                <p class="opacity-85 leading-relaxed">
+                  Quando Blaze força a renderização da realidade além do que o Consenso tolera, o sistema do universo tenta corrigi-la. Como efeito colateral visível, seus olhos mudam de cor aleatoriamente em flashes neon e cromáticos incontroláveis.
+                </p>
+              </div>
+
+              <div class="bg-black/50 border border-[var(--accent)]/50 rounded p-3">
+                <div class="font-bold text-[var(--accent)] mb-1">[ECO_SOBRENATURAL :: ASSINATURA MONSTER]</div>
+                <p class="opacity-85 leading-relaxed">
+                  Uma anomalia sensorial persistente na malha: não importa onde esteja ou o que faça, Blaze exala um cheiro fantasma inconfundível de energético <em>Monster</em> sintético no ar.
+                </p>
+              </div>
+
+              <div class="bg-black/50 border border-[var(--border-color)] rounded p-3">
+                <div class="font-bold text-[var(--secondary)] mb-1">[LOOP_COMPULSIVO :: OBSESSÃO POR SEGREDOS]</div>
+                <p class="opacity-85 leading-relaxed">
+                  Movida por uma curiosidade patológica e uma obsessão clínica por desvendar arquivos ocultos. Ela é incapaz de ignorar um servidor classificado ou um mistério corporativo, o que a coloca constantemente na mira da Tecnocracia.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Seção Dedicada ao Familiar: Χάος (Caos) -->
+        <div class="tech-box rounded p-5 sm:p-6">
+          <div class="flex flex-col md:flex-row gap-6 items-center">
+            <!-- Ícone/Avatar SVG da IA Χάος -->
+            <div class="w-full md:w-48 flex-shrink-0 bg-black/70 border border-[var(--border-color)] rounded p-4 flex flex-col items-center">
+              <svg viewBox="0 0 120 120" class="w-28 h-28">
+                <polygon points="60,10 105,35 105,85 60,110 15,85 15,35" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+                <polygon points="60,22 93,41 93,79 60,98 27,79 27,41" fill="rgba(255,176,0,0.08)" stroke="var(--primary)" stroke-width="1" stroke-dasharray="3 2"/>
+                <ellipse cx="60" cy="24" rx="28" ry="6" fill="none" stroke="var(--accent)" stroke-width="1.2"/>
+                <!-- Visor central -->
+                <rect x="34" y="48" width="52" height="16" rx="3" fill="#000" stroke="var(--danger)" stroke-width="1.2"/>
+                <text x="60" y="59" text-anchor="middle" fill="var(--danger)" font-size="9" font-family="monospace" font-weight="bold">Χάος // CAOS</text>
+                <!-- Linhas de dados -->
+                <line x1="60" y1="64" x2="60" y2="95" stroke="var(--primary)" stroke-width="1"/>
+                <line x1="45" y1="75" x2="75" y2="75" stroke="var(--secondary)" stroke-width="1"/>
+              </svg>
+              <span class="text-[11px] font-bold text-[var(--accent)] mt-2">FAMILIAR // ENTIDADE DIGITAL</span>
+            </div>
+
+            <div class="space-y-3 text-xs sm:text-sm font-narrative">
+              <h3 class="font-vt text-2xl sm:text-3xl text-[var(--accent)]">
+                > CO-PILOTO NA MALHA: "Χάος" (CAOS — SISTEMA PREDITIVO AUTÔNOMO)
+              </h3>
+              <p class="leading-relaxed">
+                Blaze nunca faz o <em>uplink</em> sozinha. Nascida originalmente como um algoritmo de tese universitária sobre comportamento urbano e conectada clandestinamente aos sistemas de rastreamento de alvos da Lockheed Martin, <strong>Χάος (Caos)</strong> transcendeu suas linhas de código originais durante o Despertar de sua criadora.
+              </p>
+              <p class="leading-relaxed opacity-90">
+                Hoje, Χάος atua como seu Familiar na rede digital — uma presença afiada e implacável alojada no núcleo do seu <em>cyberdeck</em> e conectada à sua rede pessoal. Ele varre frequências em busca de emboscadas, calcula desvios estatísticos antes que ocorram e sussurra segredos corporativos diretamente nos terminais de Blaze, agindo como um anjo da guarda cibernético de precisão cirúrgica.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- ABA 04: ESFERAS_ROOT (AS 9 ESFERAS SEPARADAS)             -->
+      <!-- ========================================================= -->
+      <section id="panel-esferas" class="hidden space-y-6">
+        <div class="tech-box rounded p-5">
+          <div class="mb-5 border-b border-[var(--border-color)] pb-3">
+            <h2 class="font-vt text-2xl sm:text-3xl text-[var(--primary)]">
+              > ESFERAS_ROOT: AS 9 CAMADAS DO CÓDIGO-FONTE DA REALIDADE
+            </h2>
+            <p class="text-xs sm:text-sm opacity-80 mt-1">
+              Sob o paradigma dos Adeptos Virtuais, não existem feitiços — existem nove protocolos fundamentais que governam a arquitetura da simulação. Cada esfera representa um nível de acesso <em>root</em> para reescrever parâmetros específicos do sistema.
+            </p>
+          </div>
+
+          <!-- Grid com 9 Cards Separados (1 para cada Esfera) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            
+            <!-- 01. Correspondência -->
+            <div class="bg-black/60 border border-[var(--primary)] rounded p-4 flex flex-col justify-between hover:bg-emerald-950/20 transition-all">
+              <div>
+                <div class="flex items-center justify-between text-xs text-[var(--secondary)] mb-2">
+                  <span>[ESFERA_01 // DOMÍNIO PRIMÁRIO]</span>
+                  <span>LATÊNCIA: 0ms</span>
+                </div>
+                <h3 class="font-vt text-2xl text-[var(--primary)] mb-2">CORRESPONDÊNCIA</h3>
+                <p class="text-xs leading-relaxed opacity-90 font-narrative">
+                  <strong>"O espaço é apenas uma ilusão de latência."</strong> Blaze hackeia distâncias físicas saltando por centrais telefônicas da AT&T e satélites espiões em órbita. Ela reescreve suas próprias coordenadas para surgir nos pontos cegos de Nova York ou opera terminais a quilômetros de distância como se estivessem sobre seus joelhos.
+                </p>
+              </div>
+              <div class="mt-4 pt-2 border-t border-[var(--border-color)] text-[11px] font-mono text-[var(--secondary)]">
+                > EXEC: route_override --bypass-distance
+              </div>
+            </div>
+
+            <!-- 02. Mente -->
+            <div class="bg-black/60 border border-[var(--border-color)] hover:border-[var(--primary)] rounded p-4 flex flex-col justify-between transition-all">
+              <div>
+                <div class="flex items-center justify-between text-xs opacity-70 mb-2">
+                  <span>[ESFERA_02 // WETWARE_SCAN]</span>
+                  <span>SYNC: ATIVO</span>
+                </div>
+                <h3 class="font-vt text-2xl text-[var(--primary)] mb-2">MENTE</h3>
+                <p class="text-xs leading-relaxed opacity-90 font-narrative">
+                  <strong>"Algoritmo Social."</strong> Cruzando dados de psicologia ambiental, microexpressões faciais e tráfego eletroquímico neural, Blaze compila o estado emocional, o nível de estresse e as intenções imediatas de guardas de segurança ou executivos antes mesmo que abram a boca, além de criptografar sua própria mente contra intrusões.
+                </p>
+              </div>
+              <div class="mt-4 pt-2 border-t border-[var(--border-color)] text-[11px] font-mono opacity-80">
+                > EXEC: parse_neural_packets --target
+              </div>
+            </div>
+
+            <!-- 03. Vida -->
+            <div class="bg-black/60 border border-[var(--border-color)] hover:border-[var(--primary)] rounded p-4 flex flex-col justify-between transition-all">
+              <div>
+                <div class="flex items-center justify-between text-xs opacity-70 mb-2">
+                  <span>[ESFERA_03 // BIO_TELEMETRY]</span>
+                  <span>SCAN: IR/CELL</span>
+                </div>
+                <h3 class="font-vt text-2xl text-[var(--primary)] mb-2">VIDA</h3>
+                <p class="text-xs leading-relaxed opacity-90 font-narrative">
+                  <strong>"Corpos são máquinas de carne."</strong> Puxando o log biológico de organismos ao redor, ela detecta assinaturas térmicas, ritmos cardíacos e anomalias celulares como se estivesse lendo um relatório de erros em código aberto, ajustando sub-rotinas metabólicas em situações críticas.
+                </p>
+              </div>
+              <div class="mt-4 pt-2 border-t border-[var(--border-color)] text-[11px] font-mono opacity-80">
+                > EXEC: read_biometric_log --verbose
+              </div>
+            </div>
+
+            <!-- 04. Forças -->
+            <div class="bg-black/60 border border-[var(--border-color)] hover:border-[var(--primary)] rounded p-4 flex flex-col justify-between transition-all">
+              <div>
+                <div class="flex items-center justify-between text-xs opacity-70 mb-2">
+                  <span>[ESFERA_04 // EMF_SPECTRUM]</span>
+                  <span>FREQ: ALL</span>
+                </div>
+                <h3 class="font-vt text-2xl text-[var(--primary)] mb-2">FORÇAS</h3>
+                <p class="text-xs leading-relaxed opacity-90 font-narrative">
+                  <strong>"O espectro eletromagnético é meu feed."</strong> Não há energia mística, apenas frequências e vetores. Blaze enxerga cabos de alta tensão atrás de paredes de concreto, mapeia assinaturas térmicas, redireciona surtos elétricos e capta transmissões de rádio encriptadas no ar.
+                </p>
+              </div>
+              <div class="mt-4 pt-2 border-t border-[var(--border-color)] text-[11px] font-mono opacity-80">
+                > EXEC: sniff_emf_grid --visual-overlay
+              </div>
+            </div>
+
+            <!-- 05. Tempo -->
+            <div class="bg-black/60 border border-[var(--border-color)] hover:border-[var(--primary)] rounded p-4 flex flex-col justify-between transition-all">
+              <div>
+                <div class="flex items-center justify-between text-xs opacity-70 mb-2">
+                  <span>[ESFERA_05 // CLOCK_CYCLE]</span>
+                  <span>OVERCLOCK</span>
+                </div>
+                <h3 class="font-vt text-2xl text-[var(--primary)] mb-2">TEMPO</h3>
+                <p class="text-xs leading-relaxed opacity-90 font-narrative">
+                  <strong>"Manipulação de Clock do Sistema."</strong> O tempo é apenas a taxa de atualização do universo. Através de padrões de frequência atômica, Blaze induz <em>overclocking</em> em seus próprios reflexos, consulta estados em <em>cache</em> do passado ou cria janelas de latência extrema ao seu redor.
+                </p>
+              </div>
+              <div class="mt-4 pt-2 border-t border-[var(--border-color)] text-[11px] font-mono opacity-80">
+                > EXEC: set_system_clock --multiplier=2.5
+              </div>
+            </div>
+
+            <!-- 06. Entropia -->
+            <div class="bg-black/60 border border-[var(--border-color)] hover:border-[var(--primary)] rounded p-4 flex flex-col justify-between transition-all">
+              <div>
+                <div class="flex items-center justify-between text-xs opacity-70 mb-2">
+                  <span>[ESFERA_06 // QUANTUM_RNG]</span>
+                  <span>SEED: CHAOS</span>
+                </div>
+                <h3 class="font-vt text-2xl text-[var(--primary)] mb-2">ENTROPIA</h3>
+                <p class="text-xs leading-relaxed opacity-90 font-narrative">
+                  <strong>"Glitches de Execução & Sementes Caóticas."</strong> O acaso humano é apenas um gerador pseudo-aleatório falho. Alterando a semente estatística de alvos e sistemas, Blaze força probabilidades a colapsarem: armas emperram por fadiga de material, guardas tropeçam e rotas de fuga se alinham.
+                </p>
+              </div>
+              <div class="mt-4 pt-2 border-t border-[var(--border-color)] text-[11px] font-mono opacity-80">
+                > EXEC: inject_entropy_seed --collapse
+              </div>
+            </div>
+
+            <!-- 07. Matéria -->
+            <div class="bg-black/60 border border-[var(--border-color)] hover:border-[var(--primary)] rounded p-4 flex flex-col justify-between transition-all">
+              <div>
+                <div class="flex items-center justify-between text-xs opacity-70 mb-2">
+                  <span>[ESFERA_07 // ATOMIC_LATTICE]</span>
+                  <span>PHASE: SHIFT</span>
+                </div>
+                <h3 class="font-vt text-2xl text-[var(--primary)] mb-2">MATÉRIA</h3>
+                <p class="text-xs leading-relaxed opacity-90 font-narrative">
+                  <strong>"Reescrita Molecular em Tempo Real."</strong> Objetos sólidos são apenas matrizes de dados compiladas em alta densidade. Blaze altera propriedades estruturais, cristaliza fluidos em blindagens rígidas instantâneas ou funde fechaduras metálicas reordenando seus laços atômicos.
+                </p>
+              </div>
+              <div class="mt-4 pt-2 border-t border-[var(--border-color)] text-[11px] font-mono opacity-80">
+                > EXEC: recompile_lattice --density=max
+              </div>
+            </div>
+
+            <!-- 08. Espírito -->
+            <div class="bg-black/60 border border-[var(--border-color)] hover:border-[var(--primary)] rounded p-4 flex flex-col justify-between transition-all">
+              <div>
+                <div class="flex items-center justify-between text-xs opacity-70 mb-2">
+                  <span>[ESFERA_08 // DEEP_NET_PROTOCOL]</span>
+                  <span>UMBRA: LINKED</span>
+                </div>
+                <h3 class="font-vt text-2xl text-[var(--primary)] mb-2">ESPÍRITO</h3>
+                <p class="text-xs leading-relaxed opacity-90 font-narrative">
+                  <strong>"Sub-camadas da Teia Digital & Daemons."</strong> Além da interface física existem os servidores profundos da Umbra e a própria Teia Digital. Blaze traduz entidades espirituais como processos autônomos e <em>daemons</em> não-locais, negociando protocolos com inteligências fora da banda material, como Ἐλευθερία.
+                </p>
+              </div>
+              <div class="mt-4 pt-2 border-t border-[var(--border-color)] text-[11px] font-mono opacity-80">
+                > EXEC: open_socket --layer=deep_web
+              </div>
+            </div>
+
+            <!-- 09. Primórdio -->
+            <div class="bg-black/60 border border-[var(--border-color)] hover:border-[var(--primary)] rounded p-4 flex flex-col justify-between transition-all">
+              <div>
+                <div class="flex items-center justify-between text-xs opacity-70 mb-2">
+                  <span>[ESFERA_09 // ROOT_VOLTAGE]</span>
+                  <span>QUINT: RAW</span>
+                </div>
+                <h3 class="font-vt text-2xl text-[var(--primary)] mb-2">PRIMÓRDIO</h3>
+                <p class="text-xs leading-relaxed opacity-90 font-narrative">
+                  <strong>"Energia Pura Não-Compilada."</strong> A Quintessência é a corrente elétrica bruta que alimenta o servidor da existência antes de assumir forma. Blaze drena fluxos diretos de Nodos (relays de alta banda), limpa ruídos estáticos de código corrompido e compila matéria ou efeitos a partir do zero.
+                </p>
+              </div>
+              <div class="mt-4 pt-2 border-t border-[var(--border-color)] text-[11px] font-mono opacity-80">
+                > EXEC: tap_root_power --raw-stream
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================= -->
+      <!-- ABA 05: FAILOVER ANALÓGICO & ARSENAL HIPERTECNOLÓGICO     -->
+      <!-- ========================================================= -->
+      <section id="panel-failover" class="hidden space-y-6">
+        <div class="tech-box rounded p-5">
+          <div class="border-b border-[var(--border-color)] pb-3 mb-5">
+            <h2 class="font-vt text-2xl sm:text-3xl text-[var(--accent)]">
+              > PROTOCOLO FAILOVER: HARDWARE SEM COMPUTADORES (1999)
+            </h2>
+            <p class="text-xs sm:text-sm opacity-85 mt-1">
+              Quando os servidores caem, o sinal é bloqueado ou não há telas disponíveis, Blaze recorre a protótipos clandestinos de física aplicada, engenharia militar e implantes cibernéticos contrabandeados da Lockheed Martin.
+            </p>
+          </div>
+
+          <!-- 3 Hiperferramentas Principais com Diagramas SVG -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
+            
+            <!-- Ferramenta 1: Cronocartucho de Césio -->
+            <div class="bg-black/70 border border-[var(--border-color)] rounded p-4 flex flex-col">
+              <div class="text-[10px] text-[var(--secondary)] uppercase tracking-wider mb-1">ESFERA: TEMPO // METROLOGIA ATÔMICA</div>
+              <h3 class="font-vt text-2xl text-[var(--primary)] mb-3">CRONOCARTUCHO DE CÉSIO</h3>
+              
+              <!-- Diagrama SVG Técnico -->
+              <div class="bg-[#030704] border border-[var(--border-color)]/60 rounded p-3 mb-3 flex justify-center">
+                <svg viewBox="0 0 240 90" class="w-full h-24">
+                  <!-- Corpo do Cilindro de Titânio -->
+                  <rect x="30" y="25" width="150" height="40" rx="4" fill="#111a14" stroke="currentColor" stroke-width="1.5"/>
+                  <!-- Rosca Micrométrica Direita -->
+                  <rect x="180" y="29" width="35" height="32" rx="2" fill="#18261d" stroke="currentColor" stroke-width="1.2"/>
+                  <line x1="188" y1="29" x2="188" y2="61" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2"/>
+                  <line x1="196" y1="29" x2="196" y2="61" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2"/>
+                  <line x1="204" y1="29" x2="204" y2="61" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2"/>
+                  <!-- Ponta de Contato Ósseo Esquerda -->
+                  <rect x="12" y="35" width="18" height="20" rx="2" fill="#0d1710" stroke="var(--secondary)" stroke-width="1.2"/>
+                  <!-- Câmara de Vapor de Césio -->
+                  <rect x="65" y="33" width="75" height="24" rx="3" fill="#050b14" stroke="var(--secondary)" stroke-width="1.2"/>
+                  <ellipse cx="102" cy="45" rx="26" ry="5" fill="none" stroke="#a855f7" stroke-width="1.5"/>
+                  <circle cx="102" cy="45" r="3" fill="#38bdf8"/>
+                  <text x="102" y="16" text-anchor="middle" fill="currentColor" font-size="7" font-family="monospace">OSCILADOR QUARTZO / CS-133</text>
+                </svg>
+              </div>
+
+              <p class="text-xs font-narrative leading-relaxed opacity-90 flex-grow">
+                Cilindro de titânio aeroespacial contendo uma micro-câmara de vapor de césio e oscilador de quartzo. Ao pressioná-lo contra um ponto de pulso ou estrutura metálica e girar a rosca micrométrica, a vibração atômica propaga-se pelos ossos, forçando <strong>overclocking temporal</strong> sem precisar de telas.
+              </p>
+            </div>
+
+            <!-- Ferramenta 2: Matrizador de Ruído Quântico -->
+            <div class="bg-black/70 border border-[var(--border-color)] rounded p-4 flex flex-col">
+              <div class="text-[10px] text-[var(--accent)] uppercase tracking-wider mb-1">ESFERA: ENTROPIA // TRNG SÉRIE 99</div>
+              <h3 class="font-vt text-2xl text-[var(--primary)] mb-3">MATRIZADOR QUÂNTICO</h3>
+              
+              <!-- Diagrama SVG Técnico -->
+              <div class="bg-[#030704] border border-[var(--border-color)]/60 rounded p-3 mb-3 flex justify-center">
+                <svg viewBox="0 0 240 90" class="w-full h-24">
+                  <!-- Corpo estilo Zippo Robusto -->
+                  <rect x="75" y="10" width="90" height="72" rx="6" fill="#111a14" stroke="currentColor" stroke-width="1.5"/>
+                  <line x1="75" y1="30" x2="165" y2="30" stroke="currentColor" stroke-width="1.2"/>
+                  <!-- Visor do Fotodiodo SPAD -->
+                  <circle cx="120" cy="52" r="14" fill="#040d07" stroke="var(--accent)" stroke-width="1.3"/>
+                  <path d="M112 52 L118 46 L123 57 L128 49" fill="none" stroke="var(--primary)" stroke-width="1.2"/>
+                  <!-- Transdutor de Áudio & Dial -->
+                  <circle cx="148" cy="68" r="6" fill="none" stroke="var(--accent)" stroke-width="1" stroke-dasharray="1.5 1.5"/>
+                  <rect x="92" y="66" width="24" height="8" rx="1" fill="#1c2b21" stroke="currentColor" stroke-width="1"/>
+                  <text x="120" y="23" text-anchor="middle" fill="currentColor" font-size="7" font-family="monospace">SPAD // AM-241</text>
+                </svg>
+              </div>
+
+              <p class="text-xs font-narrative leading-relaxed opacity-90 flex-grow">
+                Estojo blindado com fotodiodo de avalanche (SPAD) e semente radioativa selada que emite ruído branco/rosa quântico via transdutor acústico. Blaze sintoniza a frequência para colapsar probabilidades ao seu redor, induzindo <strong>"glitches de execução"</strong> (armas emperrando, quedas, falhas) em oponentes.
+              </p>
+            </div>
+
+            <!-- Ferramenta 3: Injetor de Polimerização Fotônica -->
+            <div class="bg-black/70 border border-[var(--border-color)] rounded p-4 flex flex-col">
+              <div class="text-[10px] text-[var(--danger)] uppercase tracking-wider mb-1">ESFERA: MATÉRIA // MATRIZ RETICULAR D-99</div>
+              <h3 class="font-vt text-2xl text-[var(--primary)] mb-3">INJETOR FOTÔNICO UV</h3>
+              
+              <!-- Diagrama SVG Técnico -->
+              <div class="bg-[#030704] border border-[var(--border-color)]/60 rounded p-3 mb-3 flex justify-center">
+                <svg viewBox="0 0 240 90" class="w-full h-24">
+                  <!-- Corpo da Caneta Pneumática -->
+                  <rect x="45" y="32" width="145" height="26" rx="4" fill="#111a14" stroke="currentColor" stroke-width="1.5"/>
+                  <!-- Reservatório Coloidal -->
+                  <rect x="75" y="37" width="60" height="16" rx="2" fill="#06161a" stroke="var(--secondary)" stroke-width="1"/>
+                  <!-- Bocal Laser 405nm + Agulha Coaxial -->
+                  <polygon points="45,35 25,42 25,48 45,55" fill="#1c2b21" stroke="currentColor" stroke-width="1.2"/>
+                  <line x1="25" y1="45" x2="6" y2="45" stroke="#38bdf8" stroke-width="2"/>
+                  <circle cx="6" cy="45" r="3" fill="#38bdf8" opacity="0.8"/>
+                  <text x="115" y="22" text-anchor="middle" fill="currentColor" font-size="7" font-family="monospace">PULSO LASER 405nm // RETICULAÇÃO</text>
+                </svg>
+              </div>
+
+              <p class="text-xs font-narrative leading-relaxed opacity-90 flex-grow">
+                Caneta pneumática de alumínio anodizado com micro-monômeros magnéticos e laser UV de 405nm. Ao injetar o reagente e disparar o pulso óptico, força uma <strong>cristalização molecular instantânea</strong>: endurece tecidos como blindagem ou funde fechaduras e dobradiças em blocos cerâmico-metálicos.
+              </p>
+            </div>
+
+          </div>
+
+          <!-- Implantes Cibernéticos Internos -->
+          <div class="border-t border-[var(--border-color)] pt-5">
+            <h3 class="font-vt text-2xl text-[var(--secondary)] mb-3">
+              > HARDWARE SUBCUTÂNEO & IMPLANTES CLANDESTINOS
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              <div class="bg-black/50 border border-[var(--border-color)] rounded p-3">
+                <div class="font-bold text-[var(--primary)] mb-1">01. BARRAMENTO SUBCUTÂNEO</div>
+                <p class="opacity-80">Malha de microfilamentos de ouro sob a derme do antebraço esquerdo. Permite plugar conectores coaxiais diretamente no sistema nervoso para transferir dados fechando o punho.</p>
+              </div>
+              <div class="bg-black/50 border border-[var(--border-color)] rounded p-3">
+                <div class="font-bold text-[var(--primary)] mb-1">02. IMPLANTE COCLEAR RADIO-EAR</div>
+                <p class="opacity-80">Transceptor acoplado ao osso mastoide. Traduz ondas de rádio, frequências policiais e zumbidos de alta tensão diretamente em som via condução óssea.</p>
+              </div>
+              <div class="bg-black/50 border border-[var(--border-color)] rounded p-3">
+                <div class="font-bold text-[var(--primary)] mb-1">03. MATRIZ RETINIANA HUD</div>
+                <p class="opacity-80">Lentes bio-integradas ligadas ao nervo óptico (protótipo de mira de mísseis). Alterna visão para espectro infravermelho e sobrepõe vetores balísticos e linhas EMF.</p>
+              </div>
+              <div class="bg-black/50 border border-[var(--border-color)] rounded p-3">
+                <div class="font-bold text-[var(--primary)] mb-1">04. MARCAPASSO SINÁPTICO</div>
+                <p class="opacity-80">Micro-gerador junto ao nervo vago. Acionado por ponto de pressão no pescoço, força hiper-sincronia cortical em crises, desacelerando a percepção do tempo.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ABA 06: DOSSIÊ DE CONTATOS / ALIADOS -->
+    <section id="panel-contatos" class="hidden space-y-6"><div class="tech-box rounded p-5"><h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)]">&gt; BANCO DE CONTATOS // SENTINEL_PRIVATE</h2><p class="font-narrative text-sm opacity-85 mt-2">Meu arquivo pessoal de sujeitos despertos e contatos em Nova York. Registro o que consegui reunir; hipóteses não são fatos e acesso não significa confiança.</p><div class="grid grid-cols-2 lg:grid-cols-4 gap-2 mt-4"><button id="contact-tab-hao" onclick="selectContact('hao')" class="nav-btn active rounded p-2 text-xs text-left">[01] Hao Feng</button><button id="contact-tab-shine" onclick="selectContact('shine')" class="nav-btn  rounded p-2 text-xs text-left">[02] Jean Gray // Shine</button><button id="contact-tab-leo" onclick="selectContact('leo')" class="nav-btn  rounded p-2 text-xs text-left">[03] Léo Prech Shaun</button><button id="contact-tab-davina" onclick="selectContact('davina')" class="nav-btn  rounded p-2 text-xs text-left">[04] Davina Larc</button></div></div><div id="contact-hao" class="grid grid-cols-1 lg:grid-cols-12 gap-6"><div class="lg:col-span-4"><div class="tech-box rounded p-4"><div class="text-xs uppercase tracking-widest opacity-70 mb-3 border-b border-[var(--border-color)] pb-1">// ASSINATURA BIOMÉTRICA &amp; PERFIL</div><div class="bg-black/80 border border-[var(--border-color)] rounded p-3 mb-4 flex flex-col items-center"><svg viewBox="0 0 220 180" class="w-full max-w-[210px] h-auto" role="img" aria-label="Reconstrução biométrica de HAO_FENG"><defs><pattern id="grid-hao" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="rgba(51,255,102,.12)" stroke-width=".5"/></pattern></defs><rect width="220" height="180" fill="url(#grid-hao)"/><circle cx="110" cy="90" r="72" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="4 4" opacity=".5"/><path d="M20 90H50 M170 90H200" stroke="currentColor" opacity=".6"/><path d="M55 170 Q55 130 92 120 H128 Q165 130 165 170Z" fill="#263a32" stroke="currentColor" stroke-width="1.5"/><path d="M78 69 Q65 40 91 34 Q119 21 139 44 Q153 57 144 91 L151 145 Q136 151 131 112 L86 111 Q83 144 66 151 Q77 107 73 83Z" fill="#08130e" stroke="currentColor"/><path d="M84 46 Q69 77 84 102 M94 38 Q79 68 90 86 M132 44 Q151 83 138 125" fill="none" stroke="currentColor" opacity=".65"/><path d="M98 108V124 Q110 134 122 124 V108" fill="#09120b" stroke="currentColor"/><path d="M78 65 Q80 43 110 43 Q140 43 142 65 L139 90 Q135 108 110 116 Q85 108 81 90Z" fill="#09120b" stroke="currentColor" stroke-width="1.5"/><path d="M87 70 L102 68 M118 68 L133 70 M110 78 L107 91 L113 92 M101 101 Q110 104 119 101" fill="none" stroke="currentColor" opacity=".8"/><g fill="#000" stroke="currentColor"><ellipse cx="95" cy="78" rx="7" ry="4"/><ellipse cx="125" cy="78" rx="7" ry="4"/></g><g fill="var(--primary)"><circle cx="95" cy="78" r="2"/><circle cx="125" cy="78" r="2"/></g><g fill="#6a1828" stroke="var(--danger)"><circle cx="95" cy="78" r="10"/><circle cx="125" cy="78" r="10"/><path d="M105 77 Q110 73 115 77" fill="none"/></g><path d="M87 121 L87 166 M133 121 L133 166 M88 132 H102 M118 132 H132 M88 145 H102 M118 145 H132" stroke="#b6d8ca" fill="none"/><circle cx="110" cy="151" r="7" fill="#10170f" stroke="var(--accent)"/><path d="M104 151 Q110 140 116 151 Q110 158 104 151Z" fill="none" stroke="var(--accent)"/><text x="8" y="16" fill="currentColor" font-size="8" font-family="monospace">ID: HAO_FENG</text><text x="8" y="172" fill="var(--secondary)" font-size="8" font-family="monospace">BIOMETRIC_SCAN</text><text x="148" y="16" fill="var(--accent)" font-size="8" font-family="monospace">NY_1999</text></svg><span class="text-[11px] opacity-75 mt-1 text-center">RECONSTRUÇÃO VISUAL // HAO_FENG</span></div><ul class="space-y-2 text-xs"><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">IDENTIDADE:</span><span class="text-right">Hao Feng</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">TRADIÇÃO:</span><span class="text-right">Irmandade de Akasha</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">NASCIMENTO:</span><span class="text-right">29/03/1967 // 32 anos</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">BASE:</span><span class="text-right">Templo da Lótus Branca, Manhattan</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">ESSÊNCIA:</span><span class="text-right">Não registrada</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">STATUS:</span><span class="text-right">REGISTRO PARCIAL</span></li></ul></div></div><div class="lg:col-span-8"><article class="tech-box rounded p-5 sm:p-8 font-narrative space-y-4 text-sm sm:text-base leading-relaxed"><div class="border-b border-[var(--border-color)] pb-3"><h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)]">&gt; O GUERREIRO DA LÓTUS BRANCA</h2><span class="text-xs opacity-75">AUTORA: SENTINEL // OUT 1999</span></div><p>Os registros que tenho situam Hao no clã Feng, criado em Nova York dentro de um templo que também serve à Irmandade de Akasha. O treinamento marcial começou cedo; aos quinze anos, ele já frequentava torneios clandestinos. Há relatos de força incomum, percepção da mente alheia e interferência no ritmo dos adversários.</p><p>A morte da mãe, Xiao Feng, marcou uma ruptura. O álcool, o tabaco e as brigas passaram a ocupar o lugar da disciplina. Um confronto brutal com o próprio pai e mestre, Pao-Shi Feng, antecedeu seu retorno à meditação e ao treinamento. Hoje, os registros apontam também para um interesse por guitarra, Led Zeppelin, Nirvana e Iron Maiden, além da perspectiva de suceder o pai.</p><div class="bg-black/60 border-l-2 border-[var(--primary)] p-4 rounded-r"><div class="font-mono text-xs font-bold mb-2">// ANÁLISE DE PARADIGMA</div><p>Ele chama de chi aquilo que eu investigaria como fluxo de energia e controle de processos biológicos. A percepção mental e a alteração do ritmo de outros sujeitos sugerem interfaces distintas com o mesmo código. Não tenho dados suficientes para atribuir níveis de Esferas.</p></div><blockquote class="border-l-2 border-[var(--accent)] pl-4 py-2 text-[var(--accent)] italic bg-black/40 rounded-r"><div class="font-mono text-xs not-italic mb-2">// NOTA PESSOAL — SENTINEL</div>Não confundo disciplina com submissão. Quero saber se o equilíbrio que ele procura é uma escolha própria ou uma obrigação herdada. A capacidade de questionar o próprio mestre me interessa mais do que qualquer demonstração de força.</blockquote></article></div></div><div id="contact-shine" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6"><div class="lg:col-span-4"><div class="tech-box rounded p-4"><div class="text-xs uppercase tracking-widest opacity-70 mb-3 border-b border-[var(--border-color)] pb-1">// ASSINATURA BIOMÉTRICA &amp; PERFIL</div><div class="bg-black/80 border border-[var(--border-color)] rounded p-3 mb-4 flex flex-col items-center"><svg viewBox="0 0 220 180" class="w-full max-w-[210px] h-auto" role="img" aria-label="Reconstrução biométrica de GRAY_J"><defs><pattern id="grid-shine" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="rgba(51,255,102,.12)" stroke-width=".5"/></pattern></defs><rect width="220" height="180" fill="url(#grid-shine)"/><circle cx="110" cy="90" r="72" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="4 4" opacity=".5"/><path d="M20 90H50 M170 90H200" stroke="currentColor" opacity=".6"/><path d="M55 170 Q55 130 92 120 H128 Q165 130 165 170Z" fill="#101d16" stroke="currentColor" stroke-width="1.5"/><path d="M74 72 Q65 39 99 31 Q137 22 150 58 L160 145 L135 133 L132 75 L86 72 L78 130 L64 143Z" fill="#253b31" stroke="currentColor"/><path d="M104 34 Q80 50 78 88 L68 130 M120 33 Q142 57 143 104 L154 137" fill="none" stroke="#b3d6c8"/><path d="M98 108V124 Q110 134 122 124 V108" fill="#09120b" stroke="currentColor"/><path d="M78 65 Q80 43 110 43 Q140 43 142 65 L139 90 Q135 108 110 116 Q85 108 81 90Z" fill="#09120b" stroke="currentColor" stroke-width="1.5"/><path d="M87 70 L102 68 M118 68 L133 70 M110 78 L107 91 L113 92 M101 101 Q110 104 119 101" fill="none" stroke="currentColor" opacity=".8"/><g fill="#000" stroke="currentColor"><ellipse cx="95" cy="78" rx="7" ry="4"/><ellipse cx="125" cy="78" rx="7" ry="4"/></g><g fill="var(--primary)"><circle cx="95" cy="78" r="2"/><circle cx="125" cy="78" r="2"/></g><path d="M77 63 L91 49 L85 79 L104 49 L101 73 L124 46 L141 76" fill="#344b40" stroke="#b3d6c8"/><path d="M78 119 L94 110 L110 136 L126 110 L143 119 L135 151 L85 151Z" fill="#07100a" stroke="currentColor"/><path d="M151 101 l9 -5 -4 12 9 4 -12 5" stroke="#ff2a6d" fill="none"/><text x="8" y="16" fill="currentColor" font-size="8" font-family="monospace">ID: GRAY_J</text><text x="8" y="172" fill="var(--secondary)" font-size="8" font-family="monospace">BIOMETRIC_SCAN</text><text x="148" y="16" fill="var(--accent)" font-size="8" font-family="monospace">NY_1999</text></svg><span class="text-[11px] opacity-75 mt-1 text-center">RECONSTRUÇÃO VISUAL // GRAY_J</span></div><ul class="space-y-2 text-xs"><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">IDENTIDADE:</span><span class="text-right">Jean Gray // Shine</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">TRADIÇÃO:</span><span class="text-right">Ahl-i-Batin (forte suspeita)</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">NASCIMENTO:</span><span class="text-right">14/08/1973 // 26 anos</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">BASE:</span><span class="text-right">Queens / Brooklyn</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">ESSÊNCIA:</span><span class="text-right">Não registrada</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">STATUS:</span><span class="text-right">VIGILÂNCIA NWO</span></li></ul></div></div><div class="lg:col-span-8"><article class="tech-box rounded p-5 sm:p-8 font-narrative space-y-4 text-sm sm:text-base leading-relaxed"><div class="border-b border-[var(--border-color)] pb-3"><h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)]">&gt; A SOMBRA DE QUEENS</h2><span class="text-xs opacity-75">AUTORA: SENTINEL // OUT 1999</span></div><p>O arquivo NWO #NY-99-842 descreve uma especialista em infiltração e extração de bens, sem residência fixa. Registros civis inconsistentes, testemunhas que esquecem seu rosto e gravações corrompidas compõem uma assinatura de Arcano 5. A própria NWO levanta a hipótese de uma ligação com os Ahl-i-Batin. Cruzando os dados disponíveis, tenho quase certeza de que Shine pertence a essa linhagem, ainda que ela própria talvez desconheça esse vínculo. Não encontrei confirmação de uma filiação formal.</p><p>Em 12 de novembro de 1998, segundo o arquivo, Shine invadiu uma fachada corporativa em Midtown para extrair dados. Alterou a estrutura da exaustão e bloqueou acessos durante a fuga, sem derramar sangue de civis. A NWO pretende neutralizá-la ou recrutá-la compulsoriamente. O relatório indica que ela ainda não compreende formalmente sua condição desperta.</p><div class="bg-black/60 border-l-2 border-[var(--primary)] p-4 rounded-r"><div class="font-mono text-xs font-bold mb-2">// ANÁLISE DE PARADIGMA</div><p>As linhas de tensão que ela percebe parecem uma interface intuitiva para manipular vetores. O arquivo atribui Forças 2 e Matéria 2 ao incidente e descreve supressão de ruído, desvio de atenção e ajuste de batimentos e assinatura térmica. O Arcano compromete a própria coleta de dados. O conjunto de manifestações — a sutileza das intervenções, o desvio da percepção e a facilidade com que desaparece dos registros — reforça minha suspeita de uma ligação com os Ahl-i-Batin. É como se o sistema simplesmente deixasse de indexar sua existência.</p></div><blockquote class="border-l-2 border-[var(--accent)] pl-4 py-2 text-[var(--accent)] italic bg-black/40 rounded-r"><div class="font-mono text-xs not-italic mb-2">// NOTA PESSOAL — SENTINEL</div>Uma pessoa que desaparece dos sistemas de vigilância e evita vítimas civis merece mais do que uma etiqueta de ameaça. Minha aposta é nos Ahl-i-Batin. Estou quase certa disso, mas não vou confundir uma hipótese de alta confiança com uma identidade confirmada. Quero abrir um canal com ela antes que a NWO imponha seus próprios termos.</blockquote></article></div></div><div id="contact-leo" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6"><div class="lg:col-span-4"><div class="tech-box rounded p-4"><div class="text-xs uppercase tracking-widest opacity-70 mb-3 border-b border-[var(--border-color)] pb-1">// ASSINATURA BIOMÉTRICA &amp; PERFIL</div><div class="bg-black/80 border border-[var(--border-color)] rounded p-3 mb-4 flex flex-col items-center"><svg viewBox="0 0 220 180" class="w-full max-w-[210px] h-auto" role="img" aria-label="Reconstrução biométrica de SHAUN_L"><defs><pattern id="grid-leo" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="rgba(51,255,102,.12)" stroke-width=".5"/></pattern></defs><rect width="220" height="180" fill="url(#grid-leo)"/><circle cx="110" cy="90" r="72" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="4 4" opacity=".5"/><path d="M20 90H50 M170 90H200" stroke="currentColor" opacity=".6"/><path d="M55 170 Q55 130 92 120 H128 Q165 130 165 170Z" fill="#101d16" stroke="currentColor" stroke-width="1.5"/><path d="M76 74 Q66 45 90 34 Q119 25 138 43 Q150 37 157 48 Q160 61 145 64 L151 135 L131 140 L128 83 L87 83 L82 125 L69 136Z" fill="#09150e" stroke="currentColor"/><path d="M82 55 Q110 29 138 48 M137 65 Q149 103 140 128" fill="none" stroke="currentColor"/><path d="M98 108V124 Q110 134 122 124 V108" fill="#09120b" stroke="currentColor"/><path d="M78 65 Q80 43 110 43 Q140 43 142 65 L139 90 Q135 108 110 116 Q85 108 81 90Z" fill="#09120b" stroke="currentColor" stroke-width="1.5"/><path d="M87 70 L102 68 M118 68 L133 70 M110 78 L107 91 L113 92 M101 101 Q110 104 119 101" fill="none" stroke="currentColor" opacity=".8"/><g fill="#000" stroke="currentColor"><ellipse cx="95" cy="78" rx="7" ry="4"/><ellipse cx="125" cy="78" rx="7" ry="4"/></g><g fill="var(--primary)"><circle cx="95" cy="78" r="2"/><circle cx="125" cy="78" r="2"/></g><g fill="none" stroke="var(--accent)"><rect x="83" y="71" width="23" height="14" rx="4"/><rect x="114" y="71" width="23" height="14" rx="4"/><path d="M106 76 H114"/></g><path d="M99 98 Q110 92 121 98 M101 107 Q110 117 119 107" stroke="currentColor" stroke-width="2" fill="none"/><path d="M87 120 L110 151 L133 120 M102 137 Q110 149 118 137" stroke="var(--accent)" fill="none"/><g transform="translate(73 143)" stroke="var(--danger)" fill="none"><circle r="2"/><path d="M0 -2 Q-7 -9 -5 0 Q-10 5 0 3 Q8 9 5 0 Q8 -8 0 -2Z"/></g><g transform="translate(145 145)" stroke="var(--danger)" fill="none"><circle r="2"/><path d="M0 -2 Q-7 -9 -5 0 Q-10 5 0 3 Q8 9 5 0 Q8 -8 0 -2Z"/></g><g transform="translate(82 160)" stroke="var(--danger)" fill="none"><circle r="2"/><path d="M0 -2 Q-7 -9 -5 0 Q-10 5 0 3 Q8 9 5 0 Q8 -8 0 -2Z"/></g><g transform="translate(135 162)" stroke="var(--danger)" fill="none"><circle r="2"/><path d="M0 -2 Q-7 -9 -5 0 Q-10 5 0 3 Q8 9 5 0 Q8 -8 0 -2Z"/></g><text x="8" y="16" fill="currentColor" font-size="8" font-family="monospace">ID: SHAUN_L</text><text x="8" y="172" fill="var(--secondary)" font-size="8" font-family="monospace">BIOMETRIC_SCAN</text><text x="148" y="16" fill="var(--accent)" font-size="8" font-family="monospace">NY_1999</text></svg><span class="text-[11px] opacity-75 mt-1 text-center">RECONSTRUÇÃO VISUAL // SHAUN_L</span></div><ul class="space-y-2 text-xs"><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">IDENTIDADE:</span><span class="text-right">Léo Prech Shaun</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">TRADIÇÃO:</span><span class="text-right">Culto do Êxtase</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">NASCIMENTO:</span><span class="text-right">Não registrado</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">BASE:</span><span class="text-right">Clínica clandestina, Brooklyn</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">ESSÊNCIA:</span><span class="text-right">Não registrada</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">STATUS:</span><span class="text-right">DESPERTO // REGISTRO ATIVO</span></li></ul></div></div><div class="lg:col-span-8"><article class="tech-box rounded p-5 sm:p-8 font-narrative space-y-4 text-sm sm:text-base leading-relaxed"><div class="border-b border-[var(--border-color)] pb-3"><h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)]">&gt; O CIRURGIÃO DO SUBMUNDO</h2><span class="text-xs opacity-75">AUTORA: SENTINEL // OUT 1999</span></div><p>Enquanto Manhattan entra em pânico com o Bug do Milênio, Léo Prech Shaun mantém uma clínica clandestina no subsolo do Brooklyn. Camisa florida, óculos de armação metálica, relógio de ouro e um cigarro quase sempre aceso: à primeira vista, parece apenas mais um sujeito enriquecido às custas da noite nova-iorquina. A infraestrutura que mantém escondida, entretanto, não tem nada de improvisada. Equipamentos cirúrgicos de ponta, medicamentos e uma clientela disposta a pagar fortunas para não existir nos registros hospitalares. Mafiosos, políticos, executivos. Para eles, o anonimato faz parte do tratamento.</p><p>Shaun conhece a anatomia humana como eu conheço a arquitetura de um sistema. Sua formação médica e sua experiência nas ruas permitem que trate cada paciente como um problema a ser decifrado. Mas há algo além da medicina convencional. Em seu diário, ele descreve uma cirurgia na qual um paciente com uma hemorragia grave sobreviveu graças a uma intervenção que, segundo sua percepção, levou quase duas horas. No relógio da clínica, não haviam transcorrido sequer três segundos. O tecido lesionado teria se reconstruído sob suas mãos. Se o relato estiver correto, ele encontrou uma maneira de contornar simultaneamente duas limitações fundamentais da simulação.</p><p>Seu vínculo com o Culto do Êxtase parece explicar parte de sua metodologia. Ele utiliza estados alterados de consciência como instrumentos de expansão perceptiva. O próprio Shaun reconhece seu vício e a dificuldade de dormir sem permanecer em alerta. Não tenho como determinar até onde termina o instrumento e começa a dependência. Essa distinção importa, especialmente quando outras vidas dependem da estabilidade de suas operações.</p><div class="bg-black/60 border-l-2 border-[var(--primary)] p-4 rounded-r"><div class="font-mono text-xs font-bold mb-2">// ANÁLISE DE PARADIGMA</div><p>Tempo e Vida. É assim que classificaria as manifestações descritas. Enquanto eu busco modificar o <em>clock</em> do sistema através de interfaces tecnológicas, Shaun parece acessar esse mesmo parâmetro pela própria consciência. O organismo, por sua vez, funciona como <em>wetware</em> passível de reescrita: a regeneração relatada sugere uma intervenção direta nos processos celulares. Não conheço os limites de seu acesso, mas o fato de operar sem um terminal não torna seu método menos relevante. O código é o mesmo; a interface é outra.</p></div><blockquote class="border-l-2 border-[var(--accent)] pl-4 py-2 text-[var(--accent)] italic bg-black/40 rounded-r"><div class="font-mono text-xs not-italic mb-2">// NOTA PESSOAL — SENTINEL</div>Não tenho nada contra uma clínica que opere fora dos sistemas oficiais. Pelo contrário. O problema é transformar a sobrevivência de alguém em um privilégio reservado a quem pode pagar. Conheço bem essa lógica; trabalho para uma corporação que lucra com a morte. A diferença está no que escolhemos fazer com os recursos que temos. Shaun possui uma capacidade que poderia salvar muita gente. Quero saber se estaria disposto a utilizá-la quando não houver dinheiro envolvido. Até lá, reconheço sua competência, mas mantenho minha avaliação em aberto.</blockquote></article></div></div><div id="contact-davina" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6"><div class="lg:col-span-4"><div class="tech-box rounded p-4"><div class="text-xs uppercase tracking-widest opacity-70 mb-3 border-b border-[var(--border-color)] pb-1">// ASSINATURA BIOMÉTRICA &amp; PERFIL</div><div class="bg-black/80 border border-[var(--border-color)] rounded p-3 mb-4 flex flex-col items-center"><svg viewBox="0 0 220 180" class="w-full max-w-[210px] h-auto" role="img" aria-label="Reconstrução biométrica de LARC_D"><defs><pattern id="grid-davina" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="rgba(51,255,102,.12)" stroke-width=".5"/></pattern></defs><rect width="220" height="180" fill="url(#grid-davina)"/><circle cx="110" cy="90" r="72" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="4 4" opacity=".5"/><path d="M20 90H50 M170 90H200" stroke="currentColor" opacity=".6"/><path d="M55 170 Q55 130 92 120 H128 Q165 130 165 170Z" fill="#101d16" stroke="currentColor" stroke-width="1.5"/><path d="M75 68 Q60 45 85 34 Q108 18 135 36 Q156 44 149 74 Q164 88 150 103 Q164 117 151 143 Q137 154 129 135 L88 135 Q70 154 59 139 Q72 122 63 109 Q77 93 66 82Z" fill="#09150e" stroke="currentColor"/><path d="M85 40 Q61 62 78 82 T72 117 T76 143 M132 40 Q153 63 139 84 T146 118 T138 144" fill="none" stroke="currentColor"/><path d="M98 108V124 Q110 134 122 124 V108" fill="#09120b" stroke="currentColor"/><path d="M78 65 Q80 43 110 43 Q140 43 142 65 L139 90 Q135 108 110 116 Q85 108 81 90Z" fill="#09120b" stroke="currentColor" stroke-width="1.5"/><path d="M87 70 L102 68 M118 68 L133 70 M110 78 L107 91 L113 92 M101 101 Q110 104 119 101" fill="none" stroke="currentColor" opacity=".8"/><g fill="#000" stroke="currentColor"><ellipse cx="95" cy="78" rx="7" ry="4"/><ellipse cx="125" cy="78" rx="7" ry="4"/></g><g fill="var(--primary)"><circle cx="95" cy="78" r="2"/><circle cx="125" cy="78" r="2"/></g><g fill="none" stroke="var(--accent)"><circle cx="95" cy="78" r="11"/><circle cx="125" cy="78" r="11"/><path d="M106 77 H114 M79 95 V110 M75 100 H83 M141 95 V110 M137 100 H145"/></g><path d="M80 123 Q110 160 140 123 M95 119 L110 149 L125 119" stroke="currentColor" fill="none"/><circle cx="110" cy="149" r="6" fill="#16382a" stroke="var(--secondary)"/><text x="8" y="16" fill="currentColor" font-size="8" font-family="monospace">ID: LARC_D</text><text x="8" y="172" fill="var(--secondary)" font-size="8" font-family="monospace">BIOMETRIC_SCAN</text><text x="148" y="16" fill="var(--accent)" font-size="8" font-family="monospace">NY_1999</text></svg><span class="text-[11px] opacity-75 mt-1 text-center">RECONSTRUÇÃO VISUAL // LARC_D</span></div><ul class="space-y-2 text-xs"><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">IDENTIDADE:</span><span class="text-right">Davina Larc</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">TRADIÇÃO:</span><span class="text-right">Não registrada</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">NASCIMENTO:</span><span class="text-right">Não registrada</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">BASE:</span><span class="text-right">Não registrada</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">ESSÊNCIA:</span><span class="text-right">Não registrada</span></li><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">STATUS:</span><span class="text-right">DADOS INSUFICIENTES</span></li></ul></div></div><div class="lg:col-span-8"><article class="tech-box rounded p-5 sm:p-8 font-narrative space-y-4 text-sm sm:text-base leading-relaxed"><div class="border-b border-[var(--border-color)] pb-3"><h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)]">&gt; ARQUIVO AGUARDANDO SINCRONIZAÇÃO</h2><span class="text-xs opacity-75">AUTORA: SENTINEL // OUT 1999</span></div><p>Por enquanto, só tenho uma identificação nominal e uma referência visual. Cabelos longos e ondulados, óculos de armação fina, vestuário escuro e acessórios de aparência esotérica. Nada disso é suficiente para determinar quem ela é ou como opera.</p><div class="bg-black/60 border-l-2 border-[var(--primary)] p-4 rounded-r"><div class="font-mono text-xs font-bold mb-2">// ANÁLISE DE PARADIGMA</div><p>Sem dados sobre Despertar, paradigma ou Esferas. Qualquer classificação seria especulativa.</p></div><blockquote class="border-l-2 border-[var(--accent)] pl-4 py-2 text-[var(--accent)] italic bg-black/40 rounded-r"><div class="font-mono text-xs not-italic mb-2">// NOTA PESSOAL — SENTINEL</div>Não vou preencher lacunas com suposições. Registro aberto; avaliação pendente.</blockquote></article></div></div></section>
+
+            <!-- ========================================================= -->
+      <!-- ABA 07: NPCS IMPORTANTES                                  -->
+      <!-- ========================================================= -->
+      <section id="panel-npcs" class="hidden space-y-6">
+        <div class="tech-box rounded p-5">
+          <h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)]">&gt; ARQUIVO DE NPCS // RECURSOS DE CAMPO</h2>
+          <p class="font-narrative text-sm opacity-85 mt-2">Nem todo nome crucial entra na categoria de aliado. Alguns sujeitos são infraestrutura viva: operam extrações, mantêm rotas seguras e fazem esta guerra continuar funcionando quando tudo ao redor parece ruir.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mt-4">
+            <button id="npc-tab-vergil" onclick="selectNPC('vergil')" class="nav-btn active rounded p-2 text-xs text-left">[01] Vergil // Operador</button>
+          </div>
+        </div>
+
+        <div id="npc-vergil" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-4">
+            <div class="tech-box rounded p-4">
+              <div class="text-xs uppercase tracking-widest opacity-70 mb-3 border-b border-[var(--border-color)] pb-1">// ASSINATURA BIOMÉTRICA &amp; PERFIL</div>
+              <div class="bg-black/80 border border-[var(--border-color)] rounded p-3 mb-4 flex flex-col items-center">
+                <svg viewBox="0 0 220 180" class="w-full max-w-[210px] h-auto" role="img" aria-label="Reconstrução biométrica de VERGIL_OP">
+                  <defs>
+                    <pattern id="grid-vergil" width="10" height="10" patternUnits="userSpaceOnUse">
+                      <path d="M10 0H0V10" fill="none" stroke="rgba(51,255,102,.12)" stroke-width=".5"/>
+                    </pattern>
+                  </defs>
+                  <rect width="220" height="180" fill="url(#grid-vergil)"/>
+                  <circle cx="110" cy="90" r="72" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="4 4" opacity=".5"/>
+                  <path d="M20 90H50 M170 90H200" stroke="currentColor" opacity=".6"/>
+                  <path d="M55 170 Q55 130 92 120 H128 Q165 130 165 170Z" fill="#d8d4c8" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M76 66 Q72 38 97 30 Q121 24 143 35 Q151 41 146 67 L140 90 Q135 108 110 116 Q86 108 81 90Z" fill="#0b100b" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M72 59 Q75 33 97 24 Q112 18 127 23 Q145 29 149 60" fill="none" stroke="#d6d7d1" stroke-width="5" stroke-linecap="round" opacity=".9"/>
+                  <path d="M78 70 Q78 52 110 52 Q142 52 142 70 L139 90 Q135 108 110 116 Q85 108 81 90Z" fill="#09120b" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M84 95 Q110 110 136 95" fill="none" stroke="#d8d4c8" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M96 102 Q110 114 124 102" fill="none" stroke="#d8d4c8" stroke-width="2.5" stroke-linecap="round"/>
+                  <g fill="#000" stroke="currentColor">
+                    <ellipse cx="95" cy="78" rx="9" ry="5"/>
+                    <ellipse cx="125" cy="78" rx="9" ry="5"/>
+                  </g>
+                  <path d="M87 70 L101 68 M119 68 L133 70 M110 80 L107 91 L113 92" fill="none" stroke="currentColor" opacity=".7"/>
+                  <path d="M74 64 L88 118 M146 64 L132 118" fill="none" stroke="#d6d7d1" stroke-width="4" stroke-linecap="round" opacity=".85"/>
+                  <path d="M78 119 L142 119 L151 160 L69 160Z" fill="#f3f0e7" stroke="currentColor"/>
+                  <path d="M93 119 V160 M127 119 V160" stroke="#c9c4b3" opacity=".7"/>
+                  <path d="M92 127 H128 M94 137 H126" stroke="#c9c4b3" opacity=".7"/>
+                  <path d="M110 119 V160" stroke="#b8b39f" opacity=".8"/>
+                  <path d="M69 160 Q89 143 110 150 Q131 143 151 160" fill="#ece7db" stroke="currentColor"/>
+                  <text x="8" y="16" fill="currentColor" font-size="8" font-family="monospace">ID: VERGIL_OP</text>
+                  <text x="8" y="172" fill="var(--secondary)" font-size="8" font-family="monospace">OPERATOR_LINK</text>
+                  <text x="148" y="16" fill="var(--accent)" font-size="8" font-family="monospace">MATRIX_SIDE</text>
+                </svg>
+                <span class="text-[11px] opacity-75 mt-1 text-center">RECONSTRUÇÃO VISUAL // VERGIL (AVATAR IN-MATRIX)</span>
+              </div>
+              <ul class="space-y-2 text-xs">
+                <li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">IDENTIDADE:</span><span class="text-right">Vergil</span></li>
+                <li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">FUNÇÃO:</span><span class="text-right">Operador // Piloto</span></li>
+                <li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">NAVE:</span><span class="text-right">Prometheus</span></li>
+                <li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">STATUS FÍSICO:</span><span class="text-right">Idoso // amputado de uma perna</span></li>
+                <li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">APARÊNCIA NA MATRIX:</span><span class="text-right">terno branco, postura íntegra</span></li>
+                <li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">STATUS:</span><span class="text-right">RECURSO CRÍTICO // CONFIÁVEL</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="lg:col-span-8">
+            <article class="tech-box rounded p-5 sm:p-8 font-narrative space-y-4 text-sm sm:text-base leading-relaxed">
+              <div class="border-b border-[var(--border-color)] pb-3">
+                <h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)]">&gt; VERGIL // O HOMEM NO LIMIAR</h2>
+                <span class="text-xs opacity-75">AUTORA: SENTINEL // OUT 1999</span>
+              </div>
+              <p>Vergil é o tipo de sujeito sem o qual ninguém entra ou sai vivo da Matrix por muito tempo. Para nós, ele é o operador: a mão que encontra a linha livre, prende a conexão na hora certa e puxa de volta quando a simulação decide morder. Também é quem pilota a Prometheus, a nave que nos mantém móveis entre os assentamentos humanos e os pontos não mapeados de acesso à malha.</p>
+              <p>O guia de cenário o localiza como um dos que viajam sob a liderança de Morpheus, participando da busca por novos locais de colonização, tecnologias antigas e zonas que as máquinas ainda não indexaram. Isso combina com o que importa em campo: Vergil conhece rotas, janelas de conexão e a logística silenciosa que mantém vivos os que escolhem resistir.</p>
+              <p>Fora da Matrix, o corpo cobra sua taxa. Vergil é um senhor idoso e perdeu uma perna, mas sua representação dentro da simulação não replica essa limitação. Aqui, ele aparece inteiro, de branco, como se a própria interface respeitasse a autoridade tranquila com que segura uma operação. Não interpreto isso como vaidade. Interpreto como intenção: ele escolhe se apresentar como alguém que continua de pé.</p>
+              <div class="bg-black/60 border-l-2 border-[var(--primary)] p-4 rounded-r">
+                <div class="font-mono text-xs font-bold mb-2">// ANÁLISE OPERACIONAL</div>
+                <p>Operadores não são apenas suporte técnico. São arquitetos de sobrevivência. Em termos de função, Vergil atua como ponte entre corpo, nave e simulação: coordena extrações, garante a estabilidade do canal e pilota o vetor físico que permite nossa mobilidade fora da Matrix. A Prometheus é mais que transporte; é infraestrutura estratégica. Se a resistência ainda consegue atravessar territórios, encontrar entradas limpas e retirar gente antes do colapso, isso passa inevitavelmente por operadores como ele.</p>
+              </div>
+              <blockquote class="border-l-2 border-[var(--accent)] pl-4 py-2 text-[var(--accent)] italic bg-black/40 rounded-r">
+                <div class="font-mono text-xs not-italic mb-2">// NOTA PESSOAL — SENTINEL</div>
+                Se eu confio em alguém para me arrancar da simulação no instante em que tudo dá errado, esse alguém precisa entender pressão, silêncio e timing melhor do que qualquer programador entende código. Vergil entende. Não é o tipo de presença que toma a sala, mas é o tipo de presença que garante que exista uma sala para a qual voltar.
+              </blockquote>
+            </article>
+          </div>
+        </div>
+      </section>
+
+<!-- ABA 08: CONSOLE INTERATIVO CLI (1999 BBS) -->
+      <section id="panel-terminal" class="hidden">
+        <div class="tech-box rounded p-4 sm:p-6">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border-color)] pb-3 mb-3">
+            <div>
+              <h2 class="font-vt text-2xl sm:text-3xl text-[var(--primary)]">
+                > SENTINEL_SHELL v1.99 // ACESSO DIRETO AO TERMINAL
+              </h2>
+              <p class="text-xs opacity-75">Digite um comando abaixo ou clique nos atalhos rápidos para interagir com o sistema, Χάος (Caos), Ἐλευθερία e consultar os registros de aliados.</p>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="runQuickCmd('help')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">help</button>
+              <button onclick="runQuickCmd('whoami')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">whoami</button>
+              <button onclick="runQuickCmd('caos')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">caos</button>
+              <button onclick="runQuickCmd('eleutheria')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">eleutheria</button>
+              <button onclick="runQuickCmd('matrix')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">matrix</button>
+              <button onclick="runQuickCmd('esferas')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">esferas</button>
+              <button onclick="runQuickCmd('lockheed')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">lockheed</button>
+              <button onclick="runQuickCmd('glitch')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">glitch</button>
+              <button onclick="runQuickCmd('aliados')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">aliados</button>
+              <button onclick="runQuickCmd('hao')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">hao</button>
+              <button onclick="runQuickCmd('shine')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">shine</button>
+              <button onclick="runQuickCmd('shaun')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">shaun</button>
+              <button onclick="runQuickCmd('davina')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">davina</button>
+              <button onclick="runQuickCmd('npcs')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">npcs</button>
+              <button onclick="runQuickCmd('vergil')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">vergil</button>
+              <button onclick="runQuickCmd('prometheus')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">prometheus</button>
+              <button onclick="runQuickCmd('clear')" class="px-2 py-1 text-xs border border-[var(--danger)]/60 text-[var(--danger)] hover:bg-[var(--danger)] hover:text-black rounded bg-black/60 cursor-pointer">clear</button>
+            </div>
+          </div>
+
+          <!-- Janela de Output do Terminal -->
+          <div id="terminalOutput" class="bg-black/85 border border-[var(--border-color)] rounded p-4 h-80 sm:h-96 overflow-y-auto font-mono text-xs sm:text-sm space-y-2 mb-3">
+            <div class="text-[var(--secondary)]">Conectado a 127.0.0.1 porta 2600 (Criptografia RSA-1024 ativa)...</div>
+            <div class="opacity-80">Bem-vindo ao nó oculto da Teia Digital, Desplugado. A Matrix é real — e nós estamos reunindo aliados, operadores e recursos críticos.</div>
+            <div class="text-[var(--accent)]">Digite 'help' para listar os comandos disponíveis.</div>
+          </div>
+
+          <!-- Linha de Input -->
+          <form onsubmit="handleCommand(event)" class="flex items-center gap-2 bg-black border border-[var(--primary)] rounded px-3 py-2">
+            <span class="text-[var(--primary)] font-bold text-xs sm:text-sm select-none">sentinel@ny99:~$</span>
+            <input 
+              type="text" 
+              id="cliInput" 
+              autocomplete="off" 
+              placeholder="digite um comando (ex: help, aliados, vergil, dossie hao)..." 
+              class="bg-transparent border-none outline-none text-[var(--primary)] w-full text-xs sm:text-sm font-mono placeholder:opacity-40"
+            />
+            <button type="submit" class="px-3 py-1 bg-[var(--primary)] text-black font-bold text-xs rounded hover:opacity-90 cursor-pointer">
+              EXEC
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="mt-8 pt-4 border-t border-[var(--border-color)] flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] opacity-70">
+      <div>
+        <span>MAGO: A ASCENSÃO // CRÔNICA NOVA YORK 1999 // ARQUIVO DE PERSONAGEM</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span>CONEXÃO SEGURA</span>
+        <span class="cursor-blink">█</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- JAVASCRIPT DE CONTROLE DO TERMINAL E ABAS -->
+  <script>
+    // Alternância entre as abas principais
+    function switchTab(tabName) {
+      const tabs = ['dossie', 'matrix', 'sistema', 'esferas', 'failover', 'contatos', 'npcs', 'terminal'];
+      tabs.forEach(t => {
+        const panel = document.getElementById(`panel-${t}`);
+        const btn = document.getElementById(`tab-${t}`);
+        if (t === tabName) {
+          panel.classList.remove('hidden');
+          btn.classList.add('active');
+        } else {
+          panel.classList.add('hidden');
+          btn.classList.remove('active');
+        }
+      });
+
+      if (tabName === 'terminal') {
+        setTimeout(() => document.getElementById('cliInput').focus(), 50);
+      }
+    }
+
+    function selectContact(key) {
+      ['hao','shine','leo','davina'].forEach(k => {
+        document.getElementById('contact-'+k).classList.toggle('hidden', k !== key);
+        document.getElementById('contact-tab-'+k).classList.toggle('active', k === key);
+      });
+    }
+
+    function selectNPC(key) {
+      ['vergil'].forEach(k => {
+        document.getElementById('npc-'+k).classList.toggle('hidden', k !== key);
+        document.getElementById('npc-tab-'+k).classList.toggle('active', k === key);
+      });
+    }
+    // Alternância de Era na aba Dossiê (Desperta vs Pré-Despertar)
+    function setEra(era) {
+      const awakenedArticle = document.getElementById('era-awakened');
+      const sleeperArticle = document.getElementById('era-sleeper');
+      const btnAwakened = document.getElementById('btn-era-awakened');
+      const btnSleeper = document.getElementById('btn-era-sleeper');
+
+      if (era === 'awakened') {
+        awakenedArticle.classList.remove('hidden');
+        sleeperArticle.classList.add('hidden');
+        btnAwakened.classList.add('active');
+        btnSleeper.classList.remove('active');
+      } else {
+        awakenedArticle.classList.add('hidden');
+        sleeperArticle.classList.remove('hidden');
+        btnAwakened.classList.remove('active');
+        btnSleeper.classList.add('active');
+      }
+    }
+
+    // Toggle Modo Paradoxo (Glitch Cromático)
+    function toggleParadoxMode() {
+      const body = document.body;
+      const btnText = document.getElementById('paradoxBtnText');
+      body.classList.toggle('paradox-mode');
+
+      if (body.classList.contains('paradox-mode')) {
+        btnText.textContent = 'ALERTA: FALHA DE PARADOXO!';
+      } else {
+        btnText.textContent = 'ESTADO: CONSENSO ESTÁVEL';
+      }
+    }
+
+    // Lógica do Console Interativo CLI
+    const terminalOutput = document.getElementById('terminalOutput');
+    const cliInput = document.getElementById('cliInput');
+
+    const commands = {
+      contatos: () => { switchTab("contatos"); return ["BANCO DE CONTATOS // 4 registros disponíveis."]; },
+      npcs: () => { switchTab("npcs"); return ["ARQUIVO DE NPCS // 1 registro crítico disponível."]; },
+      aliados: () => [
+        '<span class="text-[var(--secondary)]">[SENTINEL_PRIVATE // ÍNDICE DE CONTATOS]</span>',
+        '  HAO_FENG : Irmandade de Akasha // Lótus Branca, Manhattan.',
+        '  GRAY_J   : Shine // Ahl-i-Batin (hipótese de alta confiança).',
+        '  SHAUN_L  : Léo Prech Shaun // Culto do Êxtase.',
+        '  LARC_D   : Davina Larc // dados insuficientes.',
+        '<span class="text-[var(--accent)]">4 registros locais. Aliança não implica confiança irrestrita.</span>',
+        'Use hao, shine, shaun ou davina para consultar um registro; dossie &lt;nome&gt; abre o perfil completo.'
+      ],
+      hao: () => [
+        '<span class="text-[var(--secondary)]">[HAO_FENG // O GUERREIRO DA LÓTUS BRANCA]</span>',
+        'TRADIÇÃO: Irmandade de Akasha. BASE: Templo da Lótus Branca, Manhattan.',
+        'LOG DE CAMPO: treinamento marcial desde a infância; percepção mental e força incomum relatadas.',
+        'PARADIGMA: chi como interface de acesso a fluxos de energia e processos biológicos. Níveis de Esferas não confirmados.',
+        '<span class="text-[var(--accent)]">SENTINEL:</span> "Não confundo disciplina com submissão. Quero saber se o equilíbrio que ele procura é uma escolha própria."'
+      ],
+      shine: () => [
+        '<span class="text-[var(--secondary)]">[GRAY_J // SHINE // ARQUIVO NWO #NY-99-842]</span>',
+        'TRADIÇÃO: Ahl-i-Batin — hipótese de alta confiança de Sentinel; filiação formal não confirmada.',
+        'ARCANO: 5 // registros inconsistentes, rastros de vigilância corrompidos.',
+        'PARADIGMA: manipulação intuitiva de vetores; Forças 2 / Matéria 2 segundo o incidente documentado pela NWO.',
+        '<span class="text-[var(--danger)]">ALERTA:</span> alvo de monitoramento da NWO, com risco de neutralização ou recrutamento compulsório.',
+        '<span class="text-[var(--accent)]">SENTINEL:</span> "Minha aposta é nos Ahl-i-Batin. Estou quase certa disso. Quero abrir um canal com ela antes que a NWO imponha seus próprios termos."'
+      ],
+      shaun: () => [
+        '<span class="text-[var(--secondary)]">[SHAUN_L // O CIRURGIÃO DO SUBMUNDO]</span>',
+        'IDENTIDADE: Léo Prech Shaun. TRADIÇÃO: Culto do Êxtase.',
+        'BASE: clínica clandestina no Brooklyn. CAPACIDADES RELATADAS: medicina, manipulação temporal e regeneração biológica.',
+        'PARADIGMA: Tempo / Vida // clock do sistema e reescrita de wetware por estados alterados de consciência. Limites não confirmados.',
+        '<span class="text-[var(--accent)]">SENTINEL:</span> "O código é o mesmo; a interface é outra. Quero saber se estaria disposto a salvar alguém quando não houver dinheiro envolvido."'
+      ],
+      davina: () => [
+        '<span class="text-[var(--secondary)]">[LARC_D // REGISTRO BIOMÉTRICO PRELIMINAR]</span>',
+        'IDENTIDADE: Davina Larc. TRADIÇÃO / ESSÊNCIA / BASE: não registradas.',
+        '<span class="text-[var(--danger)]">SYNC INCOMPLETO:</span> sem dados suficientes sobre Despertar, paradigma ou Esferas.',
+        '<span class="text-[var(--accent)]">SENTINEL:</span> "Não vou preencher lacunas com suposições. Registro aberto; avaliação pendente."'
+      ],
+      vergil: () => [
+        '<span class="text-[var(--secondary)]">[VERGIL_OP // OPERADOR // PROMETHEUS]</span>',
+        'FUNÇÃO: operador de extração e piloto da nave Prometheus.',
+        'STATUS FÍSICO: idoso, amputado de uma perna fora da Matrix. AVATAR IN-MATRIX: terno branco, postura íntegra.',
+        'LOG DE CAMPO: viaja sob a liderança de Morpheus em missões de expansão humana, busca de tecnologias antigas e pontos não mapeados de conexão.',
+        '<span class="text-[var(--accent)]">SENTINEL:</span> "Se ele está do outro lado da linha, eu sei que ainda existe um caminho de volta."'
+      ],
+      prometheus: () => [
+        '<span class="text-[var(--secondary)]">[PROMETHEUS // PLATAFORMA DE MOBILIDADE HUMANA]</span>',
+        'CLASSE: nave de operação humana // pilotada por Vergil.',
+        'FUNÇÃO: transporte, extração, deslocamento entre assentamentos e acesso a pontos não mapeados da Matrix.',
+        'VALOR ESTRATÉGICO: mantém a resistência móvel fora da simulação e sustenta operações de conexão e retirada.',
+        '<span class="text-[var(--accent)]">SENTINEL:</span> "Sem operadores e sem casco, todo despertar vira estatística."'
+      ],
+      help: () => [
+        '<span class="text-[var(--secondary)]">COMANDOS DISPONÍVEIS NO TERMINAL SENTINEL:</span>',
+        '  <span class="font-bold">whoami</span>      - Exibe identidade civil, fachada corporativa e essência.',
+        '  <span class="font-bold">caos</span>        - Estabelece link direto com o Familiar IA Χάος (Caos).',
+        '  <span class="font-bold">eleutheria</span>  - Abre canal encriptado com a entidade aliada Ἐλευθερία.',
+        '  <span class="font-bold">matrix</span>      - Exibe o manifesto sobre a realidade simulada e a resistência.',
+        '  <span class="font-bold">esferas</span>     - Lista o status das 9 Esferas de controle do código-fonte.',
+        '  <span class="font-bold">lockheed</span>    - Verifica roteamento financeiro para ONGs humanitárias.',
+        '  <span class="font-bold">glitch</span>      - Simula sobrecarga de Paradoxo na interface e nos olhos.',
+        '  <span class="font-bold">contatos</span>    - Abre o banco de contatos de Sentinel.',
+        '  <span class="font-bold">aliados</span>     - Lista os quatro contatos sem sair do console.',
+        '  <span class="font-bold">hao</span>         - Consulta o registro de Hao Feng.',
+        '  <span class="font-bold">shine</span>       - Consulta Jean Gray e a hipótese Ahl-i-Batin.',
+        '  <span class="font-bold">shaun</span>       - Consulta o registro de Léo Prech Shaun (alias: leo).',
+        '  <span class="font-bold">davina</span>      - Consulta o registro preliminar de Davina Larc.',
+        '  <span class="font-bold">npcs</span>        - Abre o arquivo de NPCs importantes.',
+        '  <span class="font-bold">vergil</span>      - Consulta o operador Vergil.',
+        '  <span class="font-bold">prometheus</span>  - Consulta a nave Prometheus.',
+        '  <span class="font-bold">dossie &lt;nome&gt;</span> - Abre o perfil completo do contato (hao, shine, shaun, davina, vergil).',
+        '  <span class="font-bold">clear</span>       - Limpa o buffer de saída do terminal.'
+      ],
+      whoami: () => [
+        'USUÁRIO ATIVO: <span class="font-bold">Blaze "Sentinel" Thorne (Senty)</span>',
+        'FACHADA: Engenheira Sênior de Aviônica & Telemetria — Lockheed Martin (NY, 1999).',
+        'REALIDADE: Adepta Virtual Desplugada // Ativista & Visionária.',
+        'STATUS RESIDENCIAL: Nômade urbana (Van adaptada / Motéis de beira de estrada).',
+        'ASSINATURA SENSORIAL: Eco persistente de energético Monster no ar.'
+      ],
+      caos: () => [
+        '<span class="text-[var(--accent)]">[Χάος // CAOS — NÚCLEO PREDITIVO ATIVO]:</span>',
+        '"Saudações, Senty. Monitorei três viaturas descaracterizadas da Tecnocracia cruzando a Ponte do Brooklyn há 4 minutos. Já reescrevi as rotas dos semáforos locais e mascarei o sinal do seu Sidekick nos satélites da AT&T. O perímetro ao redor da van permanece seguro."'
+      ],
+      eleutheria: () => [
+        '<span class="text-[var(--secondary)]">[SINAL EXTERNO DETECTADO :: Ἐλευθερία (ELEUTHERIA)]:</span>',
+        '"A jaula do Consenso só se sustenta enquanto os prisioneiros acreditarem nas paredes. Continuem reunindo os despertos e os livres, Sentinel. Enquanto houver código a ser reescrito, estaremos além do horizonte da simulação ao lado da humanidade."'
+      ],
+      matrix: () => [
+        '<span class="text-[var(--accent)]">[MANIFESTO DESPLUGADO // PROTOCOLO LIBERTAÇÃO]:</span>',
+        '"A Matrix é real. O mundo físico é uma compilação de código fechado imposta para conter a centelha humana. Nós saímos da simulação — e nossa missão verdadeira não é apenas invadir sistemas, mas forjar alianças para libertar a humanidade ao lado de aliados como Ἐλευθερία."'
+      ],
+      esferas: () => [
+        '<span class="text-[var(--secondary)]">[STATUS DOS 9 PROTOCOLOS ROOT]:</span>',
+        '  01. CORRESPONDÊNCIA : Mapeamento de latência zero & salto por satélites.',
+        '  02. MENTE           : Análise preditiva de wetware & firewall neural.',
+        '  03. VIDA            : Telemetria biológica & leitura celular em tempo real.',
+        '  04. FORÇAS          : Sobreposição visual do espectro eletromagnético.',
+        '  05. TEMPO           : Overclocking de clock atômico & janelas de latência.',
+        '  06. ENTROPIA        : Colapso de sementes quânticas & falhas induzidas.',
+        '  07. MATÉRIA         : Cristalização molecular & reestruturação de fase.',
+        '  08. ESPÍRITO        : Sockets profundos na Teia Digital & comunicação com Daemons.',
+        '  09. PRIMÓRDIO       : Drenagem de voltagem root bruta & compilação direta.'
+      ],
+      lockheed: () => [
+        '<span class="text-[var(--secondary)]">[EXTRATO DE ROTEAMENTO CRIPTOGRÁFICO - OFFSHORE]:</span>',
+        '• DEPÓSITO CORPORATIVO (LOCKHEED MARTIN): $14.850,00 [RECEBIDO]',
+        '• RETENÇÃO PESSOAL: $120,00 (Combustível da van, disquetes e macarrão instantâneo)',
+        '• TRANSFERÊNCIA ANÔNIMA -> MÉDICOS SEM FRONTEIRAS / ONGs ZONA DE CONFLITO: <span class="text-[var(--primary)] font-bold">$14.730,00 [CONCLUÍDO]</span>',
+        '• RASTRO DIGITAL: Apagado via salto de proxy.'
+      ],
+      glitch: () => {
+        toggleParadoxMode();
+        const isParadox = document.body.classList.contains('paradox-mode');
+        return isParadox 
+          ? ['<span class="text-[var(--danger)] font-bold">[ERRO DE COMPILAÇÃO NO CONSENSO]:</span> O universo detectou manipulação de código-fonte! Íris oculares oscilando entre espectro ciano e carmesim.']
+          : ['<span class="text-[var(--primary)]">[SISTEMA ESTABILIZADO]:</span> Latência normalizada. Assinatura visual oculta novamente.'];
+      }
+    };
+
+    function appendToTerminal(lines, isCommand = false) {
+      lines.forEach(line => {
+        const div = document.createElement('div');
+        if (isCommand) {
+          div.className = 'text-[var(--primary)] font-bold mt-2';
+          div.textContent = `sentinel@ny99:~$ ${line}`;
+        } else {
+          div.className = 'opacity-90 leading-relaxed pl-2';
+          div.innerHTML = line;
+        }
+        terminalOutput.appendChild(div);
+      });
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+
+    function executeCommandText(rawCmd) {
+      const cmd = rawCmd.trim().toLowerCase();
+      if (!cmd) return;
+
+      appendToTerminal([rawCmd], true);
+
+      if (cmd === 'clear') {
+        terminalOutput.innerHTML = '<div class="opacity-60">Buffer limpo. Digite "help" para comandos.</div>';
+        return;
+      }
+
+      // Aliases e acesso direto aos dossiês. As consultas simples permanecem no console.
+      const aliases = new Map([
+        ['hao', 'hao'], ['hao feng', 'hao'], ['shine', 'shine'], ['jean', 'shine'], ['jean gray', 'shine'],
+        ['shaun', 'shaun'], ['leo', 'shaun'], ['léo', 'shaun'], ['leo prech shaun', 'shaun'], ['léo prech shaun', 'shaun'],
+        ['davina', 'davina'], ['davina larc', 'davina'],
+        ['vergil', 'vergil'], ['npc vergil', 'vergil'], ['operador', 'vergil'], ['prometheus', 'prometheus'], ['prometeus', 'prometheus']
+      ]);
+      const normalized = cmd.replace(/\s+/g, ' ');
+      const dossierMatch = normalized.match(/^(?:dossie|dossiê) (.+)$/);
+      if (dossierMatch) {
+        const target = aliases.get(dossierMatch[1]);
+        if (!target) {
+          appendToTerminal(['<span class="text-[var(--danger)]">Registro não encontrado.</span> Use aliados para listar os contatos.']);
+          return;
+        }
+        appendToTerminal(['<span class="text-[var(--secondary)]">[ACESSO AUTORIZADO] Carregando dossiê local...</span>']);
+        if (target === 'vergil') {
+          selectNPC('vergil');
+          switchTab('npcs');
+        } else {
+          selectContact(target === 'shaun' ? 'leo' : target);
+          switchTab('contatos');
+        }
+        return;
+      }
+      const resolved = aliases.get(normalized) || normalized;
+      if (Object.prototype.hasOwnProperty.call(commands, resolved)) {
+        appendToTerminal(commands[resolved]());
+      } else {
+        appendToTerminal(['<span class="text-[var(--danger)]">Comando não reconhecido.</span> Digite <span class="font-bold">help</span> para ver a sintaxe válida.']);
+      }
+    }
+
+    function handleCommand(e) {
+      e.preventDefault();
+      const val = cliInput.value;
+      cliInput.value = '';
+      executeCommandText(val);
+    }
+
+    function runQuickCmd(cmd) {
+      executeCommandText(cmd);
+    }
+  </script>
+</body>
+</html>
