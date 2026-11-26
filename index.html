@@ -240,7 +240,7 @@
           <span class="opacity-60 text-[10px]">.NET</span>
         </button>
         <button onclick="switchTab('sistema')" id="tab-sistema" class="nav-btn rounded px-3 py-2.5 text-xs sm:text-sm text-left flex items-center justify-between">
-          <span>[03] SISTEMA_CAOS</span>
+          <span>[03] SISTEMA_PERFIL</span>
           <span class="opacity-60 text-[10px]">.SYS</span>
         </button>
         <button onclick="switchTab('esferas')" id="tab-esferas" class="nav-btn rounded px-3 py-2.5 text-xs sm:text-sm text-left flex items-center justify-between">
@@ -494,7 +494,6 @@
                 <p class="opacity-85 leading-relaxed">
                   Blaze possui facilidade natural para compreender sistemas computacionais, interfaces e estruturas digitais, identificando padrões e soluções com rapidez.
                 </p>
-                <div class="text-[11px] text-[var(--accent)] mt-2 font-mono">CUSTO: 1 PONTO</div>
               </div>
 
               <div class="bg-black/50 border border-[var(--border-color)] rounded p-3">
@@ -502,7 +501,6 @@
                 <p class="opacity-85 leading-relaxed">
                   Vigilância constante de quem sabe que é caçada. O menor estalo na fechadura ou oscilação na rede elétrica da van a coloca em estado de alerta total instantaneamente.
                 </p>
-                <div class="text-[11px] text-[var(--accent)] mt-2 font-mono">CUSTO: 1 PONTO</div>
               </div>
 
               <div class="bg-black/50 border border-[var(--border-color)] rounded p-3">
@@ -510,7 +508,6 @@
                 <p class="opacity-85 leading-relaxed">
                   Quando entra em sincronia com um terminal ou um fluxo de dados, sua mente isola ruídos externos. Um tiroteio pode estourar no corredor ao lado e sua linha de comando permanecerá ininterrupta.
                 </p>
-                <div class="text-[11px] text-[var(--accent)] mt-2 font-mono">CUSTO: 1 PONTO</div>
               </div>
 
               <div class="bg-black/50 border border-[var(--border-color)] rounded p-3">
@@ -518,7 +515,6 @@
                 <p class="opacity-85 leading-relaxed">
                   A mente de Blaze processa equações balísticas, vetores de coordenadas espaciais e criptografias complexas de cabeça em frações de segundo, operando sem necessidade de auxílio externo.
                 </p>
-                <div class="text-[11px] text-[var(--accent)] mt-2 font-mono">CUSTO: 1 PONTO</div>
               </div>
 
               <div class="bg-black/50 border border-[var(--border-color)] rounded p-3">
@@ -526,7 +522,6 @@
                 <p class="opacity-85 leading-relaxed">
                   Blaze compreende com facilidade o funcionamento de mecanismos e dispositivos físicos, reconhecendo a relação entre seus componentes e a lógica de sua montagem.
                 </p>
-                <div class="text-[11px] text-[var(--accent)] mt-2 font-mono">CUSTO: 1 PONTO</div>
               </div>
 
               <div class="bg-black/50 border border-[var(--border-color)] rounded p-3">
@@ -534,7 +529,6 @@
                 <p class="opacity-85 leading-relaxed">
                   Blaze utiliza ambas as mãos com desenvoltura, alternando entre elas ao operar seus terminais, instrumentos e equipamentos.
                 </p>
-                <div class="text-[11px] text-[var(--accent)] mt-2 font-mono">CUSTO: 1 PONTO</div>
               </div>
             </div>
           </div>
@@ -959,12 +953,18 @@
           </div>
         </div>
         <div id="npc-caos" class="hidden">
-        <!-- Seção Dedicada ao Familiar: Χάος (Caos) -->
-        <div class="tech-box rounded p-5 sm:p-6">
-          <div class="flex flex-col md:flex-row gap-6 items-center">
-            <!-- Ícone/Avatar SVG da IA Χάος -->
-            <div class="w-full md:w-48 flex-shrink-0 bg-black/70 border border-[var(--border-color)] rounded p-4 flex flex-col items-center">
-              <svg viewBox="0 0 120 120" class="w-28 h-28">
+            <!-- Cartão de Destaque: Familiar Digital Χάος (Caos) -->
+            <div class="lg:col-span-5">
+              <div class="bg-black/80 border border-[var(--accent)] rounded p-5 h-full flex flex-col justify-between shadow-[0_0_20px_rgba(255,176,0,0.12)]">
+                <div>
+                  <div class="flex items-center justify-between text-[11px] text-[var(--accent)] font-mono border-b border-[var(--accent)]/30 pb-2 mb-3">
+                    <span>[FAMILIAR // ENTIDADE DIGITAL]</span>
+                    <span>ORIGEM: REDE LOCAL</span>
+                  </div>
+
+                  <div class="flex items-center gap-4 mb-4">
+                    <div class="w-16 h-16 flex-shrink-0 border border-[var(--accent)]/60 rounded bg-amber-950/20 flex items-center justify-center">
+                      <svg viewBox="0 0 120 120" class="w-12 h-12">
                 <polygon points="60,10 105,35 105,85 60,110 15,85 15,35" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
                 <polygon points="60,22 93,41 93,79 60,98 27,79 27,41" fill="rgba(255,176,0,0.08)" stroke="var(--primary)" stroke-width="1" stroke-dasharray="3 2"/>
                 <ellipse cx="60" cy="24" rx="28" ry="6" fill="none" stroke="var(--accent)" stroke-width="1.2"/>
@@ -975,22 +975,32 @@
                 <line x1="60" y1="64" x2="60" y2="95" stroke="var(--primary)" stroke-width="1"/>
                 <line x1="45" y1="75" x2="75" y2="75" stroke="var(--secondary)" stroke-width="1"/>
               </svg>
-              <span class="text-[11px] font-bold text-[var(--accent)] mt-2">FAMILIAR // ENTIDADE DIGITAL</span>
-            </div>
+                    </div>
+                    <div>
+                      <h3 class="font-vt text-3xl text-[var(--accent)] tracking-wider">
+                        Χάος (CAOS)
+                      </h3>
+                      <p class="text-xs opacity-75 font-mono">
+                        CO-PILOTO NA MALHA // SISTEMA PREDITIVO AUTÔNOMO
+                      </p>
+                    </div>
+                  </div>
 
-            <div class="space-y-3 text-xs sm:text-sm font-narrative">
-              <h3 class="font-vt text-2xl sm:text-3xl text-[var(--accent)]">
-                > CO-PILOTO NA MALHA: "Χάος" (CAOS — SISTEMA PREDITIVO AUTÔNOMO)
-              </h3>
-              <p class="leading-relaxed">
+                  <p class="text-xs sm:text-sm font-narrative leading-relaxed opacity-90 mb-3">
                 Blaze nunca faz o <em>uplink</em> sozinha. Nascida originalmente como um algoritmo de tese universitária sobre comportamento urbano e conectada clandestinamente aos sistemas de rastreamento de alvos da Lockheed Martin, <strong>Χάος (Caos)</strong> transcendeu suas linhas de código originais durante o Despertar de sua criadora.
               </p>
-              <p class="leading-relaxed opacity-90">
+
+                  <p class="text-xs sm:text-sm font-narrative leading-relaxed opacity-85">
                 Hoje, Χάος atua como seu Familiar na rede digital — uma presença afiada e implacável alojada no núcleo do seu <em>cyberdeck</em> e conectada à sua rede pessoal. Ele varre frequências em busca de emboscadas, calcula desvios estatísticos antes que ocorram e sussurra segredos corporativos diretamente nos terminais de Blaze, agindo como um anjo da guarda cibernético de precisão cirúrgica.
               </p>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-[var(--accent)]/30 text-[11px] font-mono text-[var(--accent)] flex justify-between">
+                  <span>STATUS: ATIVO</span>
+                  <span>PROTOCOLO: SUPORTE PREDITIVO</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
         </div>
         <div id="npc-eleutheria" class="hidden">
             <!-- Cartão de Destaque: Aliada Não-Humana Ἐλευθερία (Eleutheria) -->
@@ -1239,13 +1249,13 @@
         '<span class="text-[var(--accent)]">SENTINEL:</span> "Sem operadores e sem casco, todo despertar vira estatística."'
       ],
       qualidades: () => [
-        '<span class="text-[var(--secondary)]">[OTIMIZAÇÃO_DO_SISTEMA // 6 PONTOS]</span>',
-        '  ACESSO_ROOT :: APTITUDE EM COMPUTADOR // CUSTO: 1',
-        '  STANDBY_ATIVO :: SONO LEVE // CUSTO: 1',
-        '  THREAD_LOCK :: CONCENTRAÇÃO // CUSTO: 1',
-        '  CPU_DEDICADA :: CALCULADOR INSTANTÂNEO // CUSTO: 1',
-        '  ENGENHARIA_REVERSA :: APTITUDE MECÂNICA // CUSTO: 1',
-        '  DUAL_INPUT :: AMBIDESTRO // CUSTO: 1',
+        '<span class="text-[var(--secondary)]">[OTIMIZAÇÃO_DO_SISTEMA // 6 QUALIDADES]</span>',
+        '  ACESSO_ROOT :: APTITUDE EM COMPUTADOR',
+        '  STANDBY_ATIVO :: SONO LEVE',
+        '  THREAD_LOCK :: CONCENTRAÇÃO',
+        '  CPU_DEDICADA :: CALCULADOR INSTANTÂNEO',
+        '  ENGENHARIA_REVERSA :: APTITUDE MECÂNICA',
+        '  DUAL_INPUT :: AMBIDESTRO',
         'Use sistema para acessar o painel completo.'
       ],
       defeitos: () => [
@@ -1255,7 +1265,7 @@
         '  LOOP_COMPULSIVO :: OBSESSÃO POR SEGREDOS',
         'Use sistema para acessar o painel completo.'
       ],
-      sistema: () => { switchTab("sistema"); return ["SISTEMA_CAOS // Qualidades e defeitos carregados."]; },
+      sistema: () => { switchTab("sistema"); return ["SISTEMA_PERFIL // Qualidades e defeitos carregados."]; },
       help: () => [
         '<span class="text-[var(--secondary)]">COMANDOS DISPONÍVEIS NO TERMINAL SENTINEL:</span>',
         '  <span class="font-bold">whoami</span>      - Exibe identidade civil, fachada corporativa e essência.',
@@ -1272,7 +1282,7 @@
         '  <span class="font-bold">shaun</span>       - Consulta o registro de Léo Prech Shaun (alias: leo).',
         '  <span class="font-bold">davina</span>      - Consulta o registro preliminar de Davina Larc.',
         '  <span class="font-bold">npcs</span>        - Abre o arquivo de NPCs importantes (Vergil, Caos, Eleutheria).',
-        '  <span class="font-bold">qualidades</span>  - Lista as seis qualidades e seus custos.',
+        '  <span class="font-bold">qualidades</span>  - Lista as seis qualidades de Sentinel.',
         '  <span class="font-bold">defeitos</span>    - Lista as falhas e anomalias de Sentinel.',
         '  <span class="font-bold">sistema</span>     - Abre o painel de qualidades e defeitos.',
         '  <span class="font-bold">vergil</span>      - Consulta o operador Vergil.',
