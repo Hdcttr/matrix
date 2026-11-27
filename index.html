@@ -268,7 +268,7 @@
             :: TERMINAL OVERRIDE // SENTINEL ::
           </h1>
           <p class="text-xs sm:text-sm mt-1 opacity-90">
-            SUJEITO: <span class="font-bold">BLAZE "SENTINEL" THORNE</span> &nbsp;|&nbsp; TRADIÇÃO: <span class="text-[var(--secondary)]">ADEPTOS VIRTUAIS</span> &nbsp;|&nbsp; ESSÊNCIA: <span class="text-[var(--accent)]">INVESTIGADORA</span>
+            SUJEITO: <span class="font-bold">BLAZE "SENTINEL" THORNE</span> &nbsp;|&nbsp; TRADIÇÃO: <span class="text-[var(--secondary)]">ADEPTOS VIRTUAIS</span> <span style="display:inline-block;white-space:nowrap">&nbsp;|&nbsp; ESSÊNCIA: <span class="text-[var(--accent)]">INVESTIGADORA</span></span>
           </p>
         </div>
 
@@ -939,8 +939,9 @@
           <p class="font-narrative text-sm opacity-85 mt-2">Nem todo nome crucial entra na categoria de aliado. Alguns sujeitos são infraestrutura viva: operam extrações, mantêm rotas seguras e fazem esta guerra continuar funcionando quando tudo ao redor parece ruir.</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mt-4">
             <button id="npc-tab-vergil" onclick="selectNPC('vergil')" class="nav-btn active rounded p-2 text-xs text-left">[01] Vergil // Operador</button>
-            <button id="npc-tab-caos" onclick="selectNPC('caos')" class="nav-btn rounded p-2 text-xs text-left">[02] Χάος // Familiar</button>
-            <button id="npc-tab-eleutheria" onclick="selectNPC('eleutheria')" class="nav-btn rounded p-2 text-xs text-left">[03] Ἐλευθερία // Entidade externa</button>
+            <button id="npc-tab-dante" onclick="selectNPC('dante')" class="nav-btn rounded p-2 text-xs text-left">[02] Dante // Operador de Máquinas</button>
+            <button id="npc-tab-caos" onclick="selectNPC('caos')" class="nav-btn rounded p-2 text-xs text-left">[03] Χάος // Familiar</button>
+            <button id="npc-tab-eleutheria" onclick="selectNPC('eleutheria')" class="nav-btn rounded p-2 text-xs text-left">[04] Ἐλευθερία // Entidade externa</button>
           </div>
         </div>
 
@@ -1008,6 +1009,49 @@
                 <div class="font-mono text-xs not-italic mb-2">// NOTA PESSOAL — SENTINEL</div>
                 Se eu confio em alguém para me arrancar da simulação no instante em que tudo dá errado, esse alguém precisa entender pressão, silêncio e timing melhor do que qualquer programador entende código. Vergil entende. Não é o tipo de presença que toma a sala, mas é o tipo de presença que garante que exista uma sala para a qual voltar.
               </blockquote>
+            </article>
+          </div>
+        </div>
+        <div id="npc-dante" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-4"><div class="tech-box rounded p-4">
+            <div class="text-xs uppercase tracking-widest opacity-70 mb-3 border-b border-[var(--border-color)] pb-1">// ASSINATURA BIOMÉTRICA &amp; PERFIL</div>
+            <div class="bg-black/80 border border-[var(--border-color)] rounded p-3 mb-4 flex flex-col items-center">
+              <svg viewBox="0 0 220 180" class="w-full max-w-[210px] h-auto" role="img" aria-label="Reconstrução biométrica de Dante: jovem ruivo com sardas, gorro e roupas gastas">
+<defs><pattern id="grid-dante" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M10 0H0V10" fill="none" stroke="rgba(51,255,102,.12)" stroke-width=".5"/></pattern><pattern id="knit-dante" width="6" height="9" patternUnits="userSpaceOnUse"><path d="M1 1L3 4 5 1M1 5L3 8 5 5" fill="none" stroke="currentColor" stroke-width=".6" opacity=".36"/></pattern></defs>
+<rect width="220" height="180" fill="url(#grid-dante)"/><circle cx="110" cy="90" r="72" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="4 4" opacity=".5"/><path d="M20 90H50 M170 90H200" stroke="currentColor" opacity=".6"/>
+<path d="M57 160L54 133Q56 114 77 113L90 123M140 123Q165 108 170 131L170 160" fill="#302c20" stroke="var(--accent)" opacity=".8"/>
+<path d="M55 170Q55 138 78 126L93 119H127L145 126Q165 138 165 170Z" fill="#25312a" stroke="currentColor" stroke-width="1.5"/>
+<path d="M79 126Q69 110 94 110L110 127 126 110Q150 110 141 126L129 147 110 136 91 147Z" fill="#131e17" stroke="currentColor"/><path d="M91 137L110 149 129 137 135 170H85Z" fill="#3b3e35" stroke="currentColor" stroke-width=".8"/>
+<path d="M74 129L86 131 78 170H66ZM146 129L134 131 142 170H154Z" fill="#423b28" stroke="var(--accent)" stroke-width=".9"/><path d="M70 149H80M140 149H150M70 154H80M140 154H150" stroke="var(--accent)" opacity=".7"/>
+<path d="M91 157l8 3 -5 4m27 -6l8 -3 -2 7m-20 2l6 3" fill="none" stroke="currentColor" stroke-width=".7" opacity=".7"/>
+<path d="M99 105V121Q110 132 121 121V105" fill="#09120b" stroke="currentColor"/>
+<path d="M78 63Q68 40 99 36Q137 27 147 61L143 96 134 108 128 96 92 104 81 110 85 95 74 88 81 80 72 75Z" fill="#44201a" stroke="#b86743" stroke-width="1.2"/>
+<path d="M82 66Q82 47 110 47Q138 47 138 66L137 90Q133 107 110 114Q87 107 83 90Z" fill="#10170f" stroke="currentColor" stroke-width="1.4"/>
+<path d="M82 79Q73 75 76 85Q78 92 84 91M138 79Q147 75 144 85Q142 92 136 91" fill="#10170f" stroke="currentColor"/>
+<path d="M88 72Q95 68 103 71M117 71Q125 68 132 72" fill="none" stroke="#b86743" stroke-width="1.5"/>
+<g fill="#020503" stroke="currentColor"><ellipse cx="95" cy="79" rx="7.5" ry="4.7"/><ellipse cx="125" cy="79" rx="7.5" ry="4.7"/></g><g fill="var(--primary)"><circle cx="97" cy="79" r="2.4"/><circle cx="127" cy="79" r="2.4"/></g>
+<path d="M110 82L107 92 113 92M102 101Q110 98 118 101" fill="none" stroke="currentColor" stroke-width=".9" opacity=".85"/>
+<g fill="var(--accent)" opacity=".8"><circle cx="87" cy="88" r="1"/><circle cx="92" cy="90" r="1"/><circle cx="98" cy="87" r="1"/><circle cx="101" cy="91" r="1"/><circle cx="119" cy="89" r="1"/><circle cx="124" cy="87" r="1"/><circle cx="129" cy="91" r="1"/><circle cx="134" cy="87" r="1"/></g>
+<path d="M78 60Q104 39 139 50L147 67 140 64 135 76 128 60 119 74 115 59 104 70 102 58 91 76 87 63 78 75Z" fill="#4a241a" stroke="#b86743" stroke-width="1.1"/><path d="M90 59L98 52 95 65M115 50L123 59M133 52L139 61" fill="none" stroke="#cf8057" opacity=".8"/>
+<path d="M73 58Q68 46 78 33Q90 20 112 25Q139 25 146 47L149 58Z" fill="#29342e" stroke="currentColor" stroke-width="1.3"/><path d="M73 58Q68 46 78 33Q90 20 112 25Q139 25 146 47L149 58Z" fill="url(#knit-dante)"/>
+<path d="M73 52Q111 41 148 51L149 64Q111 54 74 66Z" fill="#343e36" stroke="currentColor"/><path d="M73 52Q111 41 148 51L149 64Q111 54 74 66Z" fill="url(#knit-dante)"/><path d="M83 54l7 -2 2 8 -7 2Z" fill="#766747" stroke="var(--accent)" stroke-width=".65"/>
+<text x="8" y="16" fill="currentColor" font-size="8" font-family="monospace">ID: DANTE_OP</text><text x="8" y="172" fill="var(--secondary)" font-size="8" font-family="monospace">OPERATOR_LINK</text><text x="148" y="16" fill="var(--accent)" font-size="8" font-family="monospace">CREW_DATA</text></svg>
+              <span class="text-[11px] opacity-75 mt-1 text-center">RECONSTRUÇÃO VISUAL // DANTE</span>
+            </div>
+            <ul class="space-y-2 text-xs"><li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">IDENTIDADE:</span><span class="text-right">Dante</span></li>
+<li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">FUNÇÃO:</span><span class="text-right">Operador de Máquinas</span></li>
+<li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">NAVE:</span><span class="text-right">Prometheus</span></li>
+<li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">VÍNCULO:</span><span class="text-right">Braço direito de Vergil</span></li>
+<li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">DESPERTAR:</span><span class="text-right">Ainda jovem</span></li>
+<li class="flex justify-between gap-2 border-b border-[var(--border-color)]/50 pb-1"><span class="opacity-65">STATUS:</span><span class="text-right">OPERADOR ATIVO</span></li></ul>
+          </div></div>
+          <div class="lg:col-span-8">
+            <article class="tech-box rounded p-5 sm:p-8 font-narrative space-y-4 text-sm sm:text-base leading-relaxed">
+              <div class="border-b border-[var(--border-color)] pb-3"><h2 class="font-vt text-2xl sm:text-3xl text-[var(--secondary)]">&gt; DANTE // O OUTRO LADO DA LINHA</h2><span class="text-xs opacity-75">AUTORA: SENTINEL // OUT 1999</span></div>
+              <p>Não tenho muito sobre a vida de Dante antes do Despertar. Sei que despertou ainda jovem e que já era o braço direito de Vergil antes mesmo das baixas recentes na tripulação da Prometheus. Sua colaboração com Vergil não começou com a necessidade de preencher uma vaga.</p>
+              <p>Agora, oficialmente Operador de Máquinas, Dante guia os membros da Prometheus em nossas incursões na Matrix. Enquanto estamos do lado de dentro, ele trabalha do outro lado da conexão. Para alguém que passou tanto tempo pensando em como quebrar as regras da simulação, é estranho perceber o quanto dependemos de quem permanece fora dela.</p>
+              <div class="bg-black/60 border-l-2 border-[var(--primary)] p-4 rounded-r"><div class="font-mono text-xs font-bold mb-2">// ANÁLISE OPERACIONAL</div><p>Seu papel é orientar nossa equipe durante as operações na malha. Ainda não tenho informações suficientes para avaliar sua formação técnica ou os limites de sua atuação.</p></div>
+              <blockquote class="border-l-2 border-[var(--accent)] pl-4 py-2 text-[var(--accent)] italic bg-black/40 rounded-r"><div class="font-mono text-xs not-italic mb-2">// NOTA PESSOAL — SENTINEL</div>Sei pouco sobre o garoto. Por enquanto, sei que Vergil conta com ele. Quero conhecer melhor quem está do outro lado da linha.</blockquote>
             </article>
           </div>
         </div>
@@ -1134,6 +1178,8 @@
               <button onclick="runQuickCmd('davina')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">davina</button>
               <button onclick="runQuickCmd('npcs')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">npcs</button>
               <button onclick="runQuickCmd('vergil')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">vergil</button>
+              <button onclick="runQuickCmd('dante')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">dante</button>
+              <button onclick="runQuickCmd('dossie dante')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">dossie dante</button>
               <button onclick="runQuickCmd('qualidades')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">qualidades</button>
               <button onclick="runQuickCmd('defeitos')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">defeitos</button>
               <button onclick="runQuickCmd('dossie caos')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">dossie caos</button>
@@ -1212,7 +1258,7 @@
     }
 
     function selectNPC(key) {
-      ['vergil','caos','eleutheria'].forEach(k => {
+      ['vergil','dante','caos','eleutheria'].forEach(k => {
         document.getElementById('npc-'+k).classList.toggle('hidden', k !== key);
         document.getElementById('npc-tab-'+k).classList.toggle('active', k === key);
       });
@@ -1257,7 +1303,7 @@
     const commands = {
       boot: () => { startSentinelBoot(); return ["[BOOT] Reinicialização visual do terminal solicitada."]; },
       contatos: () => { switchTab("contatos"); return ["BANCO DE CONTATOS // 4 registros disponíveis."]; },
-      npcs: () => { switchTab("npcs"); return ["ARQUIVO DE NPCS // 3 registros críticos disponíveis: Vergil, Χάος e Ἐλευθερία."]; },
+      npcs: () => { switchTab("npcs"); return ["ARQUIVO DE NPCS // 4 registros críticos disponíveis: Vergil, Dante, Χάος e Ἐλευθερία."]; },
       aliados: () => [
         '<span class="text-[var(--secondary)]">[SENTINEL_PRIVATE // ÍNDICE DE CONTATOS]</span>',
         '  HAO_FENG : Irmandade de Akasha // Lótus Branca, Manhattan.',
@@ -1302,6 +1348,12 @@
         'LOG DE CAMPO: viaja sob a liderança de Morpheus em missões de expansão humana, busca de tecnologias antigas e pontos não mapeados de conexão.',
         '<span class="text-[var(--accent)]">SENTINEL:</span> "Se ele está do outro lado da linha, eu sei que ainda existe um caminho de volta."'
       ],
+      dante: () => [
+        '<span class="text-[var(--secondary)]">[DANTE_OP // OPERADOR DE MÁQUINAS]</span>',
+        'NAVE: Prometheus. VÍNCULO: braço direito de Vergil, desde antes das recentes baixas na tripulação.',
+        'DESPERTAR: ainda jovem. FUNÇÃO: orientar os membros da Prometheus durante as incursões na Matrix.',
+        '<span class="text-[var(--accent)]">SENTINEL:</span> "Ainda sei pouco sobre ele. Quero conhecer melhor quem está do outro lado da linha."'
+      ],
       prometheus: () => [
         '<span class="text-[var(--secondary)]">[PROMETHEUS // PLATAFORMA DE MOBILIDADE HUMANA]</span>',
         'CLASSE: nave de operação humana // pilotada por Vergil.',
@@ -1342,13 +1394,14 @@
         '  <span class="font-bold">shine</span>       - Consulta Jean Gray e a hipótese Ahl-i-Batin.',
         '  <span class="font-bold">shaun</span>       - Consulta o registro de Léo Prech Shaun (alias: leo).',
         '  <span class="font-bold">davina</span>      - Consulta o registro preliminar de Davina Larc.',
-        '  <span class="font-bold">npcs</span>        - Abre o arquivo de NPCs importantes (Vergil, Caos, Eleutheria).',
+        '  <span class="font-bold">npcs</span>        - Abre o arquivo de NPCs importantes (Vergil, Dante, Caos, Eleutheria).',
         '  <span class="font-bold">qualidades</span>  - Lista as seis qualidades de Sentinel.',
         '  <span class="font-bold">defeitos</span>    - Lista as falhas e anomalias de Sentinel.',
         '  <span class="font-bold">sistema</span>     - Abre o painel de qualidades e defeitos.',
         '  <span class="font-bold">vergil</span>      - Consulta o operador Vergil.',
+        '  <span class="font-bold">dante</span>       - Consulta o Operador de Máquinas Dante.',
         '  <span class="font-bold">prometheus</span>  - Consulta a nave Prometheus.',
-        '  <span class="font-bold">dossie &lt;nome&gt;</span> - Abre o perfil completo do contato ou NPC (hao, shine, shaun, davina, vergil, caos, eleutheria).',
+        '  <span class="font-bold">dossie &lt;nome&gt;</span> - Abre o perfil completo do contato ou NPC (hao, shine, shaun, davina, vergil, dante, caos, eleutheria).',
         '  <span class="font-bold">boot</span>        - Reproduz a inicialização visual CRT.',
         '  <span class="font-bold">clear</span>       - Limpa o buffer de saída do terminal.'
       ],
@@ -1430,18 +1483,18 @@
         ['hao', 'hao'], ['hao feng', 'hao'], ['shine', 'shine'], ['jean', 'shine'], ['jean gray', 'shine'],
         ['shaun', 'shaun'], ['leo', 'shaun'], ['léo', 'shaun'], ['leo prech shaun', 'shaun'], ['léo prech shaun', 'shaun'],
         ['davina', 'davina'], ['davina larc', 'davina'],
-        ['vergil', 'vergil'], ['npc vergil', 'vergil'], ['operador', 'vergil'], ['prometheus', 'prometheus'], ['prometeus', 'prometheus'], ['caos', 'caos'], ['χάος', 'caos'], ['eleutheria', 'eleutheria'], ['ἐλευθερία', 'eleutheria']
+        ['vergil', 'vergil'], ['npc vergil', 'vergil'], ['dante', 'dante'], ['npc dante', 'dante'], ['operador', 'vergil'], ['prometheus', 'prometheus'], ['prometeus', 'prometheus'], ['caos', 'caos'], ['χάος', 'caos'], ['eleutheria', 'eleutheria'], ['ἐλευθερία', 'eleutheria']
       ]);
       const normalized = cmd.replace(/\s+/g, ' ');
       const dossierMatch = normalized.match(/^(?:dossie|dossiê) (.+)$/);
       if (dossierMatch) {
         const target = aliases.get(dossierMatch[1]);
-        if (!target || !['hao','shine','shaun','davina','vergil','caos','eleutheria'].includes(target)) {
+        if (!target || !['hao','shine','shaun','davina','vergil','dante','caos','eleutheria'].includes(target)) {
           appendToTerminal(['<span class="text-[var(--danger)]">Registro não encontrado.</span> Use aliados ou npcs para listar os registros.']);
           return;
         }
         appendToTerminal(['<span class="text-[var(--secondary)]">[ACESSO AUTORIZADO] Carregando dossiê local...</span>']);
-        if (['vergil','caos','eleutheria'].includes(target)) {
+        if (['vergil','dante','caos','eleutheria'].includes(target)) {
           selectNPC(target);
           switchTab('npcs');
         } else {
