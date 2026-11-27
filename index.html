@@ -187,15 +187,74 @@
     .ocular-iris {
       animation: eyeShift 4.5s infinite alternate;
     }
+
+    /* Inicialização CRT // terminal Sentinel */
+    #sentinel-boot[hidden] { display: none !important; }
+    body.boot-active { overflow: hidden; }
+    #sentinel-boot {
+      position: fixed; inset: 0; z-index: 1000; overflow: hidden;
+      background: #020503; color: #33ff66; font-family: 'Fira Code', monospace;
+      isolation: isolate; opacity: 1; transition: opacity .38s ease;
+    }
+    #sentinel-boot.boot-exit { opacity: 0; pointer-events: none; }
+    #sentinel-boot canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .8; }
+    #sentinel-boot::before {
+      content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: repeating-linear-gradient(0deg, transparent 0 2px, rgba(0,0,0,.22) 2px 4px),
+        radial-gradient(ellipse at center, transparent 25%, rgba(0,0,0,.72) 100%);
+    }
+    #sentinel-boot::after {
+      content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none;
+      background: #baffcd; transform-origin: center;
+      animation: sentinel-crt-on .62s ease-out both;
+    }
+    @keyframes sentinel-crt-on {
+      0% { transform: scale(.002,.001); opacity: 1; }
+      28% { transform: scale(1,.002); opacity: .9; }
+      65% { transform: scale(1,1); opacity: .12; }
+      100% { transform: scale(1,1); opacity: 0; }
+    }
+    .boot-readout {
+      position: absolute; z-index: 3; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: min(90vw, 620px); padding: clamp(16px,4vw,30px);
+      background: rgba(2,8,4,.9); border: 1px solid #198c38;
+      box-shadow: 0 0 35px #092e15, inset 0 0 22px #082610;
+      animation: sentinel-readout-in .6s .28s both;
+    }
+    @keyframes sentinel-readout-in { from { opacity: 0; } to { opacity: 1; } }
+    .boot-title { font-family: 'VT323', monospace; font-size: clamp(22px,5.5vw,42px); line-height: 1.1; margin: 0 0 14px; color: #aaffbb; letter-spacing: .055em; }
+    #boot-log { min-height: 10em; font-size: clamp(10px,2.7vw,13px); line-height: 1.65; overflow-wrap: anywhere; }
+    .boot-track { height: 5px; border: 1px solid #198c38; margin-top: 12px; background: #020503; }
+    #boot-progress { width: 0; height: 100%; background: #33ff66; box-shadow: 0 0 8px #33ff66; }
+    .boot-meta { display: flex; justify-content: space-between; gap: 12px; font-size: 10px; color: #91d9a0; margin-top: 10px; }
+    #boot-skip { position: absolute; z-index: 6; bottom: max(18px,env(safe-area-inset-bottom)); right: 20px; background: #030a05; color: #91d9a0; border: 1px solid #198c38; padding: 9px 13px; font: inherit; font-size: 11px; cursor: pointer; }
+    #boot-skip:hover, #boot-skip:focus-visible { color: #d0ffda; border-color: #33ff66; outline: 1px solid #33ff66; }
+    @media (prefers-reduced-motion: reduce) {
+      #sentinel-boot, #sentinel-boot::after, .boot-readout { animation: none; transition: none; }
+      #sentinel-boot::after { display: none; }
+    }
   </style>
 </head>
 <body class="crt-screen selection:bg-emerald-500 selection:text-black">
+
+
+  <!-- Sequência de inicialização // monitor CRT -->
+  <div id="sentinel-boot" role="dialog" aria-modal="true" aria-label="Inicialização do terminal Sentinel" hidden>
+    <canvas id="boot-matrix" aria-hidden="true"></canvas>
+    <div class="boot-readout">
+      <h2 class="boot-title">TERMINAL OVERRIDE // SENTINEL</h2>
+      <div id="boot-log" aria-hidden="true"></div>
+      <div class="boot-track" aria-hidden="true"><div id="boot-progress"></div></div>
+      <div class="boot-meta"><span>NY_1999 // UPLINK</span><span id="boot-percent" aria-hidden="true">00%</span></div>
+    </div>
+    <button type="button" id="boot-skip">[ ESC ] PULAR INICIALIZAÇÃO</button>
+  </div>
 
   <!-- Camada CRT Scanlines -->
   <div class="crt-overlay"></div>
 
   <!-- Container Principal -->
-  <div class="max-w-6xl mx-auto px-3 sm:px-6 py-4 sm:py-8 relative z-10">
+  <div id="sentinel-main" class="max-w-6xl mx-auto px-3 sm:px-6 py-4 sm:py-8 relative z-10">
 
     <!-- CABEÇALHO TERMINAL OVERRIDE -->
     <header class="tech-box rounded p-4 sm:p-6 mb-6">
@@ -1080,6 +1139,7 @@
               <button onclick="runQuickCmd('dossie caos')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">dossie caos</button>
               <button onclick="runQuickCmd('dossie eleutheria')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">dossie eleutheria</button>
               <button onclick="runQuickCmd('prometheus')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">prometheus</button>
+              <button onclick="runQuickCmd('boot')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">boot</button>
               <button onclick="runQuickCmd('clear')" class="px-2 py-1 text-xs border border-[var(--danger)]/60 text-[var(--danger)] hover:bg-[var(--danger)] hover:text-black rounded bg-black/60 cursor-pointer">clear</button>
             </div>
           </div>
@@ -1195,6 +1255,7 @@
     const cliInput = document.getElementById('cliInput');
 
     const commands = {
+      boot: () => { startSentinelBoot(); return ["[BOOT] Reinicialização visual do terminal solicitada."]; },
       contatos: () => { switchTab("contatos"); return ["BANCO DE CONTATOS // 4 registros disponíveis."]; },
       npcs: () => { switchTab("npcs"); return ["ARQUIVO DE NPCS // 3 registros críticos disponíveis: Vergil, Χάος e Ἐλευθερία."]; },
       aliados: () => [
@@ -1288,6 +1349,7 @@
         '  <span class="font-bold">vergil</span>      - Consulta o operador Vergil.',
         '  <span class="font-bold">prometheus</span>  - Consulta a nave Prometheus.',
         '  <span class="font-bold">dossie &lt;nome&gt;</span> - Abre o perfil completo do contato ou NPC (hao, shine, shaun, davina, vergil, caos, eleutheria).',
+        '  <span class="font-bold">boot</span>        - Reproduz a inicialização visual CRT.',
         '  <span class="font-bold">clear</span>       - Limpa o buffer de saída do terminal.'
       ],
       whoami: () => [
@@ -1406,6 +1468,132 @@
     function runQuickCmd(cmd) {
       executeCommandText(cmd);
     }
+
+    // Inicialização visual: chuva reversa de caracteres e sequência de conexão.
+    const bootOverlay = document.getElementById('sentinel-boot');
+    const bootCanvas = document.getElementById('boot-matrix');
+    const bootMain = document.getElementById('sentinel-main');
+    const bootLog = document.getElementById('boot-log');
+    const bootProgress = document.getElementById('boot-progress');
+    const bootPercent = document.getElementById('boot-percent');
+    const bootSkip = document.getElementById('boot-skip');
+    let bootRunning = false;
+    let bootFrame = 0;
+    let bootDeadline = 0;
+    let bootFinishTimer = 0;
+    let bootPreviousFocus = null;
+    let bootResize = null;
+
+    function finishSentinelBoot(immediate = false) {
+      if (!bootRunning) return;
+      bootRunning = false;
+      cancelAnimationFrame(bootFrame);
+      clearTimeout(bootDeadline);
+      if (bootResize) window.removeEventListener('resize', bootResize);
+      bootResize = null;
+      const close = () => {
+        bootOverlay.hidden = true;
+        bootOverlay.classList.remove('boot-exit');
+        document.body.classList.remove('boot-active');
+        bootMain.inert = false;
+        if (bootPreviousFocus && bootPreviousFocus.isConnected && bootMain.contains(bootPreviousFocus)) {
+          bootPreviousFocus.focus({preventScroll:true});
+        }
+        bootPreviousFocus = null;
+      };
+      if (immediate) close();
+      else {
+        bootOverlay.classList.add('boot-exit');
+        bootFinishTimer = setTimeout(close, 390);
+      }
+    }
+
+    function startSentinelBoot() {
+      if (bootRunning || !bootOverlay.hidden) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      bootRunning = true;
+      bootPreviousFocus = document.activeElement;
+      bootOverlay.classList.remove('boot-exit');
+      bootOverlay.hidden = false;
+      bootMain.inert = true;
+      document.body.classList.add('boot-active');
+      bootLog.textContent = '';
+      bootProgress.style.width = '0%';
+      bootPercent.textContent = '00%';
+      bootSkip.focus({preventScroll:true});
+      const duration = 4300;
+      const stages = [
+        [180, '> SENTINEL BIOS // INICIALIZANDO MONITOR CRT...'],
+        [780, '> CARREGANDO NÚCLEO Χάος... [OK]'],
+        [1420, '> SINCRONIZANDO TEIA DIGITAL... [OK]'],
+        [2050, '> ESTABELECENDO UPLINK // TRADITION_VA_HUB'],
+        [2690, '> VALIDANDO ASSINATURA: BLAZE_THORNE'],
+        [3300, '> MATRIX 6.5 // CANAL CRIPTOGRAFADO [OK]'],
+        [3860, '> ACESSO CONCEDIDO_']
+      ];
+      const glyphs = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ';
+      const ctx = bootCanvas.getContext('2d');
+      let cols = [], width = 0, height = 0, font = 15, lastDraw = 0, nextStage = 0;
+      bootResize = () => {
+        if (!ctx) return;
+        width = Math.max(1, bootOverlay.clientWidth);
+        height = Math.max(1, bootOverlay.clientHeight);
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        bootCanvas.width = Math.round(width*dpr);
+        bootCanvas.height = Math.round(height*dpr);
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        ctx.fillStyle = '#020503';
+        ctx.fillRect(0,0,width,height);
+        font = width < 600 ? 12 : 15;
+        cols = Array.from({length:Math.ceil(width/font)}, (_,x) => ({
+          x:x*font, y:Math.random()*height, speed:.55+Math.random()*1.65
+        }));
+      };
+      bootResize();
+      window.addEventListener('resize', bootResize);
+      const start = performance.now();
+      // Fallback: libera a interface mesmo se a aba suspender os quadros.
+      bootDeadline = setTimeout(() => finishSentinelBoot(), duration+200);
+      function frame(now) {
+        if (!bootRunning) return;
+        const elapsed = now-start;
+        while (nextStage < stages.length && elapsed >= stages[nextStage][0]) {
+          const line = document.createElement('div');
+          line.textContent = stages[nextStage][1];
+          if (nextStage === stages.length-1) line.style.color = '#caffd4';
+          bootLog.appendChild(line);
+          nextStage++;
+        }
+        const percent = Math.min(100,Math.floor(elapsed/duration*100));
+        bootProgress.style.width = percent+'%';
+        bootPercent.textContent = String(percent).padStart(2,'0')+'%';
+        if (ctx && now-lastDraw >= 38) {
+          lastDraw = now;
+          ctx.fillStyle = 'rgba(2,5,3,.16)';
+          ctx.fillRect(0,0,width,height);
+          ctx.font = font+'px monospace';
+          ctx.textBaseline = 'top';
+          for (const col of cols) {
+            ctx.fillStyle = Math.random() < .08 ? '#c5ffd2' : '#33ff66';
+            ctx.fillText(glyphs[Math.floor(Math.random()*glyphs.length)],col.x,col.y);
+            col.y -= font*col.speed;
+            if (col.y < -font*2) col.y = height+Math.random()*height*.45;
+          }
+        }
+        if (elapsed >= duration) finishSentinelBoot();
+        else bootFrame = requestAnimationFrame(frame);
+      }
+      bootFrame = requestAnimationFrame(frame);
+    }
+
+    bootSkip.addEventListener('click', () => finishSentinelBoot(true));
+    document.addEventListener('keydown', event => {
+      if (bootRunning && event.key === 'Escape') {
+        event.preventDefault();
+        finishSentinelBoot(true);
+      }
+    });
+    startSentinelBoot();
   </script>
 </body>
 </html>
