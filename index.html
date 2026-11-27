@@ -242,6 +242,13 @@
     @media (min-width: 1024px) {
       .sentinel-identity { flex: 1 1 0%; }
     }
+    .admin-entry { color: inherit; text-decoration: none; cursor: pointer; }
+    .admin-entry:hover, .admin-entry:focus-visible { text-decoration: underline; text-underline-offset: .15em; }
+    body.crt-disabled .crt-overlay { display: none; }
+    body.crt-disabled.crt-screen { animation: none; text-shadow: none; }
+    #crt-toggle { border: 1px solid var(--border-color); color: var(--primary); background: #050805; padding: 4px 8px; border-radius: 3px; cursor: pointer; white-space: nowrap; }
+    #crt-toggle:hover, #crt-toggle:focus-visible { border-color: var(--primary); }
+    @media (prefers-reduced-motion: reduce) { .crt-screen { animation: none; } }
   </style>
 </head>
 <body class="crt-screen selection:bg-emerald-500 selection:text-black">
@@ -274,7 +281,7 @@
             <span>UPLINK ESTABELECIDO // NÓ: TRADITION_VA_HUB</span>
           </div>
           <h1 class="font-vt text-3xl sm:text-5xl tracking-wider glitch-title uppercase">
-            :: TERMINAL OVERRIDE // SENTINEL ::
+            :: <a href="admin.html" target="_blank" rel="noopener noreferrer" class="admin-entry" title="Acesso administrativo" aria-label="Terminal Override — abrir área administrativa">TERMINAL OVERRIDE</a> // SENTINEL ::
           </h1>
           <p class="sentinel-identity-line text-xs sm:text-sm mt-1 opacity-90">
             SUJEITO: <span class="font-bold">BLAZE "SENTINEL" THORNE</span> &nbsp;|&nbsp; TRADIÇÃO: <span class="text-[var(--secondary)]">ADEPTOS VIRTUAIS</span> <span style="display:inline-block;white-space:nowrap">&nbsp;|&nbsp; ESSÊNCIA: <span class="text-[var(--accent)]">INVESTIGADORA</span></span>
@@ -1195,6 +1202,8 @@
               <button onclick="runQuickCmd('dossie eleutheria')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">dossie eleutheria</button>
               <button onclick="runQuickCmd('prometheus')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">prometheus</button>
               <button onclick="runQuickCmd('boot')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">boot</button>
+              <button onclick="runQuickCmd('crt')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">crt</button>
+              <button onclick="runQuickCmd('admin')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">admin</button>
               <button onclick="runQuickCmd('clear')" class="px-2 py-1 text-xs border border-[var(--danger)]/60 text-[var(--danger)] hover:bg-[var(--danger)] hover:text-black rounded bg-black/60 cursor-pointer">clear</button>
             </div>
           </div>
@@ -1228,6 +1237,7 @@
     <footer class="mt-8 pt-4 border-t border-[var(--border-color)] flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] opacity-70">
       <div>
         <span>MAGO: A ASCENSÃO // CRÔNICA NOVA YORK 1999 // ARQUIVO DE PERSONAGEM</span>
+        <button type="button" id="crt-toggle" aria-pressed="true" onclick="toggleCRT()">[ CRT: ON ]</button>
       </div>
       <div class="flex items-center gap-2">
         <span>CONEXÃO SEGURA</span>
@@ -1309,7 +1319,22 @@
     const terminalOutput = document.getElementById('terminalOutput');
     const cliInput = document.getElementById('cliInput');
 
+    function setCRT(enabled) {
+      document.body.classList.toggle('crt-disabled', !enabled);
+      const b = document.getElementById('crt-toggle');
+      b.textContent = enabled ? '[ CRT: ON ]' : '[ CRT: OFF ]';
+      b.setAttribute('aria-pressed', String(enabled));
+      try { localStorage.setItem('sentinel-crt', enabled ? 'on' : 'off'); } catch (_) {}
+      return enabled;
+    }
+    function toggleCRT() { return setCRT(document.body.classList.contains('crt-disabled')); }
+    try { setCRT(localStorage.getItem('sentinel-crt') !== 'off'); } catch (_) { setCRT(true); }
+
     const commands = {
+      crt: () => [toggleCRT() ? '[CRT] Filtro ativado.' : '[CRT] Filtro desativado.'],
+      'crt on': () => { setCRT(true); return ['[CRT] Filtro ativado.']; },
+      'crt off': () => { setCRT(false); return ['[CRT] Filtro desativado.']; },
+      admin: () => ['[ROOT] <a href="admin.html" target="_blank" rel="noopener noreferrer" style="text-decoration:underline">Abrir área administrativa</a> // Autenticação necessária.'],
       boot: () => { startSentinelBoot(); return ["[BOOT] Reinicialização visual do terminal solicitada."]; },
       contatos: () => { switchTab("contatos"); return ["BANCO DE CONTATOS // 4 registros disponíveis."]; },
       npcs: () => { switchTab("npcs"); return ["ARQUIVO DE NPCS // 4 registros críticos disponíveis: Vergil, Dante, Χάος e Ἐλευθερία."]; },
@@ -1412,6 +1437,8 @@
         '  <span class="font-bold">prometheus</span>  - Consulta a nave Prometheus.',
         '  <span class="font-bold">dossie &lt;nome&gt;</span> - Abre o perfil completo do contato ou NPC (hao, shine, shaun, davina, vergil, dante, caos, eleutheria).',
         '  <span class="font-bold">boot</span>        - Reproduz a inicialização visual CRT.',
+        '  <span class="font-bold">crt</span>         - Alterna o filtro CRT (crt on / crt off).',
+        '  <span class="font-bold">admin</span>       - Exibe acesso à área administrativa.',
         '  <span class="font-bold">clear</span>       - Limpa o buffer de saída do terminal.'
       ],
       whoami: () => [
