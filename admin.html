@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://api.github.com; base-uri 'none'; form-action 'none'; object-src 'none'; img-src 'none'">
+<meta name="referrer" content="no-referrer"><title>SENTINEL // ROOT ACCESS</title>
+<style>
+:root{color-scheme:dark;--green:#33ff66;--cyan:#00e5ff;--amber:#ffb000;--border:#1f5c31;--bg:#050805}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--green);font:14px/1.6 "Courier New",monospace}body::after{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(transparent 0 3px,#0002 3px 4px);z-index:10}main{max-width:1120px;margin:28px auto;padding:0 16px}h1,h2,h3{line-height:1.2;margin:0 0 16px}h1{font-size:clamp(23px,4vw,38px);color:var(--cyan)}h2{font-size:20px;color:var(--cyan)}p{margin:8px 0 16px}a{color:var(--cyan)}button,input,textarea,select{font:inherit;color:var(--green);background:#020503;border:1px solid var(--border);border-radius:3px;padding:9px}button{cursor:pointer}button:hover,button:focus-visible{border-color:var(--green);background:#10291a}button:disabled{opacity:.5;cursor:not-allowed}button.primary{background:var(--green);color:#020503;font-weight:bold}input,select,textarea{width:100%;max-width:100%}textarea{min-height:180px;resize:vertical;tab-size:2}textarea#source{min-height:420px}label{display:block;font-size:12px;margin:12px 0 5px}fieldset{border:0;padding:0;margin:0;min-width:0}.panel{background:#08100a;border:1px solid var(--border);padding:clamp(14px,3vw,24px);margin:18px 0;box-shadow:inset 0 0 16px #33ff6608}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0}.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:16px}.muted{color:#9abd9e;font-size:12px}.warn{color:var(--amber)}#status{white-space:pre-wrap;overflow-wrap:anywhere;padding:12px;border-left:2px solid var(--cyan);background:#07130b}#status.error{color:#ff718a;border-color:#ff3355}#status:empty{display:none}[hidden]{display:none!important}#node{min-height:220px;max-height:380px}#location{overflow-wrap:anywhere}.danger{border-color:#873246;color:#ff718a}hr{border:0;border-top:1px solid var(--border);margin:18px 0}@media(max-width:720px){.grid{grid-template-columns:1fr}#node{min-height:130px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style></head><body><main>
+<header class="panel"><div class="muted">UPLINK // TRADITION_VA_HUB // ROOT_ACCESS</div><h1>TERMINAL OVERRIDE // ADMIN</h1><p>CONSOLE DE MANUTENÇÃO // SENTINEL</p><a href="./">← RETORNAR AO TERMINAL</a></header>
+<div id="status" role="status" aria-live="polite"></div>
+<section class="panel" id="login"><h2>&gt; AUTENTICAÇÃO DE ADMINISTRADOR</h2>
+<p>Conta autorizada: <strong>Hdcttr</strong> // Repositório <strong>Hdcttr/matrix</strong>.</p>
+<p class="muted">Use um token pessoal granular do GitHub, limitado ao repositório matrix, com Contents: Read and write e validade curta. Não use sua senha do GitHub. O token é enviado somente à API oficial e mantido na memória desta página até sair ou fechá-la.</p>
+<p><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">CRIAR TOKEN GRANULAR NO GITHUB ↗</a></p>
+<form id="auth" autocomplete="off"><label for="token">TOKEN DE ACESSO // CREDENCIAL ROOT</label><input type="password" id="token" name="token" autocomplete="off" spellcheck="false" required placeholder="github_pat_…"><div class="bar"><button id="login-btn" type="submit" class="primary">[ AUTENTICAR ]</button></div></form>
+<p class="warn muted">O site e seus arquivos são públicos. Este acesso protege a publicação de alterações, não a leitura dos dossiês.</p></section>
+<section id="editor" class="panel" hidden><h2>&gt; ROOT // EDITOR DE ARQUIVO</h2><p id="account" class="muted"></p><div class="bar"><button id="logout">SAIR / LIMPAR CREDENCIAL</button><button id="reload">RECARREGAR DO GITHUB</button><button id="export">EXPORTAR HTML</button></div>
+<p class="muted">Edite blocos de conteúdo ou o código completo. Nenhuma alteração chega ao site público até clicar em PUBLICAR. O editor não executa o HTML em edição.</p>
+<fieldset id="controls"><div class="bar"><button id="visual" type="button">EDITOR DE BLOCOS</button><button id="raw" type="button">HTML COMPLETO</button></div>
+<div id="blocks" class="grid"><div><label for="area">MÓDULO / REGIÃO</label><select id="area"></select><label for="node">ELEMENTO</label><select id="node" size="11"></select><p class="muted">Escolha um título, parágrafo, cartão, perfil ou seção. O modo HTML permite alterar elementos, estilos e imagens SVG.</p></div><div><div id="location" class="muted"></div><label for="mode">MODO DE EDIÇÃO</label><select id="mode"><option value="text">Texto simples (sem formatação)</option><option value="html">HTML interno (com formatação)</option></select><label for="value">CONTEÚDO DO ELEMENTO</label><textarea id="value" spellcheck="false"></textarea><div class="bar"><button class="primary" id="apply">APLICAR AO RASCUNHO</button><button id="add">ADICIONAR BLOCO APÓS</button><button class="danger" id="remove">REMOVER ELEMENTO</button></div><p class="muted">Para adicionar um bloco, informe seu texto ou HTML no campo acima. Use HTML COMPLETO para modificar scripts, navegação e funcionalidades.</p></div></div>
+<div id="raw-panel" hidden><label for="source">INDEX.HTML // CÓDIGO-FONTE INTEGRAL</label><textarea id="source" spellcheck="false" autocomplete="off"></textarea><div class="bar"><button id="apply-source" class="primary">APLICAR CÓDIGO AO RASCUNHO</button></div></div>
+<hr><label for="message">MENSAGEM DO COMMIT</label><input id="message" value="UPDATE // SENTINEL_ADMIN" maxlength="180"><div class="bar"><button class="primary" id="publish">[ PUBLICAR ALTERAÇÕES ]</button><span id="dirty" class="muted"></span></div></fieldset>
+</section></main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const OWNER='hdcttr', REPO='/repos/Hdcttr/matrix', FILE=REPO+'/contents/index.html', API='https://api.github.com';
+let credential='', sha='', original='', draft='', parsed=null, nodes=[], selected=null, busy=false, pending=false;
+const regions=[['header','CABEÇALHO'],['#panel-dossie','01 // DOSSIÊ_LOG'],['#panel-matrix','02 // MATRIX_ALIADOS'],['#panel-sistema','03 // SISTEMA_PERFIL'],['#panel-esferas','04 // ESFERAS_ROOT'],['#panel-failover','05 // FAILOVER_HW'],['#panel-contatos','06 // DOSSIÊ_CONTATOS'],['#panel-npcs','07 // NPCS_IMPORTANTES'],['#panel-terminal','08 // CONSOLE_CLI'],['footer','RODAPÉ']];
+function status(t,error=false){$('status').textContent=t;$('status').classList.toggle('error',error)}
+function setBusy(v){busy=v;$('controls').disabled=v;for(const id of ['login-btn','reload','logout','export'])$(id).disabled=v}
+async function api(path, options={}){
+  if(!credential)throw Error('Sessão encerrada.');
+  const response=await fetch(API+path,{method:options.method||'GET',headers:{Accept:'application/vnd.github+json',Authorization:'Bearer '+credential,'X-GitHub-Api-Version':'2022-11-28',...(options.body?{'Content-Type':'application/json'}:{})},body:options.body?JSON.stringify(options.body):undefined,cache:'no-store',redirect:'error',credentials:'omit',referrerPolicy:'no-referrer'});
+  const data=await response.json();
+  if(!response.ok)throw Error('GitHub HTTP '+response.status+': '+(data.message||'Falha na operação')+(response.status===403?' — verifique a permissão Contents: Read and write.':''));
+  return data;
+}
+function from64(s){return new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g,'')),c=>c.charCodeAt(0)))}
+function to64(s){const b=new TextEncoder().encode(s);let out='';for(let i=0;i<b.length;i+=8192)out+=String.fromCharCode(...b.subarray(i,i+8192));return btoa(out)}
+function parse(s){return new DOMParser().parseFromString(s,'text/html')}
+function changed(){return pending||draft!==original}
+function sync(){ $('dirty').textContent=pending?'EDIÇÃO NÃO APLICADA':draft===original?'SEM ALTERAÇÕES':'RASCUNHO NÃO PUBLICADO';$('publish').disabled=busy||!changed() }
+function discardPending(){return !pending||confirm('Descartar a edição ainda não aplicada?')}
+function serialize(){return '<!DOCTYPE html>\n'+parsed.documentElement.outerHTML}
+function option(parent,value,label){const o=document.createElement('option');o.value=value;o.textContent=label;parent.appendChild(o)}
+function buildNodes(keep=-1){
+  const root=parsed.querySelector($('area').value);nodes=root?[root,...root.querySelectorAll('h1,h2,h3,h4,p,li,blockquote,article,section,div,span,button,a,svg,table,tr,td')].filter(e=>!e.closest('svg')||e.tagName.toLowerCase()==='svg'):[];
+  $('node').replaceChildren();nodes.forEach((e,i)=>{let t=(e.textContent||'').replace(/\s+/g,' ').trim().slice(0,75);option($('node'),String(i),e.tagName.toLowerCase()+(e.id?' #'+e.id:'')+' // '+t)});
+  $('node').selectedIndex=Math.max(0,Math.min(keep,nodes.length-1));loadNode();
+}
+function loadNode(){selected=nodes[$('node').selectedIndex]||null;$('location').textContent=selected?selected.tagName.toLowerCase()+(selected.id?' #'+selected.id:''): 'Nenhum elemento';$('mode').value=selected&&selected.children.length?'html':'text';fillValue()}
+function fillValue(){$('value').value=selected?($('mode').value==='html'?selected.innerHTML:selected.textContent):'';pending=false;sync()}
+function resetDraft(s){draft=s;parsed=parse(s);$('source').value=s;pending=false;buildNodes();sync()}
+function updateDraft(keep=-1){draft=serialize();$('source').value=draft;pending=false;buildNodes(keep);sync()}
+async function loadFile(){const f=await api(FILE+'?ref=main');if(f.encoding!=='base64'||typeof f.content!=='string')throw Error('Não foi possível ler index.html.');sha=f.sha;original=from64(f.content);resetDraft(original)}
+function logout(){credential='';sha='';original='';draft='';parsed=null;nodes=[];selected=null;pending=false;$('token').value='';$('source').value='';$('value').value='';$('node').replaceChildren();$('editor').hidden=true;$('login').hidden=false;status('SESSÃO ENCERRADA // credencial removida da memória desta página.')}
+regions.forEach(([v,l])=>option($('area'),v,l));
+$('auth').addEventListener('submit',async e=>{e.preventDefault();if(busy)return;credential=$('token').value.trim();$('token').value='';if(!credential.startsWith('github_pat_')){credential='';status('Use um token granular (github_pat_…).',true);return}setBusy(true);status('VALIDANDO IDENTIDADE...');try{const u=await api('/user');if(String(u.login).toLowerCase()!==OWNER)throw Error('Conta não autorizada.');const r=await api(REPO);if(r.permissions&&r.permissions.push===false)throw Error('Conta sem acesso de escrita ao repositório.');await loadFile();$('account').textContent='ADMIN: '+u.login+' // BRANCH: main // SHA: '+sha.slice(0,10);$('login').hidden=true;$('editor').hidden=false;status('ACESSO CONCEDIDO // edição liberada. A permissão de escrita do token será validada pelo GitHub na publicação.')}catch(e){credential='';status(e.message,true)}finally{setBusy(false);sync()}});
+$('logout').onclick=()=>{if(!changed()||confirm('Sair e descartar o rascunho?'))logout()};
+$('reload').onclick=async()=>{if(busy||changed()&&!confirm('Descartar rascunho e carregar o arquivo atual?'))return;setBusy(true);try{await loadFile();status('ARQUIVO SINCRONIZADO.')}catch(e){status(e.message,true)}finally{setBusy(false);sync()}};
+$('area').onchange=()=>{if(!discardPending()){$('area').value=$('area').dataset.previous||regions[0][0];return} $('area').dataset.previous=$('area').value;buildNodes()};
+$('node').onchange=()=>{if(!discardPending()){$('node').selectedIndex=nodes.indexOf(selected);return}loadNode()};
+$('mode').onchange=()=>{if(!discardPending()){$('mode').value=$('mode').value==='text'?'html':'text';return}fillValue()};
+$('value').oninput=$('source').oninput=()=>{pending=true;sync()};
+$('apply').onclick=()=>{if(!selected)return;const i=nodes.indexOf(selected);if($('mode').value==='text'){if(selected.children.length&&!confirm('O texto simples removerá a formatação interna. Continuar?'))return;selected.textContent=$('value').value}else selected.innerHTML=$('value').value;updateDraft(i);status('BLOCO ATUALIZADO NO RASCUNHO.')};
+$('add').onclick=()=>{if(!selected||!selected.parentElement)return;const i=nodes.indexOf(selected);if($('mode').value==='text'){const p=parsed.createElement('p');p.textContent=$('value').value;selected.after(p)}else selected.insertAdjacentHTML('afterend',$('value').value);updateDraft(i);status('BLOCO INSERIDO NO RASCUNHO.')};
+$('remove').onclick=()=>{if(!selected||!confirm('Remover este elemento e todo o seu conteúdo?'))return;const i=nodes.indexOf(selected);selected.remove();updateDraft(i);status('ELEMENTO REMOVIDO DO RASCUNHO.')};
+$('visual').onclick=()=>{if(!discardPending())return;$('raw-panel').hidden=true;$('blocks').hidden=false;$('source').value=draft;buildNodes()};
+$('raw').onclick=()=>{if(!discardPending())return;pending=false;$('blocks').hidden=true;$('raw-panel').hidden=false;$('source').value=draft;sync()};
+$('apply-source').onclick=()=>{const src=$('source').value;if(!/<!doctype html>/i.test(src)||!/<html[\s>]/i.test(src)||!/<body[\s>]/i.test(src)){status('O código deve conter o documento HTML completo.',true);return}resetDraft(src);status('CÓDIGO APLICADO AO RASCUNHO.')};
+$('export').onclick=()=>{if(pending){status('Aplique a edição antes de exportar.',true);return}const url=URL.createObjectURL(new Blob([draft],{type:'text/html;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='index.html';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+$('publish').onclick=async()=>{if(busy)return;if(pending){status('Aplique a edição antes de publicar.',true);return}if(draft===original)return;const message=$('message').value.trim();if(!message){status('Informe a mensagem do commit.',true);return}if(!confirm('Publicar o rascunho em Hdcttr/matrix, branch main? O conteúdo ficará público.'))return;setBusy(true);try{const latest=await api(FILE+'?ref=main');if(latest.sha!==sha)throw Error('O arquivo foi alterado no GitHub desde o carregamento. Exporte seu rascunho antes de recarregar; nenhuma alteração foi sobrescrita.');const p=parse(draft);if(!p.querySelector('header')||!p.querySelector('#panel-terminal')){if(!confirm('O cabeçalho ou console original está ausente. Publicar mesmo assim?'))return}const result=await api(FILE,{method:'PUT',body:{message,content:to64(draft),sha,branch:'main'}});sha=result.content.sha;original=draft;status('COMMIT PUBLICADO // '+result.commit.sha+'\nO GitHub Pages atualizará o site conforme o fluxo de deploy.');$('account').textContent='ADMIN: Hdcttr // BRANCH: main // SHA: '+sha.slice(0,10)}catch(e){status(e.message,true)}finally{setBusy(false);sync()}};
+$('area').dataset.previous=regions[0][0];
+window.addEventListener('beforeunload',e=>{if(changed()){e.preventDefault();e.returnValue=''}});
+</script></body></html>
