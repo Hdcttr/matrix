@@ -249,6 +249,71 @@
     #crt-toggle { border: 1px solid var(--border-color); color: var(--primary); background: #050805; padding: 4px 8px; border-radius: 3px; cursor: pointer; white-space: nowrap; }
     #crt-toggle:hover, #crt-toggle:focus-visible { border-color: var(--primary); }
     @media (prefers-reduced-motion: reduce) { .crt-screen { animation: none; } }
+    /* SENTINEL_OS // desktop */
+    #tab-os.active{color:var(--secondary);text-decoration:underline}
+    .os-shell{--os-line:var(--border-color);--os-muted:color-mix(in srgb,var(--primary) 55%,#83918a);border:1px solid var(--os-line);border-radius:9px;overflow:hidden;background:#050b08;box-shadow:0 16px 50px #0008;position:relative;font-size:12px}
+    .os-shell button,.os-shell input,.os-shell textarea,.os-shell select,.os-dialog button,.os-dialog input{font:inherit;color:var(--primary);background:#09120d;border:1px solid var(--os-line,var(--border-color));border-radius:4px;padding:8px 11px}
+    .os-shell button,.os-dialog button{cursor:pointer}
+    .os-shell button:hover,.os-dialog button:hover{border-color:var(--primary);background:#13241a}
+    .os-shell button:focus-visible,.os-shell input:focus-visible,.os-shell textarea:focus-visible{outline:1px solid var(--secondary);outline-offset:2px}
+    .os-shell button:disabled,.os-dialog button:disabled{opacity:.45;cursor:not-allowed}
+    .os-shell .os-primary,.os-dialog .os-primary{background:var(--primary);color:#031006;font-weight:700;border-color:var(--primary);text-shadow:none}
+    .os-shell .os-primary:hover,.os-dialog .os-primary:hover{background:var(--secondary)}
+    .os-shell .os-quiet{background:transparent;border-color:transparent}
+    .os-shell .os-danger{color:var(--danger)}
+    .os-shell svg{width:23px;height:23px;flex-shrink:0}
+    .os-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 19px;border-bottom:1px solid var(--os-line);background:#0c1710}
+    .os-brand{display:flex;align-items:center;gap:12px}
+    .os-logo{width:37px;height:37px;display:grid;place-items:center;border:1px solid var(--primary);background:#12281a;border-radius:8px;font-weight:bold;font-size:17px}
+    .os-name{font-weight:700;font-size:15px;letter-spacing:.08em}
+    .os-sub{font-size:10px;color:var(--os-muted);letter-spacing:.04em}
+    .os-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+    .os-status{padding:8px 19px;border-bottom:1px solid var(--os-line);font-size:10px;color:var(--os-muted);display:flex;justify-content:space-between;gap:12px;background:#050b08}
+    .os-grid{display:grid;grid-template-columns:205px minmax(0,1fr);min-height:650px}
+    .os-sidebar{border-right:1px solid var(--os-line);padding:18px 10px;background:#08110c}
+    .os-label{font-size:10px;letter-spacing:.13em;color:var(--os-muted);margin:0 9px 10px}
+    .os-nav{display:flex;flex-direction:column;gap:4px}
+    .os-shell .os-app{display:flex;align-items:center;gap:10px;text-align:left;border-color:transparent;background:transparent;width:100%;padding:11px 9px}
+    .os-app svg{width:19px;height:19px}
+    .os-shell .os-app.active{background:#14261a;border-color:var(--os-line);color:var(--secondary)}
+    .os-app small{margin-left:auto;color:var(--os-muted);font-size:9px}
+    .os-workspace{position:relative;min-width:0;padding:22px;background:radial-gradient(ellipse at 85% 0%,#14261b 0%,transparent 60%),linear-gradient(#33ff6607 1px,transparent 1px),linear-gradient(90deg,#33ff6607 1px,transparent 1px),#050b08;background-size:auto,32px 32px,32px 32px,auto;overflow:hidden}
+    .os-desktop-head{margin-bottom:24px;display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+    .os-desktop-head h2{font-size:clamp(22px,4vw,33px);font-weight:600;letter-spacing:-.04em;line-height:1.15;margin:7px 0}
+    .os-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .os-shell .os-shortcut{display:flex;flex-direction:column;gap:12px;align-items:flex-start;text-align:left;padding:17px;background:#0b1710;border-color:var(--os-line);min-height:115px}
+    .os-shortcut svg{width:27px;height:27px;color:var(--secondary)}
+    .os-shortcut strong{font-size:13px}
+    .os-shortcut span{color:var(--os-muted);font-size:10px}
+    .os-recent{margin-top:26px;border-top:1px solid var(--os-line);padding-top:15px}
+    .os-recent-list{display:grid;gap:5px}
+    .os-shell .os-recent-item{text-align:left;display:flex;justify-content:space-between;gap:8px;background:#0a140e;border-color:var(--os-line)}
+    .os-window{position:relative;z-index:2;background:#08110d;border:1px solid var(--os-line);border-radius:7px;box-shadow:0 14px 35px #0009;overflow:hidden;min-width:0}
+    .os-windowbar{padding:11px 13px;border-bottom:1px solid var(--os-line);display:flex;justify-content:space-between;align-items:center;gap:8px;background:#102017;cursor:grab;touch-action:none;user-select:none}
+    .os-window-title{display:flex;align-items:center;gap:8px;font-weight:bold;color:var(--secondary)}
+    .os-windowbar .os-tools button{padding:4px 8px}
+    .os-browser{display:grid;grid-template-columns:minmax(170px,32%) minmax(0,1fr);min-height:490px}
+    .os-files{border-right:1px solid var(--os-line);padding:12px;min-width:0}
+    .os-files input{width:100%;min-width:0}
+    .os-file-list{max-height:420px;overflow:auto;display:flex;flex-direction:column;gap:5px;margin-top:10px}
+    .os-shell .os-file{text-align:left;width:100%;padding:10px;background:#0a160e;overflow-wrap:anywhere}
+    .os-shell .os-file.active{border-color:var(--secondary);background:#13271c}
+    .os-file span{display:block;color:var(--os-muted);font-size:10px;margin-top:4px}
+    .os-content{padding:20px;min-width:0;overflow-wrap:anywhere}
+    .os-content h3{font-size:20px;font-weight:600;line-height:1.3;margin:5px 0 10px}
+    .os-content p{white-space:pre-wrap;line-height:1.75;font-size:13px}
+    .os-content label{display:block;font-size:10px;letter-spacing:.08em;color:var(--os-muted);margin:12px 0 5px}
+    .os-content input,.os-content textarea,.os-content select{display:block;width:100%;min-width:0}
+    .os-content textarea{min-height:210px;resize:vertical;line-height:1.6}
+    .os-empty{min-height:250px;display:grid;place-content:center;text-align:center;color:var(--os-muted);gap:10px}
+    .os-empty svg{margin:auto;width:32px;height:32px}
+    .os-tag{display:inline-block;border:1px solid var(--os-line);border-radius:3px;padding:2px 6px;color:var(--os-muted);font-size:10px;margin:3px 4px 3px 0}
+    .os-taskbar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 15px;border-top:1px solid var(--os-line);background:#0b1710;color:var(--os-muted);font-size:10px;flex-wrap:wrap}
+    .os-dialog{--os-line:var(--border-color);width:min(92vw,550px);max-height:85vh;overflow:auto;background:#08110d;color:var(--primary);border:1px solid var(--secondary);border-radius:7px;padding:23px;font:12px/1.65 inherit}
+    .os-dialog::backdrop{background:#000c}.os-dialog input{width:100%;margin:9px 0}
+    #panel-os [hidden],.os-dialog [hidden]{display:none!important}
+    @media(max-width:900px){.os-grid{grid-template-columns:165px minmax(0,1fr)}.os-workspace{padding:14px}.os-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}.os-top{flex-wrap:wrap}}
+    @media(max-width:640px){.os-grid{display:block;min-height:0}.os-sidebar{border-right:0;border-bottom:1px solid var(--os-line);padding:10px}.os-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.os-app small{display:none}.os-browser{display:block;min-height:0}.os-files{border-right:0;border-bottom:1px solid var(--os-line)}.os-file-list{max-height:180px}.os-content{padding:14px}.os-windowbar{cursor:default}.os-status{flex-wrap:wrap}.os-shortcuts{gap:8px}.os-shell .os-shortcut{padding:12px}.os-workspace{min-height:480px}}
   </style>
 </head>
 <body class="crt-screen selection:bg-emerald-500 selection:text-black">
@@ -281,7 +346,7 @@
             <span>UPLINK ESTABELECIDO // NÓ: TRADITION_VA_HUB</span>
           </div>
           <h1 class="font-vt text-3xl sm:text-5xl tracking-wider glitch-title uppercase">
-            :: <a href="admin.html" target="_blank" rel="noopener noreferrer" class="admin-entry" title="Acesso administrativo" aria-label="Terminal Override — abrir área administrativa">TERMINAL OVERRIDE</a> // SENTINEL ::
+            :: <a href="admin.html" target="_blank" rel="noopener noreferrer" class="admin-entry" title="Acesso administrativo" aria-label="Terminal Override — abrir área administrativa">TERMINAL OVERRIDE</a> // <a href="#sentinel-os" id="tab-os" class="admin-entry" onclick="event.preventDefault(); sentinelOS.open();" title="Abrir SENTINEL_OS">SENTINEL</a> ::
           </h1>
           <p class="sentinel-identity-line text-xs sm:text-sm mt-1 opacity-90">
             SUJEITO: <span class="font-bold">BLAZE "SENTINEL" THORNE</span> &nbsp;|&nbsp; TRADIÇÃO: <span class="text-[var(--secondary)]">ADEPTOS VIRTUAIS</span> <span style="display:inline-block;white-space:nowrap">&nbsp;|&nbsp; ESSÊNCIA: <span class="text-[var(--accent)]">INVESTIGADORA</span></span>
@@ -1168,6 +1233,25 @@
         </div>
       </section>
 
+<!-- SENTINEL_OS -->
+<section id="panel-os" class="hidden">
+<div class="os-shell" id="os-shell">
+  <div class="os-top"><div class="os-brand"><div class="os-logo">S_</div><div><div class="os-name">SENTINEL_OS <span style="color:var(--secondary)">1.0</span></div><div class="os-sub">PRIVATE WORKSTATION / BLAZE THORNE</div></div></div><div class="os-tools"><button type="button" id="os-edit-toggle" aria-pressed="false">EDIÇÃO: OFF</button><button type="button" id="os-publish" class="os-primary" hidden>PUBLICAR</button><button type="button" id="os-desktop">DESKTOP</button></div></div>
+  <div class="os-status"><span id="os-status" role="status">INICIALIZANDO SISTEMA DE ARQUIVOS...</span><span id="os-total">00 ARQUIVOS</span></div>
+  <div class="os-grid">
+    <aside class="os-sidebar"><div class="os-label">APLICATIVOS</div><nav class="os-nav" aria-label="Aplicativos Sentinel"><button class="os-app" type="button" data-os-app="logs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M4 3h12v18H4z M7 7h6 M7 11h6 M7 15h4"/></svg><span>Diário de campanha</span><small>LOG</small></button><button class="os-app" type="button" data-os-app="research"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 6h7l2 3h9v12H3z M8 13h8 M8 17h5"/></svg><span>Arquivos de pesquisa</span><small>RES</small></button><button class="os-app" type="button" data-os-app="grimoire"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 4h8v16H3z M11 4h10v16H11z M6 8h3 M14 8h4 M14 12h4"/></svg><span>Grimório digital</span><small>MAG</small></button><button class="os-app" type="button" data-os-app="gear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 7h18v13H3z M8 7V4h8v3 M3 12h18 M10 12v3h4v-3"/></svg><span>Equipamentos</span><small>HW</small></button><button class="os-app" type="button" data-os-app="contacts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 3a4 4 0 1 0 0 8a4 4 0 1 0 0-8 M4 21v-3a8 8 0 0 1 16 0v3z"/></svg><span>Contatos pessoais</span><small>NET</small></button><button class="os-app" type="button" data-os-app="secrets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M5 10h14v11H5z M8 10V7a4 4 0 0 1 8 0v3 M12 14v3"/></svg><span>Arquivos classificados</span><small>SEC</small></button></nav><div class="os-label" style="margin-top:25px">ACESSOS RÁPIDOS</div><div class="os-nav"><button type="button" class="os-app" id="os-main-contacts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 5h18v14H3z M7 9h10 M7 13h7"/></svg>Dossiês existentes</button><button type="button" class="os-app" id="os-main-npcs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M4 4h16v16H4z M8 8h8 M8 12h8"/></svg>NPCs importantes</button><button type="button" class="os-app" id="os-main-spheres"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 2l10 10-10 10L2 12z M12 2v20 M2 12h20"/></svg>Esferas</button></div></aside>
+    <div class="os-workspace" id="os-workspace">
+      <div id="os-home"><div class="os-desktop-head"><div><div class="os-sub">/home/sentinel</div><h2>Bem-vinda, Sentinel.</h2><div class="os-sub">Seu ambiente de pesquisa e operações.</div></div><span class="os-tag">● UPLINK</span></div><div class="os-shortcuts"><button class="os-shortcut" type="button" data-os-app="logs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M4 3h12v18H4z M7 7h6 M7 11h6 M7 15h4"/></svg><strong>Diário de campanha</strong><span data-os-count="logs">0 arquivos</span></button><button class="os-shortcut" type="button" data-os-app="research"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 6h7l2 3h9v12H3z M8 13h8 M8 17h5"/></svg><strong>Arquivos de pesquisa</strong><span data-os-count="research">0 arquivos</span></button><button class="os-shortcut" type="button" data-os-app="grimoire"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 4h8v16H3z M11 4h10v16H11z M6 8h3 M14 8h4 M14 12h4"/></svg><strong>Grimório digital</strong><span data-os-count="grimoire">0 arquivos</span></button><button class="os-shortcut" type="button" data-os-app="gear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M3 7h18v13H3z M8 7V4h8v3 M3 12h18 M10 12v3h4v-3"/></svg><strong>Equipamentos</strong><span data-os-count="gear">0 arquivos</span></button><button class="os-shortcut" type="button" data-os-app="contacts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 3a4 4 0 1 0 0 8a4 4 0 1 0 0-8 M4 21v-3a8 8 0 0 1 16 0v3z"/></svg><strong>Contatos pessoais</strong><span data-os-count="contacts">0 arquivos</span></button><button class="os-shortcut" type="button" data-os-app="secrets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M5 10h14v11H5z M8 10V7a4 4 0 0 1 8 0v3 M12 14v3"/></svg><strong>Arquivos classificados</strong><span data-os-count="secrets">0 arquivos</span></button></div><div class="os-recent"><div class="os-label">ARQUIVOS RECENTES</div><div id="os-recent" class="os-recent-list"></div></div></div>
+      <div id="os-window" class="os-window" hidden><div class="os-windowbar" id="os-windowbar"><div class="os-window-title"><span style="color:var(--primary)">▣</span><span id="os-window-title"></span></div><div class="os-tools"><button type="button" id="os-window-reset" title="Centralizar janela">↺</button><button type="button" id="os-window-close" aria-label="Fechar janela">×</button></div></div>
+        <div class="os-browser"><div class="os-files"><div class="os-tools" style="margin-bottom:10px"><span class="os-sub">ARQUIVOS</span><button type="button" id="os-new" class="os-primary" hidden>+ NOVO</button></div><input id="os-search" type="search" placeholder="Pesquisar..." aria-label="Pesquisar arquivos"><div id="os-file-list" class="os-file-list"></div></div><div id="os-content" class="os-content"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="os-taskbar"><span>S_ / SISTEMA DE ARQUIVOS</span><span id="os-draft">LEITURA</span><div class="os-tools" id="os-backup-tools" hidden><button type="button" id="os-export">EXPORTAR</button><button type="button" id="os-import">IMPORTAR</button><button type="button" id="os-revert">DESCARTAR RASCUNHO</button><input type="file" id="os-import-file" accept=".json,application/json" hidden></div></div>
+</div>
+<dialog id="os-publish-dialog" class="os-dialog"><h3 style="font-size:18px;color:var(--secondary)">ROOT // PUBLICAR ARQUIVOS</h3><p>Use o token granular da conta Hdcttr, com Contents: Read and write no repositório matrix. O token não é salvo. Os registros publicados são públicos, inclusive os classificados na ficção.</p><label for="os-token">CREDENCIAL GITHUB</label><input id="os-token" type="password" autocomplete="off" spellcheck="false"><div class="os-tools"><button id="os-publish-confirm" type="button" class="os-primary">CONFIRMAR</button><button id="os-publish-close" type="button">FECHAR</button></div><p id="os-publish-status" role="status" style="margin-top:12px;white-space:pre-wrap;overflow-wrap:anywhere"></p></dialog>
+</section>
+
 <!-- ABA 08: CONSOLE INTERATIVO CLI (1999 BBS) -->
       <section id="panel-terminal" class="hidden">
         <div class="tech-box rounded p-4 sm:p-6">
@@ -1204,6 +1288,8 @@
               <button onclick="runQuickCmd('boot')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">boot</button>
               <button onclick="runQuickCmd('crt')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">crt</button>
               <button onclick="runQuickCmd('admin')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">admin</button>
+              <button onclick="runQuickCmd('sentinel')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">sentinel</button>
+              <button onclick="runQuickCmd('logs')" class="px-2 py-1 text-xs border border-[var(--border-color)] hover:border-[var(--primary)] rounded bg-black/60 cursor-pointer">logs</button>
               <button onclick="runQuickCmd('clear')" class="px-2 py-1 text-xs border border-[var(--danger)]/60 text-[var(--danger)] hover:bg-[var(--danger)] hover:text-black rounded bg-black/60 cursor-pointer">clear</button>
             </div>
           </div>
@@ -1251,7 +1337,7 @@
   <script>
     // Alternância entre as abas principais
     function switchTab(tabName) {
-      const tabs = ['dossie', 'matrix', 'sistema', 'esferas', 'failover', 'contatos', 'npcs', 'terminal'];
+      const tabs = ['dossie', 'matrix', 'sistema', 'esferas', 'failover', 'contatos', 'npcs', 'os', 'terminal'];
       tabs.forEach(t => {
         const panel = document.getElementById(`panel-${t}`);
         const btn = document.getElementById(`tab-${t}`);
@@ -1332,7 +1418,69 @@
 
 
 
+
+    const sentinelOS=(()=>{
+      const $=id=>document.getElementById(id), appNames={"logs":"Diário de campanha","research":"Arquivos de pesquisa","grimoire":"Grimório digital","gear":"Equipamentos","contacts":"Contatos pessoais","secrets":"Arquivos classificados"}, key='sentinel-os-draft-v1', file='sentinel-os-data.json', remote='/repos/Hdcttr/matrix/contents/'+file;
+      const clone=o=>JSON.parse(JSON.stringify(o)), empty=()=>({version:1,records:[]}), norm=t=>String(t).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+      let data=empty(),published=empty(),baseText=null,baseSha=null,dirty=false,editing=false,app=null,selected=null,formDirty=false,busy=false,loaded=false;
+      const setStatus=t=>$('os-status').textContent=t;
+      function validate(d){if(!d||d.version!==1||!Array.isArray(d.records)||d.records.length>3000)throw Error('Arquivo inválido.');const ids=new Set();for(const r of d.records){if(!r||typeof r.id!=='string'||!r.id||ids.has(r.id)||!Object.hasOwn(appNames,r.app)||['title','date','body','tags','updated'].some(k=>typeof r[k]!=='string'))throw Error('Registro inválido.');ids.add(r.id)}return d}
+      function saveDraft(){dirty=true;try{localStorage.setItem(key,JSON.stringify({data,baseText,baseSha}));setStatus('RASCUNHO LOCAL SALVO')}catch(e){setStatus('RASCUNHO EM MEMÓRIA // exporte para não perder alterações')}sync()}
+      function sync(){ $('os-total').textContent=String(data.records.length).padStart(2,'0')+' ARQUIVOS';$('os-draft').textContent=dirty?'● ALTERAÇÕES NÃO PUBLICADAS':'● SISTEMA SINCRONIZADO';$('os-publish').hidden=!editing;$('os-publish').disabled=!dirty||busy;$('os-backup-tools').hidden=!editing;$('os-new').hidden=!editing;document.querySelectorAll('[data-os-count]').forEach(e=>{const n=data.records.filter(r=>r.app===e.dataset.osCount).length;e.textContent=n+' '+(n===1?'arquivo':'arquivos')});renderRecent()}
+      function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e}
+      function btn(text,fn,cls=''){const e=el('button',cls,text);e.type='button';e.onclick=fn;return e}
+      function dateLabel(r){return r.date||'SEM DATA'}
+      function sorted(list){return [...list].sort((a,b)=>b.updated.localeCompare(a.updated))}
+      function renderRecent(){const box=$('os-recent');box.replaceChildren();const items=sorted(data.records).slice(0,5);if(!items.length){box.append(el('p','os-sub','Nenhum arquivo registrado. Ative a edição para começar.'));return}items.forEach(r=>{const b=btn('',()=>{if(openApp(r.app))select(r.id)},'os-recent-item');b.append(el('span','',r.title),el('span','os-sub',appNames[r.app]+' / '+dateLabel(r)));box.append(b)})}
+      function confirmLeave(){return !formDirty||confirm('Descartar a edição ainda não aplicada?')}
+      function home(){if(!confirmLeave())return false;formDirty=false;app=null;selected=null;$('os-home').hidden=false;$('os-window').hidden=true;document.querySelectorAll('.os-app[data-os-app]').forEach(b=>b.classList.remove('active'));sync();return true}
+      function openApp(k){if(!Object.hasOwn(appNames,k)||!confirmLeave())return false;formDirty=false;app=k;selected=null;$('os-home').hidden=true;$('os-window').hidden=false;$('os-window-title').textContent=appNames[k]+' / '+k.toUpperCase();$('os-search').value='';resetWindow();document.querySelectorAll('.os-app[data-os-app]').forEach(b=>b.classList.toggle('active',b.dataset.osApp===k));renderList();renderContent();sync();return true}
+      function select(id){if(!confirmLeave())return;formDirty=false;selected=id;renderList();renderContent()}
+      function renderList(){const box=$('os-file-list');box.replaceChildren();const q=norm($('os-search').value);const items=sorted(data.records.filter(r=>r.app===app&&norm(r.title+' '+r.body+' '+r.tags+' '+r.date).includes(q)));if(!items.length){box.append(el('p','os-sub','Nenhum arquivo encontrado.'));return}for(const r of items){const b=btn(r.title||'(sem título)',()=>select(r.id),'os-file'+(r.id===selected?' active':''));b.append(el('span','',dateLabel(r)));box.append(b)}}
+      function record(){return data.records.find(r=>r.id===selected)}
+      function renderContent(){const box=$('os-content');box.replaceChildren();const r=record();if(!r){const e=el('div','os-empty');e.append(el('div','','[ ARQUIVO NÃO SELECIONADO ]'),el('p','os-sub',editing?'Crie um arquivo novo ou selecione um existente.':'Selecione um arquivo para consultar.'));if(editing)e.append(btn('+ CRIAR ARQUIVO',newRecord,'os-primary'));box.append(e);return}
+        box.append(el('div','os-sub','/home/sentinel/'+r.app+'/'+r.id.slice(0,8)),el('h3','',r.title||'(sem título)'),el('div','os-sub',dateLabel(r)));
+        if(r.tags){const tags=el('div','');r.tags.split(',').map(t=>t.trim()).filter(Boolean).forEach(t=>tags.append(el('span','os-tag',t)));box.append(tags)}
+        box.append(el('p','',r.body||'Registro sem descrição.'));
+        if(editing){const bar=el('div','os-tools');bar.style.marginTop='20px';bar.append(btn('EDITAR',()=>editForm(r),'os-primary'),btn('DUPLICAR',()=>{const n={...r,id:uid(),title:r.title+' (cópia)',updated:new Date().toISOString()};data.records.push(n);selected=n.id;saveDraft();renderList();renderContent()}),btn('EXCLUIR',()=>{if(!confirm('Excluir este arquivo?'))return;data.records=data.records.filter(x=>x.id!==r.id);selected=null;saveDraft();renderList();renderContent()},'os-danger'));box.append(bar)}
+      }
+      const uid=()=>globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+Math.random().toString(36).slice(2);
+      function newRecord(){if(!editing||!app||!confirmLeave())return;editForm({id:uid(),app,title:'',date:'',body:'',tags:'',updated:''},true)}
+      function editForm(r,isNew=false){if(!editing)return;const box=$('os-content');box.replaceChildren();box.append(el('h3','',isNew?'Novo arquivo':'Editar arquivo'));const fields={};function field(k,label,kind){box.append(el('label','',label));const f=el(kind);f.value=r[k];f.setAttribute('aria-label',label);if(kind==='input')f.type='text';f.oninput=()=>{formDirty=true;sync()};fields[k]=f;box.append(f)}
+        field('title','TÍTULO','input');field('date','DATA / SESSÃO (texto livre)','input');field('tags','ETIQUETAS (separadas por vírgula)','input');field('body','CONTEÚDO / DESCRIÇÃO','textarea');
+        box.append(el('label','','APLICATIVO / DIRETÓRIO'));const dest=el('select');for(const [k,n] of Object.entries(appNames)){const o=el('option','',n);o.value=k;dest.append(o)}dest.value=r.app;dest.onchange=()=>formDirty=true;box.append(dest);
+        const bar=el('div','os-tools');bar.style.marginTop='15px';bar.append(btn('SALVAR ARQUIVO',()=>{const title=fields.title.value.trim();if(!title){setStatus('INFORME UM TÍTULO');fields.title.focus();return}const next={id:r.id,app:dest.value,title,date:fields.date.value,body:fields.body.value,tags:fields.tags.value,updated:new Date().toISOString()};const i=data.records.findIndex(x=>x.id===r.id);if(i<0)data.records.push(next);else data.records[i]=next;formDirty=false;app=next.app;selected=next.id;$('os-window-title').textContent=appNames[app]+' / '+app.toUpperCase();$('os-search').value='';document.querySelectorAll('.os-app[data-os-app]').forEach(b=>b.classList.toggle('active',b.dataset.osApp===app));saveDraft();renderList();renderContent()},'os-primary'),btn('CANCELAR',()=>{if(confirmLeave()){formDirty=false;renderContent()}}));box.append(bar);fields.title.focus()
+      }
+      function setEdit(v){if(!confirmLeave())return;formDirty=false;editing=v;$('os-edit-toggle').textContent='EDIÇÃO: '+(v?'ON':'OFF');$('os-edit-toggle').setAttribute('aria-pressed',String(v));setStatus(v?'MODO EDIÇÃO LOCAL // publicação requer ROOT':'MODO LEITURA');sync();if(app)renderContent()}
+      function resetWindow(){$('os-window').style.transform='';dx=dy=0}
+      let dx=0,dy=0,drag=null;const bar=$('os-windowbar');bar.addEventListener('pointerdown',e=>{if(e.button!==0||e.target.closest('button')||window.innerWidth<641)return;drag={id:e.pointerId,x:e.clientX,y:e.clientY,dx,dy};bar.setPointerCapture(e.pointerId)});
+      bar.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;const w=$('os-workspace');dx=Math.max(-12,Math.min(w.clientWidth-90,drag.dx+e.clientX-drag.x));dy=Math.max(-12,Math.min(w.clientHeight-50,drag.dy+e.clientY-drag.y));$('os-window').style.transform='translate('+dx+'px,'+dy+'px)'});
+      ['pointerup','pointercancel','lostpointercapture'].forEach(n=>bar.addEventListener(n,()=>drag=null));
+      $('os-window-reset').onclick=resetWindow;$('os-window-close').onclick=home;$('os-desktop').onclick=home;$('os-edit-toggle').onclick=()=>setEdit(!editing);$('os-search').oninput=renderList;$('os-new').onclick=newRecord;
+      $('os-shell').addEventListener('click',e=>{const b=e.target.closest('[data-os-app]');if(b)openApp(b.dataset.osApp)});
+      for(const [id,tab] of [['os-main-contacts','contatos'],['os-main-npcs','npcs'],['os-main-spheres','esferas']])$(id).onclick=()=>{if(confirmLeave()){formDirty=false;switchTab(tab)}};
+      function restore(){try{const o=JSON.parse(localStorage.getItem(key)||'null');if(o){data=validate(o.data);baseText=typeof o.baseText==='string'?o.baseText:null;baseSha=o.baseSha||null;dirty=true;setStatus('RASCUNHO LOCAL RECUPERADO')}}catch(e){setStatus('Rascunho inválido; tentando carregar versão pública.')}}
+      async function load(){try{const res=await fetch(file,{cache:'no-store'});if(!res.ok)throw Error('HTTP '+res.status);const text=await res.text();published=validate(JSON.parse(text));if(!dirty&&!formDirty){data=clone(published);baseText=text;baseSha=null;setStatus('UPLINK ESTABELECIDO // SISTEMA ONLINE');if(app){renderList();renderContent()}}}catch(e){if(!dirty)setStatus('BASE LOCAL // não foi possível carregar arquivos públicos')}finally{loaded=true;sync()}}
+      $('os-export').onclick=()=>{if(formDirty){setStatus('Salve o arquivo em edição antes de exportar.');return}const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=el('a');a.href=url;a.download=file;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+      $('os-import').onclick=()=>$('os-import-file').click();$('os-import-file').onchange=async()=>{const f=$('os-import-file').files[0];if(!f)return;try{const d=validate(JSON.parse(await f.text()));if(confirm('Substituir o rascunho por este arquivo?')){formDirty=false;data=d;selected=null;saveDraft();if(app){renderList();renderContent()}}}catch(e){setStatus(e.message)}finally{$('os-import-file').value=''}};
+      $('os-revert').onclick=()=>{if(!confirm('Descartar todos os arquivos não publicados e recuperar a versão pública?'))return;try{localStorage.removeItem(key)}catch(_){}dirty=false;formDirty=false;data=clone(published);selected=null;baseSha=null;baseText=null;sync();if(app){renderList();renderContent()}load()};
+      const dialog=$('os-publish-dialog');$('os-publish').onclick=()=>{if(formDirty){setStatus('Salve o arquivo em edição antes de publicar.');return}if(!dirty||busy)return;$('os-token').value='';$('os-publish-status').textContent='';dialog.showModal()};$('os-publish-close').onclick=()=>{if(!busy){$('os-token').value='';dialog.close()}};dialog.addEventListener('cancel',e=>{if(busy)e.preventDefault();else $('os-token').value=''});
+      const enc=t=>{const bytes=new TextEncoder().encode(t);let out='';for(let i=0;i<bytes.length;i+=8192)out+=String.fromCharCode(...bytes.subarray(i,i+8192));return btoa(out)},dec=t=>new TextDecoder().decode(Uint8Array.from(atob(t.replace(/\s/g,'')),c=>c.charCodeAt(0)));
+      $('os-publish-confirm').onclick=async()=>{if(busy)return;let token=$('os-token').value.trim();$('os-token').value='';const p=$('os-publish-status');if(!token.startsWith('github_pat_')){p.textContent='Use um token granular.';return}if(!confirm('Publicar os arquivos para todos os visitantes?'))return;busy=true;$('os-publish-confirm').disabled=true;$('os-publish-close').disabled=true;p.textContent='AUTENTICANDO...';try{
+        async function api(path,body){const res=await fetch('https://api.github.com'+path,{method:body?'PUT':'GET',headers:{Accept:'application/vnd.github+json',Authorization:'Bearer '+token,'X-GitHub-Api-Version':'2022-11-28',...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined,credentials:'omit',redirect:'error',cache:'no-store',referrerPolicy:'no-referrer'});const d=await res.json();if(!res.ok)throw Error('GitHub HTTP '+res.status+': '+(d.message||'Falha'));return d}
+        const u=await api('/user');if(String(u.login).toLowerCase()!=='hdcttr')throw Error('Conta não autorizada.');const latest=await api(remote+'?ref=main');if(latest.encoding!=='base64')throw Error('Arquivo remoto grande demais.');
+        const remoteText=dec(latest.content);if(baseSha?baseSha!==latest.sha:baseText!==remoteText)throw Error('O arquivo público mudou ou a base não está confirmada. Exporte o rascunho antes de recarregar e reconciliar as alterações.');
+        const content=JSON.stringify(validate(data),null,2)+'\n';if(new TextEncoder().encode(content).length>900000)throw Error('Arquivo excede 900 KB.');
+        const result=await api(remote,{message:'UPDATE // SENTINEL_OS FILESYSTEM',content:enc(content),sha:latest.sha,branch:'main'});published=clone(data);baseText=content;baseSha=result.content.sha;dirty=false;try{localStorage.removeItem(key)}catch(_){}p.textContent='COMMIT PUBLICADO // '+result.commit.sha;setStatus('PUBLICADO // aguardando deploy do Pages');
+      }catch(e){p.textContent=e.message}finally{token='';busy=false;$('os-publish-confirm').disabled=false;$('os-publish-close').disabled=false;sync()}};
+      window.addEventListener('beforeunload',e=>{if(formDirty){e.preventDefault();e.returnValue=''}});
+      restore();sync();load();
+      return {open(k){switchTab('os');if(k&&Object.hasOwn(appNames,k))openApp(k);return data.records.length}};
+    })();
     const commands = {
+      sentinel: () => {sentinelOS.open();return ['[OS] SENTINEL_OS // desktop carregado.'];},
+      logs: () => {sentinelOS.open('logs');return ['[OS] Diário de campanha aberto.'];},
+      grimoire: () => {sentinelOS.open('grimoire');return ['[OS] Grimório digital aberto.'];},
       crt: () => [toggleCRT() ? '[CRT] Filtro ativado.' : '[CRT] Filtro desativado.'],
       'crt on': () => { setCRT(true); return ['[CRT] Filtro ativado.']; },
       'crt off': () => { setCRT(false); return ['[CRT] Filtro desativado.']; },
@@ -1441,6 +1589,9 @@
         '  <span class="font-bold">boot</span>        - Reproduz a inicialização visual CRT.',
         '  <span class="font-bold">crt</span>         - Alterna o filtro CRT (crt on / crt off).',
         '  <span class="font-bold">admin</span>       - Exibe acesso à área administrativa.',
+        '  <span class="font-bold">sentinel</span>    - Abre o SENTINEL_OS.',
+        '  <span class="font-bold">logs</span>        - Abre o diário de campanha.',
+        '  <span class="font-bold">grimoire</span>    - Abre o grimório digital.',
         '  <span class="font-bold">clear</span>       - Limpa o buffer de saída do terminal.'
       ],
       whoami: () => [
